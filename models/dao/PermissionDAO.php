@@ -1,0 +1,194 @@
+<?php
+require_once MODELS_PATH . "PermissionModel.php";
+require_once MODELS_PATH . "ModuleModel.php";
+require_once MODELS_PATH . "RoleModel.php";
+
+require_once DAO_PATH . "ModuleDAO.php";
+
+class PermissionDAO {
+    
+    private static function fetch_permissions($connection, PDOStatement $queryResult) {
+        $permissionArray = array();
+        while ($record = $queryResult->fetch(PDO::FETCH_ASSOC)) {
+            if (empty($record)) {
+                $permissionArray = null;
+                break;
+            }
+
+            $objectPermission = new PermissionModel($record["id"], $record["role_id"], $record["module_id"], 
+                    $record["r"], $record["w"], $record["u"], $record["d"]);
+
+            $permissionArray[] = $objectPermission;
+        }
+        return $permissionArray;
+    }
+    
+    public static function get_all_permission($connection) {
+        $permissionArray = null;
+
+        if (isset($connection)) {
+            try {
+                $sentence = $connection->prepare("SELECT * FROM permissions");
+                $sentence->execute();
+                $permissionArray = self::fetch_users($sentence);
+            } catch (PDOException $e) {
+                echo "Error line: " . $e->getLine();
+                die("Error: " . $e->getMessage());
+            }
+        }
+
+        return $permissionArray;
+    }
+    
+    public static function get_permission_by_id($connection, int $idPermission) {
+        $permissionObject = null;
+
+        if (isset($connection)) {
+            try {
+                $sentence = $connection->prepare("SELECT * FROM permissions WHERE id = :idPermission;");
+                $sentence->bindParam(":idPermission", $idPermission, PDO::PARAM_INT);
+                $sentence->execute();
+                $result = $sentence->fetch(PDO::FETCH_ASSOC);
+
+                if (!empty($result)) {
+                    $permissionObject = new PermissionModel($result["id"], $result["role_id"], $result["module_id"], 
+                        $result["r"], $result["w"], $result["u"], $result["d"]);
+                }
+            } catch (PDOException $e) {
+                echo "Error line: " . $e->getLine();
+                die("Error: " . $e->getMessage());
+            }
+        }
+
+        return $permissionObject;
+    }
+    
+    public static function update_permissions_role($connection, $idModule, $idRole, $r, $w, $u, $d) {
+        if (isset($connection)) {
+            try {
+                $updateSql = "UPDATE permissions SET r = :r, w = :w, u = :u, d = :d WHERE role_id = :idRole AND module_id = :idModule";
+                
+                $sentence = $connection->prepare($updateSql);
+                
+                $sentence->bindParam(":r", $r, PDO::PARAM_INT);
+                $sentence->bindParam(":w", $w, PDO::PARAM_INT);
+                $sentence->bindParam(":u", $u, PDO::PARAM_INT);
+                $sentence->bindParam(":d", $d, PDO::PARAM_INT);
+                $sentence->bindParam(":idRole", $idRole, PDO::PARAM_INT);
+                $sentence->bindParam(":idModule", $idModule, PDO::PARAM_INT);
+                
+                return $sentence->execute();
+            } catch (PDOException $e) {
+                echo "Error line: " . $e->getLine();
+                die("Error: " . $e->getMessage());
+            }
+        } else {
+            return false;
+        }
+    }
+    
+    public static function get_permission_by_module($connection, ModuleModel $module) {
+        $permissionArray = null;
+
+        if (isset($connection)) {
+            try {                
+                $sql = "SELECT * FROM permissions WHERE module_id = :idModule;";
+                $sentence = $connection->prepare($sql);
+                $sentence->bindValue(":idModule", $module->get_id(), PDO::PARAM_INT); // bindValue en lugar de bindParam
+                $sentence->execute();
+                $permissionArray = self::fetch_permissions($connection, $sentence);
+            } catch (PDOException $e) {
+                echo "Error line: " . $e->getLine();
+                die("Error: " . $e->getMessage());
+            }
+        }
+
+        return $permissionArray;
+    }
+    
+    public static function get_permissions_of_role_ordered_by_module($connection, RoleModel $role) {
+        $modulePermissionsArray = null;
+        
+        if (isset($connection)) {
+            try {                
+                $sql = "SELECT P.module_id, M.name, M.name_esp, P.role_id, P.r, P.w, P.u, P.d FROM permissions AS P "
+                        . "INNER JOIN modules AS M ON P.module_id = M.id WHERE P.role_id = :idRole ORDER BY P.module_id;";
+                
+                $sentence = $connection->prepare($sql);
+                $sentence->bindValue(":idRole", $role->get_id(), PDO::PARAM_INT); // bindValue en lugar de bindParam
+                $sentence->execute();
+                $modulePermissionsArray = array();
+                while ($record = $sentence->fetch(PDO::FETCH_ASSOC)) {
+                    $modulePermissionsArray[$record["module_id"]] = $record;
+                }
+                
+                /*$request = $sentence->fetchAll(PDO::FETCH_ASSOC); Funciona*/
+                
+            } catch (PDOException $e) {
+                echo "Error line: " . $e->getLine();
+                die("Error: " . $e->getMessage());
+            }
+        }
+        
+        return $modulePermissionsArray;
+    }
+    
+    public static function get_permissions_of_all_roles_ordered_by_role($connection) {
+        $modulePermissionsArray = null;
+        
+        if (isset($connection)) {
+            try {                
+                $sql = "SELECT P.module_id, M.name, M.name_esp, P.role_id, P.r, P.w, P.u, P.d FROM permissions AS P "
+                        . "INNER JOIN modules AS M ON P.module_id = M.id ORDER BY P.role_id";
+                
+                $sentence = $connection->prepare($sql);
+                $sentence->execute();
+                $modulePermissionsArray = array();
+                while ($record = $sentence->fetch(PDO::FETCH_ASSOC)) {
+                    $modulePermissionsArray[$record["role_id"]] = $record;
+                }
+                
+                /*$request = $sentence->fetchAll(PDO::FETCH_ASSOC); Funciona*/
+                
+            } catch (PDOException $e) {
+                echo "Error line: " . $e->getLine();
+                die("Error: " . $e->getMessage());
+            }
+        }
+        
+        return $modulePermissionsArray;
+    }
+    
+    public static function insert_permission_to_role($connection, RoleModel $role) {
+        if (isset($connection)) {
+            try {
+                $modules = ModuleDAO::get_all_modules($connection);
+                if (!is_null($modules) && !empty($modules)) {
+                    foreach($modules as $module) {
+                        $sql = "INSERT INTO permissions (role_id, module_id, r, w, u, d) VALUES (:idRole, :idModule, 0, 0, 0, 0)";
+                
+                        $sentence = $connection->prepare($sql);
+                        $sentence->bindValue(":idRole", $role->get_id(), PDO::PARAM_INT);
+                        $sentence->bindValue(":idModule", $module->get_id(), PDO::PARAM_INT);
+                        $result = $sentence->execute();
+                        
+                        if (!$result) {
+                            break;
+                        }
+                    }
+                    return $resulta;
+                } else {
+                    return false;
+                }
+            } catch (PDOException $e) {
+                echo "Error line: " . $e->getLine();
+                die("Error: " . $e->getMessage());
+            }
+        } else {
+            return false; // 0
+        }
+    }
+}
+
+?>
+
