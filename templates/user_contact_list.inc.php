@@ -1,9 +1,9 @@
 <div class="row">
     <div class="col-3">
         <div class="nav flex-column nav-pills" role="tablist" aria-orientation="vertical">
-            <a class="nav-link active" data-toggle="pill" href="#contacts2" type="button" role="tab" aria-selected="true">Contactos</a>
-            <a class="nav-link" data-toggle="pill" href="#friendRequests" type="button" role="tab" aria-selected="false">Solicitudes</a>
-            <a class="nav-link" data-toggle="pill" href="#allUsers" type="button" role="tab" aria-selected="false">Todos los usuarios</a>
+            <a class="nav-link active" data-toggle="pill" href="#contacts2" role="tab" aria-selected="true">Contactos</a>
+            <a class="nav-link" data-toggle="pill" href="#friendRequests" role="tab" aria-selected="false">Solicitudes</a>
+            <a class="nav-link" data-toggle="pill" href="#allUsers" role="tab" aria-selected="false">Todos los usuarios</a>
         </div>
     </div>
     <div class="col-9">
