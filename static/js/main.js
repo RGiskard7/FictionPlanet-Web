@@ -15,29 +15,9 @@ $(document).ready(function() {
     });
 
     dinamicMainHeight();
-    
     treeViewToggler();
-    
-    /*Mantener las pestañas abiertas al recargar la pagina*/
-    /*$('a[data-toggle="tab"]').click(function (e) {
-        e.preventDefault();
-        $(this).tab('show');
-    });*/
-
-    $('a[data-toggle="tab"]').on("shown.bs.tab", function (e) {
-        var id = $(e.target).attr("href");
-        localStorage.setItem('selectedTab', id)
-    });
-
-    var selectedTab = localStorage.getItem('selectedTab');
-    if (selectedTab != null) {
-        $('a[data-toggle="tab"][href="' + selectedTab + '"]').tab('show');
-    }
-    
-    if (window.location.pathname.indexOf('profile') == -1) {
-        localStorage.removeItem('selectedTab');
-    }
-                
+    saveLastTab();
+                  
     var date = new Date();
     var yyyy = date.getFullYear().toString();
     var mm = (date.getMonth() + 1).toString().length === 1 ? "0" + (date.getMonth() + 1).toString() : (date.getMonth() + 1).toString();
@@ -251,5 +231,27 @@ function treeViewToggler() {
         this.parentElement.querySelector(".nested").classList.toggle("active");
         this.classList.toggle("caret-down");
       });
+    }
+}
+
+function saveLastTab() {
+    /*Mantener las pestañas abiertas al recargar la pagina*/
+    /*$('a[data-toggle="tab"]').click(function (e) {
+        e.preventDefault();
+        $(this).tab('show');
+    });*/
+    
+    $('a[data-toggle="tab"]').on("shown.bs.tab", function (e) {
+        var id = $(e.target).attr("href");
+        localStorage.setItem('selectedTab', id)
+    });
+
+    var selectedTab = localStorage.getItem('selectedTab');
+    if (selectedTab != null) {
+        $('a[data-toggle="tab"][href="' + selectedTab + '"]').tab('show');
+    }
+    
+    if (window.location.pathname.indexOf('profile') == -1) {
+        localStorage.removeItem('selectedTab');
     }
 }
