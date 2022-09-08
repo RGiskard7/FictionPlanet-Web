@@ -19,7 +19,6 @@ require_once LIBS_PATH . "Pager.php";
 class Users extends Controller {
     private $postsPerPage = 5;
     private $maxLinksPager = 7;
-    
     private $imagesPerPage = 12; 
     
     public function users() {
@@ -188,7 +187,6 @@ class Users extends Controller {
         
         $arrParams = explode(",", $params);
         $currentPageImage = 1;
-        
         
         Connection::open_connection();
         $user = UserDAO::get_user_by_user_name(Connection::get_connection(), $arrParams[0]); //arrParams[0] -> username
@@ -604,7 +602,7 @@ class Users extends Controller {
                                     . 'Ver perfil&nbsp;<i class="fa fa-chevron-right" aria-hidden="true"></i></button></a>';
                             } else {
                                 $allUserTable[$i]['actions'] = '<button type="button" class="addContactBtn btn btn-primary btn-sm gmd-1" id="addContactBtn_' . $allUsers[$i]->get_id() 
-                                    . '" data-touserid="' . $allUsers[$i]->get_id() . '">Añadir a contactos</button>&nbsp;<a href="/users/profile/' 
+                                    . '" data-touserid="' . $allUsers[$i]->get_id() . '">Añadir</button>&nbsp;<a href="/users/profile/' 
                                     . $allUsers[$i]->get_user_name() . '"><button type="button" class="btn btn-secondary btn-sm gmd-1">'
                                     . 'Ver perfil&nbsp;<i class="fa fa-chevron-right" aria-hidden="true"></i></button></a>';
                             }
