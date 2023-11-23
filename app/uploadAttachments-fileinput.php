@@ -66,5 +66,3 @@ if ($processStatus) {
 // RESPUESTA DEVUELTA POR EL SCRIPT EN FORMATO JSON
 // **********************************************************************
 echo json_encode($reply);
-?>
-

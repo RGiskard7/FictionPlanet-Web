@@ -10,4 +10,3 @@ ini_set('error_log', ERROR_LOG_PATH);
 //error_log('ini app');
 
 $app = new App();
-?>

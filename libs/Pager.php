@@ -89,5 +89,5 @@ class Pager {
     public function get_data_pager() {
         return $this->output;
     }
+    
 }
-?>

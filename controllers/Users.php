@@ -717,6 +717,5 @@ class Users extends Controller {
         }
         exit;
     }
+    
 }
-
-?>

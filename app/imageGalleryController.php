@@ -59,5 +59,3 @@ if (isset($_POST["submitUploadNewImage"])) {
     }
     exit;
 }
-?>
-

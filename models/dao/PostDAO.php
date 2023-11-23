@@ -48,8 +48,10 @@ class PostDAO {
 
                 if (isset($connection)) {
                     try {
-                        $sql = "SELECT * FROM posts ORDER BY creation_date DESC LIMIT " . $init . ", " . $limit . ";";
+                        $sql = "SELECT * FROM posts ORDER BY creation_date DESC LIMIT :init, :limit;";
                         $sentence = $connection->prepare($sql);
+                        $sentence->bindParam(":init", $init, PDO::PARAM_INT);
+                        $sentence->bindParam(":limit", $limit, PDO::PARAM_INT);
                         $sentence->execute();
                         $postArray = self::fetch_posts($sentence);
                     } catch (PDOException $e) {
@@ -85,8 +87,10 @@ class PostDAO {
 
                 if (isset($connection)) {
                     try {
-                        $sql = "SELECT * FROM posts ORDER BY last_update_date DESC LIMIT " . $init . ", " . $limit . ";";
+                        $sql = "SELECT * FROM posts ORDER BY last_update_date DESC LIMIT :init, :limit;";
                         $sentence = $connection->prepare($sql);
+                        $sentence->bindParam(":init", $init, PDO::PARAM_INT);
+                        $sentence->bindParam(":limit", $limit, PDO::PARAM_INT);
                         $sentence->execute();
                         $postArray = self::fetch_posts($sentence);
                     } catch (PDOException $e) {
@@ -122,8 +126,10 @@ class PostDAO {
 
                 if (isset($connection)) {
                     try {
-                        $sql = "SELECT * FROM posts LIMIT " . $init . ", " . $limit . ";";
+                        $sql = "SELECT * FROM posts LIMIT :init, :limit;";
                         $sentence = $connection->prepare($sql);
+                        $sentence->bindParam(":init", $init, PDO::PARAM_INT);
+                        $sentence->bindParam(":limit", $limit, PDO::PARAM_INT);
                         $sentence->execute();
                         $postArray = self::fetch_posts($sentence);
                     } catch (PDOException $e) {
@@ -159,8 +165,10 @@ class PostDAO {
 
                 if (isset($connection)) {
                     try {
-                        $sql = "SELECT * FROM posts WHERE visible = '1' ORDER BY last_update_date DESC LIMIT " . $init . ", " . $limit . ";";
+                        $sql = "SELECT * FROM posts WHERE visible = '1' ORDER BY last_update_date DESC LIMIT :init, :limit;";
                         $sentence = $connection->prepare($sql);
+                        $sentence->bindParam(":init", $init, PDO::PARAM_INT);
+                        $sentence->bindParam(":limit", $limit, PDO::PARAM_INT);
                         $sentence->execute();
                         $postArray = self::fetch_posts($sentence);
                     } catch (PDOException $e) {
@@ -221,9 +229,11 @@ class PostDAO {
 
         if (isset($connection)) {
             try {                
-                $sql = "SELECT * FROM posts WHERE author_id = :authorId AND visible = 1 ORDER BY last_update_date DESC LIMIT " . $init . ", " . $limit . ";";
+                $sql = "SELECT * FROM posts WHERE author_id = :authorId AND visible = 1 ORDER BY last_update_date DESC LIMIT :init, :limit;";
                 $sentence = $connection->prepare($sql);
                 $sentence->bindParam(":authorId", $authorId, PDO::PARAM_INT);
+                $sentence->bindParam(":init", $init, PDO::PARAM_INT);
+                $sentence->bindParam(":limit", $limit, PDO::PARAM_INT);
                 $sentence->execute();
                 $postArray = self::fetch_posts($sentence);
             } catch (PDOException $e) {
@@ -498,6 +508,126 @@ class PostDAO {
         } else {
             return false; // 0
         }
+    }
+    
+    /*public static function search_post($connection, $search, $init, $limit) {
+        $postArray = null;
+        
+        if (isset($connection)) {
+            try {                
+                $searchSql = "SELECT * FROM posts WHERE visible = '1' AND ("
+                        . " title LIKE :search"
+                        . " OR introduction LIKE :search"
+                        . " OR content LIKE :search"
+                        . " OR creation_date LIKE :search"
+                        . ") LIMIT " . $init . ", " . $limit . ";";
+                
+                $sentence = $connection->prepare($searchSql);
+                
+                $searchTerm = '%' . $search . '%'; -- '%search%'
+                $sentence->bindParam(":search", $searchTerm, PDO::PARAM_STR);
+
+                $sentence->execute();
+                $postArray = self::fetch_posts($sentence);
+            } catch (PDOException $e) {
+                echo "Error line: " . $e->getLine();
+                die("Error: " . $e->getMessage());
+            }
+        }
+
+        return $postArray;
+    }*/
+    
+    public static function search_post($connection, $search, $init, $limit) {
+        $postArray = null;
+        
+        if (isset($connection)) {
+            try {
+                
+                $searchSql = "SELECT * FROM posts WHERE visible = '1' AND ("
+                        . " title LIKE :search"
+                        . " OR introduction LIKE :search"
+                        . " OR content LIKE :search"
+                        . " OR creation_date LIKE :search"
+                        . ") LIMIT :init, :limit;";
+
+                $sentence = $connection->prepare($searchSql);
+                
+                //$searchTerm = '%' . $search . '%'; -- '%search%'
+                //$sentence->bindParam(":search", $searchTerm, PDO::PARAM_STR);
+                
+                $sentence->bindValue(":search", '%' . $search . '%', PDO::PARAM_STR);
+                $sentence->bindParam(":init", $init, PDO::PARAM_INT);
+                $sentence->bindParam(":limit", $limit, PDO::PARAM_INT);
+
+                $sentence->execute();
+                $postArray = self::fetch_posts($sentence);
+            } catch (PDOException $e) {
+                echo "Error line: " . $e->getLine();
+                die("Error: " . $e->getMessage());
+            }
+        }
+
+        return $postArray;
+    }
+    
+    public static function advanced_search_post($connection, $title='', $author='', $introduction='', $content='', $date='', $init, $limit) {
+        $postArray = null;
+
+        if (isset($connection)) {
+            try {
+                
+                $searchSql = "SELECT * FROM posts WHERE visible = '1'";
+                $params = []; // Diccionario de parametros clave-valor
+                
+                if (!empty($title)){
+                    $searchSql .= " AND title LIKE :title";
+                    $params[':title'] = $title;
+                }
+                
+                if (!empty($author)){
+                    $searchSql .= " AND author_id IN (SELECT id FROM users WHERE user_name LIKE :author)";
+                    $params[':author'] = '%' . $author . '%';
+                }
+                
+                if (!empty($introduction)){
+                    $searchSql .= " AND introduction LIKE :introduction";
+                    $params[':introduction'] = $introduction;
+                }
+                
+                if (!empty($content)){
+                    $searchSql .= " AND content LIKE :content";
+                    $params[':content'] = $content;
+                }
+                
+                if (!empty($date)){
+                    $searchSql .= " AND creation_date LIKE :date";
+                    $params[':date'] = $date;
+                }
+                
+                $searchSql .= " LIMIT :init, :limit;";
+                
+                $sentence = $connection->prepare($searchSql);
+                
+                $sentence->bindParam(":init", $init, PDO::PARAM_INT);
+                $sentence->bindParam(":limit", $limit, PDO::PARAM_INT);
+                
+                // parte clave del proceso para vincular dinámicamente los valores 
+                // a los parámetros en una sentencia SQL preparada usando PDO en PHP.
+                foreach ($params as $key => $value) {
+                    //$sentence->bindParam($key, $value);
+                    $sentence->bindValue($key, '%' . $value . '%');
+                }
+                
+                $sentence->execute();
+                $postArray = self::fetch_posts($sentence);
+            } catch (PDOException $e) {
+                echo "Error line: " . $e->getLine();
+                die("Error: " . $e->getMessage());
+            }
+        }
+
+        return $postArray;
     }
 }
 

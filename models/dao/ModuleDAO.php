@@ -96,6 +96,5 @@ class ModuleDAO {
 
         return $moduleObject;
     }
+    
 }
-?>
-

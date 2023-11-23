@@ -35,6 +35,7 @@ class Home extends Controller {
         $data['postsPerPage'] = $this->postsPerPage;
         $data['maxLinksPager'] = $this->maxLinksPager;
         $data['numVisiblePosts'] = $numVisiblePosts;
+        //$data['numVisiblePosts'] = count($postArray);
         $data['postArray'] = $postArray;
         
         $this->view->render($this, "home", $data);
@@ -70,7 +71,59 @@ class Home extends Controller {
     }
     
     public function search() {
+        $postArray = null;
+        $currentPage = 1;
+        $firstPost = ($currentPage - 1) * $this->postsPerPage;
         
+        Connection::open_connection();
+        $numVisiblePosts = PostDAO::get_number_of_all_visible_posts(Connection::get_connection());
+
+        if (isset($_GET['search'])) {
+            $search = trim(htmlentities(addslashes($_GET['search']), ENT_QUOTES));
+            
+            //$postArray = PostDAO::search_post(Connection::get_connection(), $search, $firstPost, $this->postsPerPage);
+            if (isset($_GET['searchBySelect'])) {
+                switch($_GET['searchBySelect']) {
+                    case "all":
+                        //$postArray = PostDAO::advanced_search_post(Connection::get_connection(), $search, $search, $search, $search, $search, $firstPost, $this->postsPerPage);
+                        $postArray = PostDAO::search_post(Connection::get_connection(), $search, $firstPost, $this->postsPerPage);
+                        break;
+                    case "title":
+                        $postArray = PostDAO::advanced_search_post(Connection::get_connection(), $search, '', '', '', '', $firstPost, $this->postsPerPage);
+                        break;
+                    case "author":
+                        $postArray = PostDAO::advanced_search_post(Connection::get_connection(), '', $search, '', '', '', $firstPost, $this->postsPerPage);
+                        break;
+                    case "introduction":
+                        $postArray = PostDAO::advanced_search_post(Connection::get_connection(), '', '', $search, '', '', $firstPost, $this->postsPerPage);
+                        break;
+                    case "content":
+                        $postArray = PostDAO::advanced_search_post(Connection::get_connection(), '', '', '', $search, '', $firstPost, $this->postsPerPage);
+                        break;
+                    case "date":
+                        $postArray = PostDAO::advanced_search_post(Connection::get_connection(), '', '', '', '', $search, $firstPost, $this->postsPerPage);
+                        break;
+                    default:
+                        //$postArray = PostDAO::advanced_search_post(Connection::get_connection(), $search, $search, $search, $search, $search, $firstPost, $this->postsPerPage);
+                        $postArray = PostDAO::search_post(Connection::get_connection(), $search, $firstPost, $this->postsPerPage);
+                }
+            }  
+        }
+        Connection::close_connection();
+        
+        if ($postArray === null) {
+            $postArray = array();
+        }
+        
+        $data['pageTitle'] = $this->pageTitle;
+        $data['currentPage'] = $currentPage;
+        $data['postsPerPage'] = $this->postsPerPage;
+        $data['maxLinksPager'] = $this->maxLinksPager;
+        $data['numVisiblePosts'] = $numVisiblePosts;
+        //$data['numVisiblePosts'] = count($postArray);
+        $data['postArray'] = $postArray;
+        
+        $this->view->render($this, "home", $data);
     }
     
     public function login() {

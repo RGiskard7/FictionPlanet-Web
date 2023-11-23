@@ -57,7 +57,8 @@ $index = 1;
             <?php endforeach; ?>
         <?php else: ?>
             <div class='alert alert-warning m-0 text-center border' role='alert'>
-                No hay ningún artículo publicado todavía.
+                <!--No hay ningún artículo publicado todavía.-->
+                No se ha encontrado ninguna publicación
             </div>      
         <?php endif; ?>
     <?php else: ?>

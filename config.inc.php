@@ -26,7 +26,8 @@ define('CREATE_POST', POSTS . '/create');
 define('UPDATE_POST', POSTS . '/update');
 define('PAGE', 'page');
 define('GALLERY', 'image_gallery');
-define('SEARCH', 'buscar');
+
+define('SEARCH', 'home/search'); //define('SEARCH', HOME . '/search'); --Revisar
 
 define('CONTACT_SEO_URL', BASE_URL . CONTACT);
 define('HOME_SEO_URL', BASE_URL . HOME);
@@ -40,6 +41,7 @@ define('CREATE_POST_SEO_URL', BASE_URL . CREATE_POST);
 define('CREATE_USER_SEO_URL', BASE_URL . CREATE_USER);
 define('UPDATE_POST_SEO_URL', BASE_URL . UPDATE_POST);
 define('GALLERY_SEO_URL', BASE_URL . GALLERY);
+define('SEARCH_POST_SEO_URL', BASE_URL . SEARCH);
 
 
 // PATHS----------->

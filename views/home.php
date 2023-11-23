@@ -73,25 +73,27 @@ if (Session::is_started() && $_SESSION['permissions'][MDL_PUBLIC_CALENDAR]['w'])
             <div class="col-md-7">
                 <div class ="row">
                     <div class="col-md-12">
-                        <!--<div class="row">
+                        
+                        <?php //if ($numVisiblePosts > $maxLinksPager): ?>
+                        <div class="row">
                             <div class="col-md-12">
                                 <div id="searchBarHome" class="card gmd-0 p-2 mb-2">
-                                    <form>
+                                    <form id="formSearchPost" rol="form" method="get" action="<?= SEARCH_POST_SEO_URL ?>" name="formSearchPost">
                                         <div class="input-group">
-                                            <input type="search" id="form1" class="form-control" placeholder="Búsqueda..." />
+                                            <input type="search" id="search" name="search" class="form-control" placeholder="Búsqueda..." />
                                             <div class="input-group-append">
-
-                                                <select class="custom-select input-group-text" id="inputGroupSelect01" style="text-align: left;">
+                                                <select class="custom-select input-group-text" id="searchBySelect" name="searchBySelect" style="text-align: left;">
                                                     <optgroup label="Buscar por:">
-                                                        <option value="1" selected>Todo</option>
-                                                        <option value="2">Autor</option>
-                                                        <option value="3">Introducción</option>
-                                                        <option value="4">Contenido</option>
-                                                        <option value="5">Fecha</option>
+                                                        <option value="all" selected>Todo</option>
+                                                        <option value="title">Titulo</option>
+                                                        <option value="author">Autor</option>
+                                                        <option value="introduction">Introducción</option>
+                                                        <option value="content">Contenido</option>
+                                                        <option value="date">Fecha</option>
                                                     </optgroup>
                                                 </select>
-
-                                                <button type="button" class="btn btn-primary">
+                                                <!--<button type="submit" name="submitSearchPost" class="btn btn-primary">-->
+                                                <button type="submit" class="btn btn-primary">
                                                     <i class="fa fa-search"></i>
                                                 </button>
                                             </div>
@@ -99,7 +101,8 @@ if (Session::is_started() && $_SESSION['permissions'][MDL_PUBLIC_CALENDAR]['w'])
                                     </form>
                                 </div>
                             </div>
-                        </div>-->
+                        </div>
+                        <?php //endif; ?>     
                         
                         <div class="row">
                             <div class="col-md-12 ml-0">
@@ -156,17 +159,6 @@ if (Session::is_started() && $_SESSION['permissions'][MDL_PUBLIC_CALENDAR]['w'])
                         </div>
                     </div>
                 </div>
-                
-                <!--<div class="row">
-                    <div class="col-md-12">
-                        <div id="twitterTimelineHomeCard" class="card gmd-0 bg-white">
-                            <div class="card-body">
-                                <a class="twitter-timeline" data-lang="es" href="https://twitter.com/nasa_es?s=21&t=HyY2Hj2j3Hu1hLaTxPzmDw">Tweets by tydiriumdrones</a>
-                                <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
-                            </div>
-                        </div>
-                    </div>
-                </div>-->
             </div>
         </div>
     </div>	

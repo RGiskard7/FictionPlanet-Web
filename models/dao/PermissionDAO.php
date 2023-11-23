@@ -23,6 +23,8 @@ class PermissionDAO {
         return $permissionArray;
     }
     
+    /* Devuelve todos los permisos de los diferentes roles en los distintos modulos
+    existentes en la base de datos     */
     public static function get_all_permission($connection) {
         $permissionArray = null;
 
@@ -40,6 +42,8 @@ class PermissionDAO {
         return $permissionArray;
     }
     
+    /* Devuelve los permisos de un mododulo y un rol concretos especificados por un
+    identificador */
     public static function get_permission_by_id($connection, int $idPermission) {
         $permissionObject = null;
 
@@ -63,6 +67,9 @@ class PermissionDAO {
         return $permissionObject;
     }
     
+    /* Actualiza los permisos de un modulo especifico que tiene un rol concreto. Para ello, se indica el rol
+    que tiene los permisos mediante un idRol y tambien se indica el modulo sobre el que recaen dichos permisos mediante
+    un idModule */
     public static function update_permissions_role($connection, $idModule, $idRole, $r, $w, $u, $d) {
         if (isset($connection)) {
             try {
@@ -87,6 +94,8 @@ class PermissionDAO {
         }
     }
     
+    /* Devuelve todos los permisos asociados a un modulo especifico, asi como los identificadores de los roles que tienen 
+    dichos persimos */
     public static function get_permission_by_module($connection, ModuleModel $module) {
         $permissionArray = null;
 
@@ -106,6 +115,8 @@ class PermissionDAO {
         return $permissionArray;
     }
     
+    /* Devuelve todos los permisos que tiene un rol concreto sobre cada uno de los modulos existentes. El resultado estará 
+    ordenado por el numero identificativo de los modulos ascendente */
     public static function get_permissions_of_role_ordered_by_module($connection, RoleModel $role) {
         $modulePermissionsArray = null;
         
@@ -133,6 +144,8 @@ class PermissionDAO {
         return $modulePermissionsArray;
     }
     
+    /* Devuelve todos los permisos sobre todos los modulos que tienen cada uno de los roles existentes. El resultado estará
+    ordenado por el numero de identificativo de los roles de forma ascendente */
     public static function get_permissions_of_all_roles_ordered_by_role($connection) {
         $modulePermissionsArray = null;
         
@@ -159,6 +172,7 @@ class PermissionDAO {
         return $modulePermissionsArray;
     }
     
+    /* Asocia a un nuevo rol especificado todos los permisos de cada modulo a 0 */
     public static function insert_permission_to_role($connection, RoleModel $role) {
         if (isset($connection)) {
             try {
@@ -188,7 +202,5 @@ class PermissionDAO {
             return false; // 0
         }
     }
+    
 }
-
-?>
-

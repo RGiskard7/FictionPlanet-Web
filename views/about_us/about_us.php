@@ -25,7 +25,8 @@ include TEMPLATES_PATH . 'head.inc.php';
             
             <div class="row">
                 <div class="col-md-12 d-flex justify-content-center">
-                    <img src="<?php echo IMAGES_URL . "logo10.jpeg"; ?>" width="250" alt="" class="thumbnail"/>
+                    <!--<img src="<?php echo IMAGES_URL . "logo10.jpeg"; ?>" width="250" alt="" class="thumbnail"/>-->
+                    <img src="<?php echo IMAGES_URL . "logo_gpt_2.png"; ?>" width="250" alt="" class="thumbnail"/>
                 </div>
             </div>
 

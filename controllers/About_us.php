@@ -10,5 +10,3 @@ class About_us extends Controller {
     }
     
 }
-
-?>

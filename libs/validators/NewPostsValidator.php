@@ -72,7 +72,7 @@ class NewPostsValidator {
         }
 
         if (strlen($introduction) > 2000) {
-            return "El titulo no puede sobrepasar los 2000 caracteres.";
+            return "La introducción no puede sobrepasar los 2000 caracteres.";
         }
 
         return "";
@@ -162,7 +162,6 @@ class NewPostsValidator {
         } else {
             return false;
         }
-    }    
+    } 
+    
 }
-?>
-

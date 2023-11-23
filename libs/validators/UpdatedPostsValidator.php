@@ -22,6 +22,5 @@ class UpdatedPostsValidator extends NewPostsValidator {
  
         return "";
     }  
+    
 }
-?>
-

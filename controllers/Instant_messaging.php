@@ -163,6 +163,5 @@ class Instant_messaging extends Controller {
         }
         return false;
     }
+    
 }
-?>
-

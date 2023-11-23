@@ -3,13 +3,15 @@ require_once realpath(dirname(__FILE__)) . "/../../config.inc.php";
 
 class Utilities {
     
+    /* Copia el contenido que haya en un directorio origen (sourcerDir) a un 
+    directorio destino (targetDir) */
     public static function copy_all_contents_of_directory($sourceDir, $targetDir) {
-        if(!file_exists($sourceDir)) return false;
-        if(!file_exists($targetDir)) {
+        if(!file_exists($sourceDir)) return false; /* Si el directorio origen no existe, se devuelve false */
+        if(!file_exists($targetDir)) { /* Si el directorio destino no existe, se intenta crear */
             mkdir($targetDir, 0777) or die("No se puede crear el directorio de extracci&oacute;n");	
         }
 
-        $dir = opendir($sourceDir) or die("No se puede abrir el directorio");
+        $dir = opendir($sourceDir) or die("No se puede abrir el directorio"); /* Se intenta abrir directorio origen */
 
         while (($file = readdir($dir)) !== false){
             if (($file != '.') && ($file != '..')) {
@@ -22,6 +24,11 @@ class Utilities {
         return true;
     }
     
+    /* Copia un fichero concreto de un directorio origen (sourceDir) a un directorio 
+    Destino (targetDir). En caso de que el directorio origen no exista, o que si no existe
+    el directorio destino, este no se pueda crear, o que no se encuentra el fichero que se
+    quiera copiar en el directorio origen, se devuelve false. En caso contrario, se develve
+    true. */
     public static function copy_file_to_directory($sourceDir, $targetDir, $targetFile) {
         if(!file_exists($sourceDir)) return false;
         if(!file_exists($targetDir)) {
@@ -32,7 +39,7 @@ class Utilities {
         
         while (($file = readdir($dir)) !== false){
             if (($file != '.') && ($file != '..')) {
-                if ($file == $targetFile) {
+                if ($file == $targetFile) { /* Se comprueba que el fichero que se desea copiar se encuentra en el directorio origen */
                     copy($sourceDir . '/' . $file, $targetDir . '/' . $file);
                     closedir($dir);
                     return true;
@@ -45,6 +52,8 @@ class Utilities {
         return false;
     }
     
+    /* Comprueba si un directorio esta vacio. Si lo esta, devuelve true, En caso
+    contrario, devuelve false */
     public static function directory_is_empty($directory) {
         if (file_exists($directory)) {
             $dir = @scandir($directory);
@@ -53,6 +62,7 @@ class Utilities {
         return false;
     }
     
+    /* Elimina un directorio, y todo su contenido */
     public static function delete_directory($directory) {
         if (!file_exists($directory)) return false;
         if (!$fileList = @opendir($directory)) return false; //EL @ es para bloquear los warning y mensajes de error
@@ -62,6 +72,7 @@ class Utilities {
                     deleteDirectory($directory . '/' . $currentFile); 
             }       
         }
+        
         closedir($fileList);
         
         @rmdir($directory);
@@ -69,6 +80,7 @@ class Utilities {
         return true;
     }
     
+    /* Devuelve un listado (array) con todo el contenido de un directorio */
     public static function get_all_contents_of_directory($directory) {
         $files = null;
         if (file_exists($directory)) {
@@ -79,6 +91,7 @@ class Utilities {
         return $files;
     }
     
+    /* Elimina un fichero concreto de un directorio especifico */
     public static function delete_file_of_directory($directory, $file) {
         if (file_exists($directory)) {
             if (!$fileList = @opendir($directory)) return false;
@@ -117,6 +130,5 @@ class Utilities {
         
         return strtolower($url); // Convertir todo a minusculas
     }
+    
 }
-
-?>

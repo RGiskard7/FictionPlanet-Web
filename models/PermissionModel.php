@@ -47,6 +47,5 @@ class PermissionModel {
     public function get_d() {
         return $this->d;
     } 
+    
 }
-
-?>

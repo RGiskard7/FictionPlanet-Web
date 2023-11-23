@@ -403,5 +403,5 @@ class NewUserValidator {
             return false;
         }
     }
+    
 }
-?>

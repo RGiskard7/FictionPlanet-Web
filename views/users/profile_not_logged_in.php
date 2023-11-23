@@ -58,9 +58,9 @@ include TEMPLATES_PATH . 'head.inc.php';
                     <div class="col-md-12">
                         <nav>
                             <div class="nav nav-tabs" id="myTab" role="tablist">
-                                <?php if (Session::is_started() && $_SESSION['permissions'][MDL_PRSN_DATA]['r']): ?>
+                                <!--<?php if (Session::is_started() && $_SESSION['permissions'][MDL_PRSN_DATA]['r']): ?>
                                 <a class="nav-item nav-link active" id="aboutMe-tab" data-toggle="tab" href="#aboutMe" role="tab" aria-controls="aboutMe" aria-selected="true">Acerca de</a>
-                                <?php endif; ?>
+                                <?php endif; ?>-->
                                 <a class="nav-item nav-link <?= (!Session::is_started() || (Session::is_started() && !$_SESSION['permissions'][MDL_PRSN_DATA]['r'])) ? "active" : "" ?>" 
                                    id="content-tab" data-toggle="tab" href="#content" role="tab" aria-controls="content" aria-selected="false">Publicaciones</a>
                                 <a class="nav-item nav-link" id="images-tab" data-toggle="tab" href="#images" role="tab" aria-controls="images" aria-selected="true">Imágenes</a>
@@ -68,7 +68,7 @@ include TEMPLATES_PATH . 'head.inc.php';
                         </nav>
 
                         <div class="tab-content mt-4" id="nav-tabContent">
-                            <?php if (Session::is_started() && $_SESSION['permissions'][MDL_PRSN_DATA]['r']): ?>
+                            <!--<?php if (Session::is_started() && $_SESSION['permissions'][MDL_PRSN_DATA]['r']): ?>
                             <div class="tab-pane fade show active" id="aboutMe" role="tabpanel" aria-labelledby="aboutMe-tab">
                                 <div class="row">
                                     <div class="col-md-12">
@@ -86,11 +86,22 @@ include TEMPLATES_PATH . 'head.inc.php';
                                     </div>
                                 </div>
                             </div>
-                            <?php endif; ?>
-                            <div class="tab-pane fade <?= (!Session::is_started() || (Session::is_started() && !$_SESSION['permissions'][MDL_PRSN_DATA]['r'])) ? "show active" : "" ?>" 
-                                 id="content" role="tabpanel" aria-labelledby="content-tab">
+                            <?php endif; ?>-->
+                            <!--<div class="tab-pane fade <?= (!Session::is_started() || (Session::is_started() && !$_SESSION['permissions'][MDL_PRSN_DATA]['r'])) ? "show active" : "" ?>" 
+                                 id="content" role="tabpanel" aria-labelledby="content-tab">-->
+                            <div class="tab-pane fade show active" id="content" role="tabpanel" aria-labelledby="content-tab">
                                 <div class="row">
-                                    <div class="col-md-12">
+                                    <div class="col-md-4">
+                                        <div class="card bg-white border" style="border-radius: 10px;">
+                                            <div class="card-header"><strong>Acerca del autor</strong></div>
+                                            <div class="card-body p-4">
+                                                <div class='alert alert-warning m-0 text-center border' role='alert'>
+                                                    No hay información.
+                                                </div> 
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-8">
                                         <div id="postListCard" class="card bg-white border">
                                             <div class='card-body mr-2 ml-2'>
                                             <?php

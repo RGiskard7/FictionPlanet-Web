@@ -5,5 +5,3 @@ class Redirection {
         die(); //exit();
     }
 }
-?>
-

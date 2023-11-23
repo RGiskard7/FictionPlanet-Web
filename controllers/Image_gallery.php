@@ -64,6 +64,6 @@ class Image_gallery extends Controller {
         $data['imageArray'] = $imageArray;
 
         $this->view->render($this, "gallery", $data);
-    }   
+    }
+    
 }
-?>

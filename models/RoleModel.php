@@ -45,7 +45,5 @@ class RoleModel {
     public function set_sp_name($sp_name) {
         $this->sp_name = $sp_name;
     }
+    
 }
-
-?>
-

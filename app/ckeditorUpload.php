@@ -91,5 +91,3 @@ if(isset($_FILES['upload']) && strlen($_FILES['upload']['name']) > 1) {
 // Render HTML output 
 @header('Content-type: text/html; charset=utf-8'); 
 echo $re;
-?>
-

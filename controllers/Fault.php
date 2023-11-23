@@ -7,5 +7,3 @@ class Fault extends Controller {
     }
     
 }
-
-?>

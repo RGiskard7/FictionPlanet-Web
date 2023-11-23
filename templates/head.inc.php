@@ -13,8 +13,10 @@
         <meta name="author" content="">
         <meta name="robots" content="index, follow">
         
-        <link rel="icon" type="image/png" href="<?= IMAGES_URL . "logo8.png"; ?>">
-        <link rel="shortcut icon" type="image/png" href="<?= IMAGES_URL . "logo8.png"; ?>">
+        <!--<link rel="icon" type="image/png" href="<?= IMAGES_URL . "logo8.png"; ?>">-->
+        <link rel="icon" type="image/png" href="<?= IMAGES_URL . "logo_gpt_3.png"; ?>">
+        <!--<link rel="shortcut icon" type="image/png" href="<?= IMAGES_URL . "logo8.png"; ?>">-->
+        <link rel="shortcut icon" type="image/png" href="<?= IMAGES_URL . "logo_gpt_3.png"; ?>">
 
         <link rel="stylesheet" href="<?= STATIC_URL . "css/style.css"; ?>">
         <!-- Bootstrap CSS -->

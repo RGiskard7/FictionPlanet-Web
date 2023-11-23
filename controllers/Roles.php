@@ -244,6 +244,5 @@ class Roles extends Controller {
         }
         exit;
     }
+    
 }
-
-?>

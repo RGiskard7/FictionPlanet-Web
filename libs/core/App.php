@@ -15,20 +15,20 @@ class App {
     public function __construct() {
         $url = !empty($_GET['url']) ? $_GET['url'] : 'home/home';
         $url = rtrim($url, '/'); // Elimina barra inclinada del lado derecho
-	$arrUrl = explode('/', $url);
-	$controller = $arrUrl[0]; // Metodo con el mismo nombre que el controlador
-	$method = $arrUrl[0];
+	$arrUrl = explode('/', $url); // Se obtiene cada componente de la URL separada por / y se almacena en un array
+	$controller = $arrUrl[0]; // Se obtiene el nombre del controlador
+	$method = $arrUrl[0]; // De serie se pone el metodo con el mismo nombre que el controlador
 	$params = '';
 
-	if(!empty($arrUrl[1])) {
+	if(!empty($arrUrl[1])) { // Si hay un segundo elemento del array, hay un metodo con nombre diferente al nombre del controlador
             $method = $arrUrl[1];
 	}
 
-	if(!empty($arrUrl[2])) {
-            for ($i = 2; $i < count($arrUrl); $i++) {
+	if(!empty($arrUrl[2])) { // Si hay un tercer elemento, hay al menos un parametro para el metodo del controlador
+            for ($i = 2; $i < count($arrUrl); $i++) { // Se aniaden todos los parametros que haya, separados por una coma, a un string
                 $params .=  $arrUrl[$i].',';
             }
-            $params = trim($params,','); // Elimina la coma de ambos lados
+            $params = trim($params,','); // Elimina la coma de ambos lados (principio y final, por si acaso)
 	}
         
         $controller = ucwords($controller); // Convertir en mayuscula el primer caracter
@@ -49,6 +49,4 @@ class App {
 	}
     }
 }
-
 ?>
-

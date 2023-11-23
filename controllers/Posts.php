@@ -40,7 +40,7 @@ class Posts extends Controller {
                 $postStatus = '';
             }
              
-            $data['pageTitle'] = 'Publicación | Tydirium Drones';
+            $data['pageTitle'] = 'Publicación | Fiction Planet';
             $data['post'] = $post;
             $data['postStatus'] = $postStatus;
             $data['author'] = $author;
@@ -61,7 +61,7 @@ class Posts extends Controller {
             Redirection::redirect(BASE_URL);
         }
         
-        $data['pageTitle'] = 'Crear publicación | Tydirium Drones';
+        $data['pageTitle'] = 'Crear publicación | Fiction Planet';
         //Cuando se tiene una publicacion en creacion y no ha pasado el validador
         if (!empty($validator)) { 
             $data['validator'] = $validator;
@@ -136,7 +136,7 @@ class Posts extends Controller {
         }
         Connection::close_connection();        
         
-        $data['pageTitle'] = 'Editar publicación | Tydirium Drones';
+        $data['pageTitle'] = 'Editar publicación | Fiction Planet';
         $data['post'] = $post;
         $data['attachedFiles'] = $attachedFiles;
         $data['url'] = $postURL;
@@ -367,6 +367,5 @@ class Posts extends Controller {
         }
         return $sourceURL;
     }
+    
 }
-
-?>
