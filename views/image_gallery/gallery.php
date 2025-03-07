@@ -14,7 +14,7 @@ include TEMPLATES_PATH . 'modals/upload_new_image_modal.inc.php';
 <script>
     document.getElementById("galleryLink").style.color="#1e90ff"; 
     document.getElementById("galleryLink").style.borderBottom="0.219em solid dodgerblue"; 
-    document.getElementById("galleryLink").style.fontWeight="700";
+    /*document.getElementById("galleryLink").style.fontWeight="700";*/
 </script>
 
 <div id="main">

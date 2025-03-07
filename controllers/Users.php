@@ -187,6 +187,7 @@ class Users extends Controller {
         
         $arrParams = explode(",", $params);
         $currentPageImage = 1;
+        $currentPagePost = 1;
         
         Connection::open_connection();
         $user = UserDAO::get_user_by_user_name(Connection::get_connection(), $arrParams[0]); //arrParams[0] -> username
@@ -236,37 +237,37 @@ class Users extends Controller {
                 $data['currentPageImage'] = $currentPageImage;
                 $data['imageArray'] = $imageArray;
                 
+                //$currentPagePost = 1;
+                    
+                if (!empty($arrParams[1])) { // arrParams[1] -> modulo (posts, gallery...)
+                    if ($arrParams[1] === POSTS) {
+                        if (!empty($arrParams[2]) && $arrParams[2] === 'page') { // arrParm[2] -> accion
+                            if (!empty($arrParams[3])) { // arrParams[3] -> numero de pagina
+                                $totalPages = ceil($numVisiblePosts / $this->postsPerPage);
+
+                                if ($arrParams[3] > 0 && $arrParams[3] <= $totalPages) {
+                                     $currentPagePost = $arrParams[3];
+                                } else {
+                                     $currentPagePost = 1;
+                                }
+                            }
+                        }
+                    } 
+                }    
+
+                $firstPost = ($currentPagePost - 1) * $this->postsPerPage;
+                $postArray = PostDAO::get_visible_posts_by_author_id(Connection::get_connection(), $user->get_id(), $firstPost, $this->postsPerPage);
+                if (is_null($postArray)) $postArray = array();
+
+                $data['postsPerPage'] = $this->postsPerPage;
+                $data['maxLinksPager'] = $this->maxLinksPager;
+                $data['currentPagePost'] = $currentPagePost;
+                $data['postArray'] = $postArray;
+                
                 // Si el perfil es del usuario logeado
                 if (Session::is_started() && $_SESSION['idUser'] === $user->get_id()) {
                     $this->view->render($this, "profile", $data); 
                 } else { // Si el usuario esta logeado pero no es su perfil, o no esta logeado
-                    $currentPagePost = 1;
-                    
-                    if (!empty($arrParams[1])) { // arrParams[1] -> modulo (posts, gallery...)
-                        if ($arrParams[1] === POSTS) {
-                            if (!empty($arrParams[2]) && $arrParams[2] === 'page') { // arrParm[2] -> accion
-                                if (!empty($arrParams[3])) { // arrParams[3] -> numero de pagina
-                                    $totalPages = ceil($numVisiblePosts / $this->postsPerPage);
-
-                                    if ($arrParams[3] > 0 && $arrParams[3] <= $totalPages) {
-                                         $currentPagePost = $arrParams[3];
-                                    } else {
-                                         $currentPagePost = 1;
-                                    }
-                                }
-                            }
-                        } 
-                    }    
-                        
-                    $firstPost = ($currentPagePost - 1) * $this->postsPerPage;
-                    $postArray = PostDAO::get_visible_posts_by_author_id(Connection::get_connection(), $user->get_id(), $firstPost, $this->postsPerPage);
-                    if (is_null($postArray)) $postArray = array();
-
-                    $data['postsPerPage'] = $this->postsPerPage;
-                    $data['maxLinksPager'] = $this->maxLinksPager;
-                    $data['currentPagePost'] = $currentPagePost;
-                    $data['postArray'] = $postArray;
-
                     $this->view->render($this, "profile_not_logged_in", $data);
                 }
             }
@@ -323,7 +324,7 @@ class Users extends Controller {
         if (Session::is_started() /*&& $_SESSION['permissions'][MDL_USERS]['r']*/) {
             
             if (isset($_POST['action']) && $_POST['action'] === 'userDataTableLoad') {
-                $userDataTable = array();
+                $usersDataTable = array();
 
                 Connection::open_connection();
                 $userArray = UserDAO::get_all_user(Connection::get_connection());
@@ -366,27 +367,27 @@ class Users extends Controller {
                             $status = '<td><span class="badge badge-pill badge-danger">Inactivo</span></td>';
                         }
 
-                        $userDataTable[$i]['actions'] = $viewBtn . $editBtn . $removeBtn;
-                        $userDataTable[$i]['index'] = $i + 1;
-                        $userDataTable[$i]['id'] = $userArray[$i]->get_id();
-                        $userDataTable[$i]['user_name'] = $userArray[$i]->get_user_name();
-                        $userDataTable[$i]['first_name'] = $userArray[$i]->get_first_name();
-                        $userDataTable[$i]['last_name'] = $userArray[$i]->get_last_name();
-                        $userDataTable[$i]['email'] = $userArray[$i]->get_email();
-                        $userDataTable[$i]['password'] = '*****';
-                        $userDataTable[$i]['address'] = $userArray[$i]->get_address();
-                        $userDataTable[$i]['country'] = $userArray[$i]->get_country();
-                        $userDataTable[$i]['phone_number'] = $userArray[$i]->get_phone_number();
-                        $userDataTable[$i]['role'] = $role->get_sp_name();
-                        $userDataTable[$i]['reg_date'] = $userArray[$i]->get_reg_date();
-                        $userDataTable[$i]['last_update_date'] = $userArray[$i]->get_last_update_date();
-                        $userDataTable[$i]['last_access_date'] = $userArray[$i]->get_last_access_date();
-                        $userDataTable[$i]['status'] = $status;
+                        $usersDataTable[$i]['actions'] = $viewBtn . $editBtn . $removeBtn;
+                        $usersDataTable[$i]['index'] = $i + 1;
+                        $usersDataTable[$i]['id'] = $userArray[$i]->get_id();
+                        $usersDataTable[$i]['user_name'] = $userArray[$i]->get_user_name();
+                        $usersDataTable[$i]['first_name'] = $userArray[$i]->get_first_name();
+                        $usersDataTable[$i]['last_name'] = $userArray[$i]->get_last_name();
+                        $usersDataTable[$i]['email'] = $userArray[$i]->get_email();
+                        $usersDataTable[$i]['password'] = '*****';
+                        $usersDataTable[$i]['address'] = $userArray[$i]->get_address();
+                        $usersDataTable[$i]['country'] = $userArray[$i]->get_country();
+                        $usersDataTable[$i]['phone_number'] = $userArray[$i]->get_phone_number();
+                        $usersDataTable[$i]['role'] = $role->get_sp_name();
+                        $usersDataTable[$i]['reg_date'] = $userArray[$i]->get_reg_date();
+                        $usersDataTable[$i]['last_update_date'] = $userArray[$i]->get_last_update_date();
+                        $usersDataTable[$i]['last_access_date'] = $userArray[$i]->get_last_access_date();
+                        $usersDataTable[$i]['status'] = $status;
                     }
                 }
                 Connection::close_connection();
 
-                $response = json_encode($userDataTable, JSON_UNESCAPED_UNICODE);
+                $response = json_encode($usersDataTable, JSON_UNESCAPED_UNICODE);
 
                 echo $response;
             }

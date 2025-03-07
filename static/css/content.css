@@ -1,0 +1,357 @@
+@charset "UTF-8";
+
+/*------CAROUSEL---------------*/
+.carousel-inner img {
+    max-height: 26.25em;
+
+    overflow: hidden;
+    position: relative;
+    object-fit: cover;
+}
+
+#carouselIndicators {
+    /*border-radius: 1.063em;*/
+    margin-bottom: 20px;
+    border-radius: 10px;
+}
+
+#photoCarousel {
+    /*border-radius: 1.063em;*/
+    border-radius: 10px;
+}
+/*------FIN CAROUSEL-----------*/
+
+.titlePostLink {
+    text-decoration: none;
+    color: black;
+}
+
+.titlePostLink:hover {
+    text-decoration: none;
+    color: gray;
+}
+
+#keepReading {
+    text-decoration: none;
+    color: black;
+}
+
+#keepReading:hover {
+    text-decoration: none;
+    color: gray;
+}
+
+#personalPageCard {
+    border-radius: 15px;
+}
+
+#aboutMe-tab {
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+}
+
+#content-tab {
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+}
+
+#images-tab {
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+}
+
+#contacts-tab {
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+}
+
+#createPostCard {
+    border-radius: 15px;
+}
+
+#contactPageCard {
+    border-radius: 15px;
+}
+
+#createUserCard {
+    border-radius: 15px;
+}
+
+#loginCard {
+    border-radius: 15px;
+}
+
+#postCard {
+    border-radius: 15px;
+    display: block;
+}
+
+#postCard img{
+    width: 100%;
+    max-width: 100%;
+    height: auto;
+    overflow: hidden;
+    margin: 0 auto;
+    padding: 0;
+    position: relative;
+    object-fit: scale-down;
+}
+
+#searchBarHome {
+    border-radius: 10px;
+}
+
+#postListHomeCard {
+    border-radius: 15px;
+}
+
+#weekListHomeCard {
+    border-radius: 15px;
+    margin-bottom: 30px;
+}
+
+#calendarHomeCard {
+    border-radius: 15px;
+    margin-bottom: 10px;
+}
+
+#postListCard {
+    border-radius: 15px;
+}
+
+#usersCard {
+    border-radius: 15px;
+}
+
+#postsCard {
+    border-radius: 15px;
+}
+
+#rolesCard {
+    border-radius: 15px;
+}
+
+#galleryCard {
+    border-radius: 15px;
+}
+
+#jumbo {
+    /*border-radius: 17px;*/
+    border-radius: 10px;
+}
+
+/*------CHAT-------------------*/
+#window_chat {
+    cursor: pointer; /*Para que el raton reaccione al estar encima*/
+    width: auto;
+    position: absolute;
+    bottom: 0;
+    top:0;
+    /*right: 70px;*/
+    z-index: 5;
+    overflow: auto;
+    /*display:block;*/
+    border-top-left-radius: 0.625em; 
+    border-top-right-radius: 0.625em;
+}
+
+.chatHistoryWindow {
+    height: 420px;
+    width: auto;
+    border: 1px solid #ccc;
+    background: #ECE5DD;
+    resize: vertical;
+    overflow: auto;
+    padding: 10px;
+    margin-bottom: 15px;
+}
+
+ul li.sent p {
+    background: #DCF8C6;
+    border-style: solid;
+    border-width: 1px 1px;
+    border-color: grey;
+    color: black;
+    border-top-left-radius: 17px;
+    border-top-right-radius: 17px;
+    border-bottom-left-radius: 17px;
+    padding-left: 12px;
+    padding-right: 12px;
+    padding-top: 4px;
+    padding-bottom: 4px;
+    margin-top: 5px;
+    margin-bottom: 5px;
+    /*Para que no se salga el texto del parrafo*/
+    word-wrap: break-word;
+    white-space: normal;
+}
+
+ul li.replies p {
+    background: #FFFFFF;
+    border-style: solid;
+    border-width: 1px 1px;
+    border-color: grey;
+    border-top-left-radius: 17px;
+    border-top-right-radius: 17px;
+    border-bottom-right-radius: 17px;
+    padding-left: 12px;
+    padding-right: 12px;
+    padding-top: 4px;
+    padding-bottom: 4px;
+    margin-top: 5px;
+    margin-bottom: 5px;  
+    /*Para que no se salga el texto del parrafo*/
+    word-wrap: break-word;
+    white-space: normal;
+}
+
+.unread {
+    background:red;  
+    position: relative;
+    left: 5px;
+    border-radius: 50%;
+    display: inline-block;
+    color:white;
+    width: 20px;
+    text-align:center;
+}
+/*------FIN CHAT---------------*/
+
+/*------FULLCALENDAR-----------*/
+.fc-view-container {
+    width: auto;
+    height: auto;
+}
+
+.fc-view-container .fc-view {
+    overflow: auto;
+}
+/*------FIN FULLCALENDAR-------*/
+
+.project-tab #profileTabs .nav-tabs .nav-item.show .nav-link, .nav-tabs .nav-link.active {
+    border-top: none;
+    border-left: none;
+    border-right: none;
+    border-bottom: 3.7px solid dodgerblue !important;
+    font-weight: 600;
+    color: dodgerblue;
+    
+}
+
+.project-tab .nav-link.active {
+    color: dodgerblue;
+}
+
+.project-tab .nav-link {
+    border: none;
+    font-weight: 600;
+    color: grey;
+}
+
+.project-tab .nav-link:hover {
+    border: none;
+    font-weight: 600;
+    color: dodgerblue;
+    background-color: #CBCACA33; /* color: #CBCACA, opacidad: #33 = 20% #*/ 
+}
+
+#profileTabs .nav-link.active {
+    color: dodgerblue;
+}
+
+.tz-gallery .lightbox img {
+    width: 100%;
+    margin-bottom: 30px;
+    transition: 0.2s ease-in-out;
+    box-shadow: 0 2px 3px rgba(0,0,0,0.2);
+}
+
+.tz-gallery .lightbox img:hover {
+    transform: scale(1.05);
+    box-shadow: 0 8px 15px rgba(0,0,0,0.3);
+}
+
+.tz-gallery img {
+    border-radius: 4px;
+}
+
+.baguetteBox-button {
+    background-color: transparent !important;
+}
+
+/* Extra small devices (portrait phones, less than 576px)*/
+@media (max-width: 575.98px) {}
+
+/* Small devices (landscape phones, 576px and up) */
+@media (min-width: 576px) and (max-width: 767.98px) {
+        /*#main {*/
+        /*margin-top: 6.25em; /*101px*/
+        /*margin-top: 84px;*/
+        /*margin-bottom: 1.25em;*/
+        /*margin-bottom: 15px;
+        margin-left: 0;
+        margin-right: 0;
+        padding-left: 0;
+        padding-right: 0;
+    }*/
+    
+    #postCard .card-body {
+        padding: 0.313em;
+    }
+
+    #postCard .card-header {
+        padding: 0.313em;
+    }
+    
+    #postListCard .card-body {
+        padding: 0.313em;
+    }
+    
+    #postListCard .card-header {
+        padding-left: 0.313em;
+        padding-right: 0.313em;
+    }
+    
+    #profileUsername {
+        text-align: center;
+    }
+            
+    #carouselIndicators {
+        margin-bottom: 15px;
+        border-radius: 10px;
+    }
+    
+    #postListHomeCard {
+        border-radius: 15px;
+        margin-bottom: 15px;
+    }
+    
+    #postListHomeCard .card-body {
+        /*padding: 0.313em;*/
+        padding-left: 0.313em;
+        padding-right: 0.313em;
+    }
+    
+    #postListHomeCard .card-header {
+        padding: 0.313em;
+    }
+
+    #calendarHomeCard {
+        border-radius: 15px;
+        margin-bottom: 15px;
+    }
+
+    #weekListHomeCard {
+        border-radius: 15px;
+        margin-bottom: 15px;
+    }
+}
+
+/* Medium devices (tablets, 768px and up) */
+@media (min-width: 768px) and (max-width: 991.98px) {}
+
+/* Large devices (desktops, 992px and up) */
+@media (min-width: 992px) and (max-width: 1199.98px) {}
+
+/* Extra large devices (large desktops, 1200px and up) */
+@media (min-width: 1200px) {}

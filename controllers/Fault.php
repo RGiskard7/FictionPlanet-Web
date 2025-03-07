@@ -1,5 +1,4 @@
 <?php
-
 class Fault extends Controller {
     
     public function error_404() {

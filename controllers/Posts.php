@@ -230,12 +230,6 @@ class Posts extends Controller {
         exit;
     }
     
-    /*public function cancel() {
-        if () {
-            
-        }
-    }*/
-    
     public function refresh_attached_files() {
         if (Session::is_started()) {
             if (isset($_POST['action']) /*&& $_POST['action'] === 'refreshAttachedFiles'*/) {
@@ -282,7 +276,7 @@ class Posts extends Controller {
         if (Session::is_started() /*&& $_SESSION['permissions'][MDL_POSTS]['r']*/) {
             
             if (isset($_POST['action']) && $_POST['action'] === 'postsDataTableLoad') {
-                $postDataTable = array();
+                $postsDataTable = array();
 
                 $viewBtn = '';
                 $editBtn = '';
@@ -335,21 +329,21 @@ class Posts extends Controller {
                             $status = '<span class="badge badge-pill badge-danger">No visible</span>';
                         }
 
-                        $postDataTable[$i]['actions'] = $viewBtn . $editBtn . $removeBtn;
-                        $postDataTable[$i]['index'] = $i + 1;
-                        $postDataTable[$i]['id'] = $postArray[$i]->get_id();
-                        $postDataTable[$i]['title'] = mb_substr($postArray[$i]->get_title(), 0, 40, 'UTF-8') . '...';
-                        $postDataTable[$i]['creation_date'] = $postArray[$i]->get_date_creation();
-                        $postDataTable[$i]['date_last_update'] = $postArray[$i]->get_date_last_update();
+                        $postsDataTable[$i]['actions'] = $viewBtn . $editBtn . $removeBtn;
+                        $postsDataTable[$i]['index'] = $i + 1;
+                        $postsDataTable[$i]['id'] = $postArray[$i]->get_id();
+                        $postsDataTable[$i]['title'] = mb_substr($postArray[$i]->get_title(), 0, 40, 'UTF-8') . '...';
+                        $postsDataTable[$i]['creation_date'] = $postArray[$i]->get_date_creation();
+                        $postsDataTable[$i]['date_last_update'] = $postArray[$i]->get_date_last_update();
                         if (!$isProfile) {
-                            $postDataTable[$i]['author'] = $author->get_user_name();
+                            $postsDataTable[$i]['author'] = $author->get_user_name();
                         }
-                        $postDataTable[$i]['status'] = $status;
+                        $postsDataTable[$i]['status'] = $status;
                     }
                 }
                 Connection::close_connection();
 
-                $response = json_encode($postDataTable, JSON_UNESCAPED_UNICODE);
+                $response = json_encode($postsDataTable, JSON_UNESCAPED_UNICODE);
 
                 echo $response;  
             }

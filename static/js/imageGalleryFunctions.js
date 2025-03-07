@@ -65,7 +65,7 @@ $(document).ready(function () {
                             processData: false,
                             contentType: false,
                             success: function (data) {
-                                if (data == 1 || parseInt(data) == 1) {
+                                if (data === 1 || parseInt(data) === 1) {
                                     $('#uploadNewImageModal').modal('hide');
                                     swal({
                                         title: "Correcto",
@@ -74,15 +74,15 @@ $(document).ready(function () {
                                     }).then(() => {
                                         location.reload();
                                     });
-                                } else if (data == 2 || parseInt(data) == 2) {
+                                } else if (data === 2 || parseInt(data) === 2) {
                                     $("#msgNewImage").html(
                                             '<div class="alert alert-info"><i class="fa fa-exclamation-triangle"></i> La extensión no es buena, solo prueba con <strong>GIF, JPG, PNG, JPEG</strong>.</div>'
                                             );
-                                } else if (data == 3 || parseInt(data) == 3) {
+                                } else if (data === 3 || parseInt(data) === 3) {
                                     $("#msgNewImage").html(
                                             '<div class="alert alert-info"><i class="fa fa-exclamation-triangle"></i> Debe seleccionar una imagen para subirla</strong>.</div>'
                                             );
-                                } else if (data == 4 || parseInt(data) == 4) {
+                                } else if (data === 4 || parseInt(data) === 4) {
                                     $("#msgNewImage").html(
                                             '<div class="alert alert-info"><i class="fa fa-exclamation-triangle"></i> Debe ponerse un título a la imagen</strong>.</div>'
                                             );

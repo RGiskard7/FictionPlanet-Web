@@ -14,7 +14,7 @@ class Home extends Controller {
     
     /*public function __construct() {
         parent::__construct();
-        session_start();
+        session_start(); // Siempre se tiene que llamar a session_start para poder usar variables de sesion
     }*/
     
     public function home() {  

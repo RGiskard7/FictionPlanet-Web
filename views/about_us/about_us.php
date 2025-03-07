@@ -7,7 +7,7 @@ include TEMPLATES_PATH . 'head.inc.php';
 <script>
     document.getElementById("aboutUsLink").style.color="#1e90ff"; 
     document.getElementById("aboutUsLink").style.borderBottom="0.219em solid dodgerblue"; 
-    document.getElementById("aboutUsLink").style.fontWeight="700";
+    /*document.getElementById("aboutUsLink").style.fontWeight="700";*/
 </script>
 
 <div id="main">

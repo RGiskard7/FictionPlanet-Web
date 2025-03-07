@@ -10,7 +10,7 @@
         <meta name="keywords" content="Ciencia ficción, tecnología, programación">
         <meta name="description" content="Descubre lo último en tecnología y ciencia ficción.">
         <meta name="owner" content="Fiction Planet">
-        <meta name="author" content="">
+        <meta name="author" content="Eduardo Diaz">
         <meta name="robots" content="index, follow">
         
         <!--<link rel="icon" type="image/png" href="<?= IMAGES_URL . "logo8.png"; ?>">-->
@@ -35,7 +35,7 @@
         <!-- Iconos fa fa -->
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
         <!-- Gallery -->
-        <link rel="stylesheet" href="<?= STATIC_URL . "css/baguetteBox.css"; ?>"
+        <link rel="stylesheet" href="<?= STATIC_URL . "css/baguetteBox.css"; ?>">
     </head>
     <body>
         

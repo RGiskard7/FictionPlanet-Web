@@ -1,0 +1,13 @@
+@charset "UTF-8";
+
+footer {
+    background-color: rgb(255, 255, 255);    
+}
+
+#footerContainer {  
+    transition: margin-left .5s;
+    padding: 0.938em; /*15px*/
+    width: 100%;
+    height: auto; /*Suele ser 378px*/
+}
+

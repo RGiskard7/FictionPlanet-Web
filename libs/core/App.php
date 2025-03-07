@@ -10,6 +10,12 @@ require_once LIBS_PATH . 'Session.php';
 
 require_once CONTROLLERS_PATH . 'Fault.php';
 
+/*
+ * La función App analiza la URL solicitada, extrae el controlador y el método de la URL, 
+ * y luego invoca el método correspondiente en el controlador. También maneja la lógica 
+ * de pasar parámetros a los métodos si están presentes en la URL.
+ */
+
 class App {
     
     public function __construct() {

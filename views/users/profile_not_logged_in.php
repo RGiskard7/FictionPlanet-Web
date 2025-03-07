@@ -1,14 +1,17 @@
 <?php
 $pageTitle = $data['pageTitle'];
+
+$user = $data['user'];
+$userRole = $data['userRole'];
+
 $numPosts = $data['numPosts'];
 $numVisiblePosts = $data['numVisiblePosts'];
 $numNotVisiblePosts = $data['numNotVisiblePosts'];
 $postsPerPage = $data['postsPerPage'];
-$maxLinksPager = $data['maxLinksPager'];
 $currentPagePost = $data['currentPagePost'];
-$user = $data['user'];
-$userRole = $data['userRole'];
 $postArray = $data['postArray']; 
+
+$maxLinksPager = $data['maxLinksPager'];
 
 $numVisibleImages = $data['numVisibleImages'];
 $imagesPerPage = $data['imagesPerPage'];

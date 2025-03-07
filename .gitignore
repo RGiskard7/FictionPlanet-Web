@@ -1,1 +1,14 @@
 nbproject
+
+# macOS system files
+.DS_Store
+
+# Ignorar el contenido de estas carpetas
+uploads/gallery/*
+uploads/posts/attachments/*
+uploads/editor/img/*
+
+# Permitir que las carpetas vacías se mantengan en el repositorio
+!uploads/gallery/.gitkeep
+!uploads/posts/attachments/.gitkeep
+!uploads/editor/img/.gitkeep

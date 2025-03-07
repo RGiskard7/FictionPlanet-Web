@@ -26,6 +26,7 @@ define('CREATE_POST', POSTS . '/create');
 define('UPDATE_POST', POSTS . '/update');
 define('PAGE', 'page');
 define('GALLERY', 'image_gallery');
+define('GET_IMAGE', GALLERY . '/get');
 
 define('SEARCH', 'home/search'); //define('SEARCH', HOME . '/search'); --Revisar
 
@@ -41,6 +42,9 @@ define('CREATE_POST_SEO_URL', BASE_URL . CREATE_POST);
 define('CREATE_USER_SEO_URL', BASE_URL . CREATE_USER);
 define('UPDATE_POST_SEO_URL', BASE_URL . UPDATE_POST);
 define('GALLERY_SEO_URL', BASE_URL . GALLERY);
+define('IMAGE_SEO_URL', BASE_URL . GET_IMAGE);
+
+define('IMAGE_SEO_URL', BASE_URL . GALLERY);
 define('SEARCH_POST_SEO_URL', BASE_URL . SEARCH);
 
 
@@ -95,6 +99,7 @@ define('MDL_PUBLIC_CALENDAR', 4);
 define('MDL_PUBL_DATA', 5); /* Duda */
 define('MDL_PRSN_DATA', 6); /* Duda */
 define('MDL_CHAT', 7);
+define('MDL_IMAGES', 8);
 //define('MDL_SHPPNG_DATA', 8); /* Duda */
 //define('MDL_IMAGES', 9);
 
