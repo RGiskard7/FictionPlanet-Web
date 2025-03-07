@@ -309,6 +309,7 @@ CREATE TABLE `users` (
 
 --
 -- Volcado de datos para la tabla `users`
+-- Contraseña de usuarios: 1234
 --
 
 INSERT INTO `users` (`id`, `user_name`, `first_name`, `last_name`, `email`, `password`, `address`, `country`, `phone_number`, `reg_date`, `last_update_date`, `last_access_date`, `active`, `avatar`, `online`, `role_id`) VALUES
