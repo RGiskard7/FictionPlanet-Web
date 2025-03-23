@@ -6,16 +6,32 @@
 ![jQuery](https://img.shields.io/badge/jQuery-3.5.1-yellow?style=flat-square&logo=jquery)
 
 ## 📋 Índice
-- [Descripción del Proyecto](#-descripción-del-proyecto)
-- [Aspectos Técnicos](#-aspectos-técnicos)
-- [Funcionalidades](#-funcionalidades)
-- [Estructura del Proyecto](#-estructura-del-proyecto)
-- [Modelo de Datos](#-modelo-de-datos)
-- [Requisitos del Sistema](#-requisitos-del-sistema)
-- [Instalación](#-instalación)
-- [Configuración](#-configuración)
-- [Capturas de Pantalla](#-capturas-de-pantalla)
-- [Seguridad Implementada](#-seguridad-implementada)
+- [🌎 FictionPlanet-Web](#-fictionplanet-web)
+  - [📋 Índice](#-índice)
+  - [🚀 Descripción del Proyecto](#-descripción-del-proyecto)
+  - [💻 Aspectos Técnicos](#-aspectos-técnicos)
+  - [✨ Funcionalidades](#-funcionalidades)
+  - [📂 Estructura del Proyecto](#-estructura-del-proyecto)
+  - [🔍 Modelo de Datos](#-modelo-de-datos)
+  - [🛠️ Requisitos del Sistema](#️-requisitos-del-sistema)
+  - [📥 Instalación](#-instalación)
+    - [Usando XAMPP](#usando-xampp)
+    - [Solución de problemas comunes](#solución-de-problemas-comunes)
+    - [Verificación de la instalación](#verificación-de-la-instalación)
+    - [Próximos pasos](#próximos-pasos)
+  - [⚙️ Configuración](#️-configuración)
+    - [Configuración básica](#configuración-básica)
+    - [Configuración de servidor virtual (opcional)](#configuración-de-servidor-virtual-opcional)
+  - [🚀 Primeros pasos para desarrolladores](#-primeros-pasos-para-desarrolladores)
+    - [Flujo de trabajo recomendado](#flujo-de-trabajo-recomendado)
+    - [Convenciones de código](#convenciones-de-código)
+    - [Consejos para extender la aplicación](#consejos-para-extender-la-aplicación)
+  - [📸 Capturas de Pantalla](#-capturas-de-pantalla)
+    - [Página de Inicio](#página-de-inicio)
+    - [Perfil de Usuario](#perfil-de-usuario)
+    - [Publicaciones](#publicaciones)
+    - [Chat en Vivo](#chat-en-vivo)
+  - [🔒 Seguridad Implementada](#-seguridad-implementada)
 
 ## 🚀 Descripción del Proyecto
 
@@ -26,6 +42,87 @@ Esta página web no está siendo utilizada para ningún objetivo comercial, y su
 ## 💻 Aspectos Técnicos
 
 La aplicación ha sido diseñada siguiendo principios robustos de ingeniería de software:
+
+- **Diagrama de Arquitectura**:
+
+  Este diagrama muestra la interacción entre los componentes principales del sistema:
+
+  ```mermaid
+  flowchart TB
+    subgraph Cliente
+      Browser["🌐 Navegador"]
+    end
+    
+    subgraph Servidor["Servidor PHP"]
+      FrontController["📥 FrontController\nindex.php + App.php"]
+      
+      subgraph MVC["Patrón MVC"]
+        direction TB
+        Controllers["👨‍💼 Controladores\n/controllers/*.php"]
+        Models["📊 Modelos\n/models/*.php"]
+        Views["👁️ Vistas\n/views/*.php"]
+      end
+      
+      subgraph DAOs["Capa de Acceso a Datos"]
+        direction LR
+        ModelDAOs["🗃️ DAOs\n/models/dao/*.php"]
+        Connection["🔌 Connection.php"]
+      end
+      
+      subgraph Otros["Componentes de Soporte"]
+        direction TB
+        Session["📝 Session.php"]
+        Validators["✅ Validadores\n/libs/validators/*.php"]
+        Templates["🧩 Plantillas\n/templates/*.inc.php"]
+      end
+    end
+    
+    subgraph BaseDatos["Base de Datos"]
+      MySQL[("🐬 MySQL/MariaDB")]
+    end
+    
+    %% Conexiones principales
+    Browser <--"HTTP Request"--> FrontController
+    FrontController --> Controllers
+    Controllers --> Models
+    Controllers --> Views
+    Views --> Browser
+    Models --> ModelDAOs
+    ModelDAOs <--> Connection
+    Connection <--> MySQL
+    
+    %% Conexiones secundarias
+    Controllers --> Session
+    Controllers --> Validators
+    Views --> Templates
+    
+    %% Estilos
+    classDef primary fill:#d0e0ff,stroke:#0066cc,stroke-width:2px
+    classDef secondary fill:#e6f5e6,stroke:#339933,stroke-width:2px
+    classDef database fill:#ffe6cc,stroke:#ff9933,stroke-width:2px
+    classDef client fill:#f5e6ff,stroke:#9933cc,stroke-width:2px
+    
+    class Browser client
+    class FrontController,Controllers,Models,Views primary
+    class ModelDAOs,Connection secondary
+    class MySQL database
+    class Session,Validators,Templates secondary
+  ```
+
+  El flujo de una solicitud típica:
+  1. El navegador envía una petición HTTP
+  2. El FrontController (index.php + App.php) analiza la URL y determina qué controlador y método invocar
+  3. El controlador procesa la solicitud, interactúa con los modelos para obtener/manipular datos
+  4. Los modelos utilizan DAOs para acceder a la base de datos
+  5. El controlador prepara los datos y los pasa a la vista
+  6. La vista renderiza la respuesta HTML utilizando plantillas
+  7. La respuesta se envía de vuelta al navegador
+
+  Este patrón de arquitectura asegura:
+  - **Separación de responsabilidades**: Cada componente tiene una función específica
+  - **Mantenibilidad**: Facilita cambios en componentes individuales sin afectar a otros
+  - **Testabilidad**: Permite probar cada capa de forma independiente
+  - **Escalabilidad**: Facilita la adición de nuevas funcionalidades
 
 - **Arquitectura MVC**: Implementación completa del patrón Modelo-Vista-Controlador para separar la lógica de negocio de su visualización.
   - **Controladores**: Clases PHP que reciben las peticiones HTTP desde el Front Controller (index.php), extraen parámetros de la URL, validan permisos de usuario y orquestan la ejecución de la lógica de negocio.
@@ -164,20 +261,6 @@ La aplicación ha sido diseñada siguiendo principios robustos de ingeniería de
   - Gestión de conexiones PDO con manejo de errores
   - Métodos para abrir/cerrar conexiones y transacciones
   - Configuración centralizada en config.inc.php
-
-- **Sistema de Permisos**:
-  - Basado en roles (Root, Administrador, Usuario registrado)
-  - Permisos granulares para operaciones CRUD por módulo funcional
-  - Validación de permisos en cada acción de controlador
-  - Estructura en base de datos: `roles -> permissions -> modules`
-
-- **Frontend**:
-  - **HTML5/CSS3**: Estructura semántica y estilos responsive 
-  - **Bootstrap 4.6**: Framework CSS para componentes UI (cards, modales, nav, grid system)
-  - **JavaScript**: Manejo de DOM, validaciones, efectos visuales
-  - **jQuery 3.5.1**: AJAX para carga dinámica y comunicación asíncrona con el servidor
-  - **Fetch API**: Para operaciones asíncronas modernas (chat, notificaciones)
-  - **Font Awesome**: Iconografía vectorial para la interfaz
 
 ## ✨ Funcionalidades
 
@@ -477,7 +560,7 @@ erDiagram
 - PHP 8.1.1 o superior
 - MySQL 5.7 o superior / MariaDB 10.4.21
 - Servidor web Apache con mod_rewrite habilitado
-- XAMPP 8.1.1 (incluye PHP 8.1.1, MariaDB 10.4.21, Apache)
+- XAMPP 8.1.1+ (incluye PHP 8.1.1, MariaDB 10.4.21, Apache)
 - Extensiones PHP requeridas:
   - PDO y PDO_MySQL para conexión a base de datos
   - GD Library para manipulación de imágenes
@@ -489,58 +572,155 @@ erDiagram
 
 ### Usando XAMPP
 
+XAMPP es un paquete que incluye Apache, MySQL/MariaDB, PHP y phpMyAdmin, lo que facilita la configuración del entorno necesario para ejecutar FictionPlanet.
+
 1. **Instalar XAMPP**:
-   - Descargar e instalar XAMPP desde [https://www.apachefriends.org/](https://www.apachefriends.org/)
-   - Asegurarse de que incluya PHP 8.x, MySQL/MariaDB y Apache
+   - Descargar XAMPP desde [https://www.apachefriends.org/](https://www.apachefriends.org/) (versión 8.1.1 o superior)
+   - Ejecutar el instalador:
+     - **Windows**: Ejecutar el archivo `.exe` descargado y seguir las instrucciones
+     - **macOS**: Montar el archivo `.dmg` y arrastrar XAMPP a la carpeta de aplicaciones
+     - **Linux**: Hacer ejecutable el archivo `.run` descargado (`chmod +x`) y ejecutarlo
 
-2. **Clonar el repositorio**:
-   - Navegar a la carpeta `htdocs` de XAMPP (generalmente en `C:\xampp\htdocs` en Windows o `/Applications/XAMPP/htdocs` en macOS)
-   - Abrir una terminal en esa ubicación y ejecutar:
-   ```bash
-   git clone https://github.com/RGiskard7/FictionPlanet-Web.git
-   ```
-   - Alternativamente, descargar el ZIP del repositorio y extraerlo en la carpeta `htdocs`
+2. **Iniciar XAMPP Control Panel**:
+   - **Windows**: Ejecutar XAMPP Control Panel desde el menú inicio o el acceso directo
+   - **macOS**: Abrir la aplicación "manager-osx" en la carpeta de XAMPP
+   - **Linux**: Ejecutar `sudo /opt/lampp/lampp start` o usar el panel de control gráfico
 
-3. **Configurar la base de datos con phpMyAdmin**:
-   - Iniciar XAMPP Control Panel y arrancar los servicios Apache y MySQL
-   - Abrir phpMyAdmin en el navegador: `http://localhost/phpmyadmin`
-   - Crear una nueva base de datos llamada `fictionplanetdb`
-   - Seleccionar la pestaña "Importar"
-   - Hacer clic en "Examinar" y seleccionar el archivo `fictionplanetdb.sql` del proyecto
-   - Hacer clic en "Continuar" para importar la estructura y datos
+3. **Iniciar los servicios necesarios**:
+   - Hacer clic en "Start" para Apache (servidor web)
+   - Hacer clic en "Start" para MySQL (base de datos)
+   - Verificar que ambos servicios muestren el estado "Running" (verde)
 
-4. **Configurar la aplicación**:
-   - Abrir el archivo `config.inc.php` con un editor de texto
-   - Modificar los parámetros de conexión según sea necesario:
-   ```php
-   define('DB_HOST', 'localhost');
-   define('DB_USER', 'root'); // Usuario por defecto en XAMPP
-   define('DB_PASSWORD', ''); // Contraseña por defecto en XAMPP (vacía)
-   define('DB_NAME', 'fictionplanetdb');
-   ```
-
-5. **Configurar permisos de directorios**:
-   - Asegurarse de que la carpeta `uploads` y sus subcarpetas tengan permisos de escritura:
-   ```bash
-   # En sistemas Linux/macOS:
-   chmod 755 -R ./
-   chmod 777 -R ./uploads
+4. **Clonar o descargar el repositorio**:
+   - **Opción 1 - Usando Git**:
+     - Navegar a la carpeta `htdocs` de XAMPP:
+       - Windows: `C:\xampp\htdocs\`
+       - macOS: `/Applications/XAMPP/htdocs/`
+       - Linux: `/opt/lampp/htdocs/`
+     - Abrir una terminal en esa ubicación y ejecutar:
+       ```bash
+       git clone https://github.com/RGiskard7/FictionPlanet-Web.git
+       ```
    
-   # En Windows, abrir las propiedades de la carpeta y asegurarse de que
-   # el usuario XAMPP tenga permisos de escritura
-   ```
+   - **Opción 2 - Descarga directa**:
+     - Descargar el ZIP del repositorio desde GitHub
+     - Extraer el contenido en la carpeta `htdocs` de XAMPP
+     - Renombrar la carpeta extraída a `FictionPlanet-Web` si es necesario
 
-6. **Verificar configuración de Apache**:
-   - Asegurarse de que el módulo `mod_rewrite` esté habilitado en Apache
-   - En XAMPP, esto se puede verificar en el archivo `httpd.conf` ubicado en `xampp/apache/conf/`
-   - La línea `LoadModule rewrite_module modules/mod_rewrite.so` debe estar sin comentar (sin # al inicio)
+5. **Configurar la base de datos con phpMyAdmin**:
+   
+   - **Acceder a phpMyAdmin**:
+     - Abrir el navegador web y navegar a: `http://localhost/phpmyadmin/`
+     - Si aparece una pantalla de login, el usuario por defecto es `root` sin contraseña
 
-7. **Acceder a la aplicación**:
-   - Abrir un navegador web
-   - Navegar a `http://localhost/FictionPlanet-Web/`
-   - Iniciar sesión con las credenciales por defecto:
+   - **Crear la base de datos**:
+     - En el panel izquierdo de phpMyAdmin, hacer clic en "Nueva"
+     - Introducir `fictionplanetdb` como nombre de la base de datos
+     - Seleccionar `utf8mb4_general_ci` como collation
+     - Hacer clic en "Crear"
+
+   - **Importar el archivo SQL**:
+     - Seleccionar la base de datos `fictionplanetdb` recién creada
+     - Hacer clic en la pestaña "Importar" en el menú superior
+     - Hacer clic en "Examinar" y seleccionar el archivo `fictionplanetdb.sql` del proyecto
+     - Desplazarse hacia abajo y hacer clic en "Continuar"
+     - Esperar a que se complete la importación (aparecerá un mensaje de éxito)
+
+6. **Configurar la aplicación** (ver detalles en la sección de Configuración):
+   - En `config.inc.php`, verificar/ajustar:
+     - `BASE_DIR` (ruta de instalación)
+     - Credenciales de base de datos (normalmente no requieren cambios con XAMPP)
+
+7. **Configurar permisos de directorios**:
+   - **Windows**:
+     - Hacer clic derecho en la carpeta `uploads` dentro del proyecto
+     - Seleccionar "Propiedades" → "Seguridad" → "Editar"
+     - Asegurarse que IUSR o el usuario del servidor web tiene permisos de escritura
+   
+   - **macOS/Linux**:
+     - Abrir terminal y navegar al directorio del proyecto
+     - Ejecutar:
+       ```bash
+       chmod 755 -R ./
+       chmod 777 -R ./uploads
+       ```
+
+8. **Verificar configuración de Apache**:
+   - **Para módulo rewrite**:
+     - Abrir `httpd.conf` desde el panel de XAMPP (botón "Config" junto a Apache)
+     - Buscar la línea `LoadModule rewrite_module modules/mod_rewrite.so`
+     - Asegurarse que NO esté comentada (no tiene # al inicio)
+     - Si hiciste cambios, reiniciar Apache desde el panel de control
+
+9. **Acceder a la aplicación** (Ver sección "Verificación de la instalación" más abajo)
+
+### Solución de problemas comunes
+
+- **Error "No se puede conectar a la base de datos"**:
+  - Verificar que el servicio MySQL esté corriendo en el panel de XAMPP
+  - Comprobar que el nombre de la base de datos sea `fictionplanetdb`
+  - Verificar credenciales en `config.inc.php`
+
+- **Error 404 o página en blanco**:
+  - Verificar que Apache esté corriendo en el panel de XAMPP
+  - Comprobar que mod_rewrite esté habilitado
+  - Verificar que la ruta BASE_DIR en `config.inc.php` coincida con la instalación
+
+- **Error de permisos al subir archivos**:
+  - Asegurarse que la carpeta `uploads` y sus subcarpetas tengan permisos de escritura
+  - Verificar límites de tamaño de archivo en la configuración de PHP
+
+### Verificación de la instalación
+
+Para comprobar que la instalación ha sido exitosa:
+
+1. **Acceder a la página principal**:
+   - Abrir un navegador y navegar a: `http://localhost/FictionPlanet-Web/`
+   - Deberías ver la página de inicio con el carrusel de imágenes y la lista de publicaciones
+
+2. **Verificar el acceso al sistema**:
+   - Hacer clic en el botón "Iniciar sesión" en la barra de navegación
+   - Acceder con las credenciales por defecto:
      - Usuario: `Asimov`
      - Contraseña: `1234`
+   - Deberías ver tu nombre de usuario en la barra de navegación y tener acceso a tu perfil
+
+3. **Comprobar funcionalidades básicas**:
+   - Visitar tu perfil de usuario
+   - Ver las publicaciones existentes
+   - Acceder al chat (si hay otros usuarios)
+   - Verificar la galería de imágenes
+
+4. **Verificación de la base de datos**:
+   - En phpMyAdmin, verificar que todas las tablas se hayan importado correctamente
+   - Comprobar que existan datos en las tablas principales: `users`, `roles`, `modules`, `permissions`
+
+Si alguno de estos pasos falla, revisa la sección "Solución de problemas comunes" o los registros de error en `php-error.log`.
+
+### Próximos pasos
+
+Una vez que el sistema esté funcionando correctamente, puedes comenzar a explorar:
+
+1. **Conocer la plataforma**:
+   - Explora las publicaciones existentes
+   - Revisa los perfiles de los usuarios de ejemplo
+   - Familiarízate con la interfaz de usuario
+
+2. **Personalización**:
+   - Edita tu perfil de usuario
+   - Crea una publicación de prueba
+   - Sube imágenes a tu galería
+   - Prueba el sistema de mensajería
+
+3. **Administración** (si tienes permisos de administrador):
+   - Crea nuevos usuarios
+   - Administra los roles y permisos
+   - Modera el contenido de las publicaciones
+
+4. **Desarrollo**:
+   - Revisa la sección "Primeros pasos para desarrolladores"
+   - Examina la estructura del código fuente
+   - Considera qué mejoras o características adicionales podrías implementar
 
 ## ⚙️ Configuración
 
@@ -575,6 +755,24 @@ define('UPLOAD_IMG_EDITOR_DIR', '/uploads/editor/img/');
 define('UPLOAD_IMG_GALLERY_DIR', '/uploads/gallery/');
 ```
 
+### Configuración básica
+
+Para una configuración rápida del proyecto:
+
+1. **Parámetros obligatorios** (deben modificarse según tu entorno):
+   - `BASE_DIR`: Ruta relativa desde la raíz del servidor web (ej: `/FictionPlanet-Web/` o `/` si está en la raíz)
+   
+2. **Parámetros que normalmente no requieren cambios** (en entorno XAMPP estándar):
+   - `DB_HOST`: Normalmente "localhost"
+   - `DB_USER`: "root" en instalaciones por defecto de XAMPP
+   - `DB_PASSWORD`: Vacío en instalaciones por defecto de XAMPP
+   - `DB_NAME`: "fictionplanetdb" (debe coincidir con el nombre de la base de datos creada)
+
+3. **Nota de seguridad**:
+   - Para entornos de producción, es fundamental cambiar las credenciales por defecto
+   - Nunca utilizar usuario "root" sin contraseña en un servidor público
+   - Considerar el uso de HTTPS para proteger la información transmitida
+
 ### Configuración de servidor virtual (opcional)
 
 Para una experiencia mejorada, puedes configurar un host virtual en Apache:
@@ -605,6 +803,224 @@ Para una experiencia mejorada, puedes configurar un host virtual en Apache:
 
 5. Reiniciar Apache desde el panel de control de XAMPP
 6. Acceder a la aplicación a través de `http://fictionplanet.local/`
+
+## 🚀 Primeros pasos para desarrolladores
+
+Si deseas modificar o extender el proyecto, esta guía te ayudará a entender cómo trabajar con la arquitectura existente.
+
+### Flujo de trabajo recomendado
+
+1. **Familiarízate con la estructura del proyecto**:
+   - Comienza explorando los archivos en este orden: `index.php` → `libs/core/App.php` → `controllers/` → `models/` → `views/`
+   - Examina cómo se implementa un módulo completo (por ejemplo, Posts o Users)
+   - Entiende el flujo de datos desde la solicitud HTTP hasta la respuesta renderizada
+
+2. **Configuración del entorno de desarrollo**:
+   - Configura un host virtual para desarrollo (explicado arriba)
+   - Habilita la visualización de errores PHP para desarrollo:
+     ```php
+     // En config.inc.php o en un archivo separado para dev
+     ini_set('display_errors', 1);
+     ini_set('display_startup_errors', 1);
+     error_reporting(E_ALL);
+     ```
+
+3. **Implementar nueva funcionalidad**:
+
+   - **Añadir un nuevo controlador**:
+     1. Crear archivo `controllers/NuevoControlador.php`:
+        ```php
+        <?php
+        require_once MODELS_PATH . "MiModelo.php";
+        require_once DAO_PATH . "MiModeloDAO.php";
+
+        class NuevoControlador extends Controller {
+            public function nuevoControlador() {
+                // Método por defecto (mismo nombre que el controlador)
+                $data['pageTitle'] = 'Mi Nueva Página | Fiction Planet';
+                $this->view->render($this, 'mi_vista', $data);
+            }
+            
+            public function miMetodo($parametros = null) {
+                // Verificar permisos
+                if (!Session::is_started() || !$_SESSION['permissions'][MI_MODULO]['r']) {
+                    Redirection::redirect(BASE_URL);
+                }
+                
+                // Procesar datos
+                // ...
+                
+                // Renderizar vista
+                $this->view->render($this, 'mi_otra_vista', $data);
+            }
+        }
+        ```
+   
+   - **Crear un nuevo modelo y DAO**:
+     1. Crear el modelo `models/MiModelo.php`:
+        ```php
+        <?php
+        class MiModelo {
+            private $id;
+            private $propiedad1;
+            private $propiedad2;
+            // ...
+            
+            public function __construct($id, $propiedad1, $propiedad2, /* ... */) {
+                $this->id = $id;
+                $this->propiedad1 = $propiedad1;
+                $this->propiedad2 = $propiedad2;
+                // ...
+            }
+            
+            // Getters y setters
+            public function get_id() {
+                return $this->id;
+            }
+            
+            public function get_propiedad1() {
+                return $this->propiedad1;
+            }
+            
+            public function set_propiedad1($propiedad1) {
+                $this->propiedad1 = $propiedad1;
+            }
+            
+            // ... más getters y setters
+        }
+        ```
+     
+     2. Crear el DAO `models/dao/MiModeloDAO.php`:
+        ```php
+        <?php
+        require_once MODELS_PATH . "MiModelo.php";
+        
+        class MiModeloDAO {
+            private static function fetch_items(PDOStatement $queryResult) {
+                $itemArray = array();
+                while ($record = $queryResult->fetch(PDO::FETCH_ASSOC)) {
+                    if (empty($record)) {
+                        $itemArray = null;
+                        break;
+                    }
+                    
+                    $object = new MiModelo(
+                        $record["id"], 
+                        $record["propiedad1"], 
+                        $record["propiedad2"],
+                        // ...
+                    );
+                    
+                    $itemArray[] = $object;
+                }
+                return $itemArray;
+            }
+            
+            public static function get_all($connection) {
+                $itemArray = null;
+                
+                if (isset($connection)) {
+                    try {
+                        $sentence = $connection->prepare("SELECT * FROM mi_tabla");
+                        $sentence->execute();
+                        $itemArray = self::fetch_items($sentence);
+                    } catch (PDOException $e) {
+                        echo "Error line: " . $e->getLine();
+                        die("Error: " . $e->getMessage());
+                    }
+                }
+                
+                return $itemArray;
+            }
+            
+            // Más métodos CRUD...
+        }
+        ```
+   
+   - **Crear vistas**:
+     1. Crear directorio `views/nuevo_controlador/`
+     2. Crear vista `views/nuevo_controlador/mi_vista.php`:
+        ```php
+        <?php
+        $pageTitle = $data['pageTitle'];
+        // Obtener más datos del array $data
+        
+        include TEMPLATES_PATH . 'head.inc.php';
+        ?>
+
+        <div class="container mt-5">
+            <div class="row">
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-header">
+                            <h1>Mi Nueva Funcionalidad</h1>
+                        </div>
+                        <div class="card-body">
+                            <!-- Contenido de la vista -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <?php include TEMPLATES_PATH . 'footer.inc.php'; ?>
+        ```
+
+   - **Añadir rutas y URLs amigables**:
+     1. Editar `config.inc.php` para añadir nuevas constantes de ruta:
+        ```php
+        // Nuevas rutas
+        define('MI_CONTROLADOR', 'nuevo_controlador');
+        define('MI_METODO', MI_CONTROLADOR . '/mi_metodo');
+        
+        // URLs completas
+        define('MI_CONTROLADOR_SEO_URL', BASE_URL . MI_CONTROLADOR);
+        define('MI_METODO_SEO_URL', BASE_URL . MI_METODO);
+        ```
+
+### Convenciones de código
+
+Para mantener la coherencia con el proyecto existente, sigue estas convenciones:
+
+- **Nombres de archivos**:
+  - Controladores: `PascalCase.php` (ej: `Posts.php`)
+  - Modelos: `PascalCaseModel.php` (ej: `UserModel.php`)
+  - DAOs: `PascalCaseDAO.php` (ej: `UserDAO.php`)
+  - Vistas: `snake_case.php` (ej: `create_user.php`)
+
+- **Nombres de clases**:
+  - Usar `PascalCase` para todas las clases
+  - Controladores: Nombre simple (ej: `class Posts`)
+  - Modelos: Sufijo `Model` (ej: `class UserModel`)
+  - DAOs: Sufijo `DAO` (ej: `class UserDAO`)
+
+- **Métodos y variables**:
+  - Usar `snake_case` para métodos (ej: `get_user_by_id()`)
+  - Usar `snake_case` para propiedades y variables (ej: `$first_name`)
+  - Prefijo `get_` y `set_` para getters y setters
+
+- **Estilo de código**:
+  - Indentación con 4 espacios
+  - Llaves en nueva línea para clases y funciones
+  - Variables de métodos con prefijo `$` (estilo PHP)
+
+### Consejos para extender la aplicación
+
+- **Nuevos módulos**: Para añadir un nuevo módulo funcional completo:
+  1. Crear entrada en la tabla `modules` de la base de datos
+  2. Asignar permisos a los roles en la tabla `permissions`
+  3. Definir constantes para el módulo en `config.inc.php`
+  4. Implementar controlador, modelo, DAO y vistas
+
+- **JavaScript y AJAX**:
+  - Utiliza jQuery para manipulación del DOM y AJAX
+  - Coloca scripts específicos en archivos separados en `static/js/`
+  - Sigue el patrón existente en `static/js/userFunctions.js` o `static/js/postFunctions.js`
+
+- **Depuración**:
+  - Utiliza `error_log()` para registrar mensajes en el archivo `php-error.log`
+  - Para depurar variables, usa `error_log(print_r($variable, true))`
+  - Habilita temporalmente `display_errors` para desarrollo
 
 ## 📸 Capturas de Pantalla
 
@@ -662,11 +1078,91 @@ FictionPlanet implementa diversas medidas de seguridad:
   - Timeout de sesión configurable
   - Protección contra fijación de sesión
 
-- **Sistema de Roles y Permisos**:
-  - Control granular de acceso basado en matriz de permisos
-  - Verificación de permisos a nivel de controlador para cada operación
-  - Separación entre permisos de lectura, escritura, actualización y eliminación
-  - Restricciones de interfaz según permisos del usuario
+- **Sistema de Roles y Permisos (RBAC)**:
+
+  - **Arquitectura del sistema**:
+    - Implementación de **Role-Based Access Control (RBAC)** con aspectos de control de acceso basado en recursos
+    - Modelo de datos en tres niveles: `usuarios ↔ roles ↔ permisos ↔ módulos`
+    - Estructura de datos relacional:
+      ```
+      users(role_id) → roles(id) → permissions(role_id, module_id) → modules(id)
+      ```
+  
+  - **Componentes principales**:
+    - **Roles**: Perfiles predefinidos (Root, Administrador, Usuario registrado)
+    - **Módulos**: Áreas funcionales del sistema (usuarios, publicaciones, chat, etc.)
+    - **Permisos**: Matriz que conecta roles con módulos y define operaciones permitidas
+    - **Operaciones**: Acciones CRUD (Create, Read, Update, Delete)
+  
+  - **Implementación en base de datos**:
+    - Tabla `roles`: Define los roles disponibles
+      ```sql
+      CREATE TABLE roles (
+        id bigint(20) UNSIGNED NOT NULL,
+        name varchar(255) NOT NULL,
+        description varchar(255) DEFAULT NULL,
+        name_esp varchar(255) DEFAULT NULL
+      )
+      ```
+    
+    - Tabla `modules`: Define las áreas funcionales
+      ```sql
+      CREATE TABLE modules (
+        id bigint(20) UNSIGNED NOT NULL,
+        name varchar(255) NOT NULL,
+        name_esp varchar(255) DEFAULT NULL
+      )
+      ```
+    
+    - Tabla `permissions`: Matriz de permisos granulares por operación CRUD
+      ```sql
+      CREATE TABLE permissions (
+        id bigint(20) NOT NULL,
+        role_id bigint(20) UNSIGNED NOT NULL,
+        module_id bigint(20) UNSIGNED NOT NULL,
+        r int(11) NOT NULL DEFAULT 0, -- Read
+        w int(11) NOT NULL DEFAULT 0, -- Write (Create)
+        u int(11) NOT NULL DEFAULT 0, -- Update
+        d int(11) NOT NULL DEFAULT 0  -- Delete
+      )
+      ```
+  
+  - **Funcionamiento en tiempo de ejecución**:
+    1. Durante la autenticación, se cargan los permisos del usuario en la sesión:
+       ```php
+       $_SESSION['permissions'][MODULE_ID]['operation'] = true/false;
+       ```
+    
+    2. Verificación de permisos en controladores antes de cada operación:
+       ```php
+       // Ejemplo: verificar permiso de lectura sobre módulo de usuarios
+       if (!Session::is_started() || !$_SESSION['permissions'][MDL_USERS]['r']) {
+           Redirection::redirect(BASE_URL); // Redirigir si no tiene permiso
+       }
+       ```
+    
+    3. Adaptación dinámica de la interfaz según permisos:
+       ```php
+       // Mostrar botón de edición solo si tiene permiso
+       <?php if($_SESSION['permissions'][MDL_POSTS]['u']): ?>
+           <a href="<?= UPDATE_POST_SEO_URL . '/' . $post->get_id(); ?>" class="btn btn-primary">
+               <i class="fa fa-edit"></i> Editar
+           </a>
+       <?php endif; ?>
+       ```
+  
+  - **Gestión administrativa**:
+    - Interfaz completa para administración de roles y permisos
+    - Creación, modificación y eliminación de roles
+    - Asignación masiva de permisos mediante matriz visual
+    - Triggers de base de datos para mantener integridad (ej: reasignación automática al eliminar roles)
+  
+  - **Características y ventajas**:
+    - **Simplicidad**: Modelo fácil de entender y mantener
+    - **Rendimiento**: Permisos pre-cargados en sesión evitan consultas frecuentes
+    - **Granularidad**: Control preciso por operación y módulo
+    - **Seguridad en capas**: Validación tanto en backend como en frontend
+    - **Escalabilidad**: Facilidad para añadir nuevos módulos y roles
 
 - **Validación de datos**:
   - Validadores específicos para cada tipo de formulario
