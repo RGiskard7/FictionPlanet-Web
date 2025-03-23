@@ -44,12 +44,13 @@ La aplicación ha sido diseñada siguiendo principios robustos de ingeniería de
     - Se renderizan a través del método `render()` de la clase `View`
 
 - **Sistema de Enrutamiento**: Implementación del patrón Front Controller para gestionar todas las peticiones HTTP:
+
   - **Componentes principales**:
-    - `index.php`: Front Controller que inicia la aplicación
+    - `index.php`: Front Controller que inicia la aplicación y actúa como punto de entrada único para todas las peticiones
     - `App.php`: Analizador de URL y despachador de controladores
-    - `.htaccess`: Configuración de Apache para redireccionar peticiones
+    - `.htaccess`: Configuración de Apache para redireccionar todas las peticiones al Front Controller
   
-  - **Funcionamiento del enrutador**:
+  - **Proceso de enrutamiento**:
     1. Todas las peticiones son redirigidas a `index.php` mediante reglas en `.htaccess`
     2. El Front Controller carga la configuración y crea una instancia de `App`
     3. `App.php` analiza la URL siguiendo la estructura `/controlador/metodo/parametros`
@@ -57,30 +58,87 @@ La aplicación ha sido diseñada siguiendo principios robustos de ingeniería de
     5. Busca y carga el archivo correspondiente en el directorio `controllers/`
     6. Instancia el controlador y ejecuta el método solicitado con los parámetros extraídos
     7. Si el controlador o método no existen, renderiza una página de error 404
-
-  - **Ejemplo de flujo**:
+    
+    **Implementación en código**:
+    
+    ```php
+    // 1. Extracción de la URL
+    $url = !empty($_GET['url']) ? $_GET['url'] : 'home/home';
+    $url = rtrim($url, '/');
+    $arrUrl = explode('/', $url);
+    
+    // 2. Determinación del controlador
+    $controller = $arrUrl[0]; 
+    $controller = ucwords($controller); // Primera letra mayúscula
+    $controllerFile = CONTROLLERS_PATH . $controller . '.php';
+    
+    // 3. Determinación del método
+    $method = $arrUrl[0]; // Por defecto, mismo nombre que el controlador
+    if(!empty($arrUrl[1])) {
+        $method = $arrUrl[1]; // Si hay un segundo segmento
+    }
+    
+    // 4. Extracción de parámetros
+    $params = '';
+    if(!empty($arrUrl[2])) {
+        for ($i = 2; $i < count($arrUrl); $i++) {
+            $params .= $arrUrl[$i].',';
+        }
+        $params = trim($params,',');
+    }
+    
+    // 5. Instanciación y ejecución del controlador
+    if(file_exists($controllerFile)) {
+        require_once $controllerFile;
+        $controller = new $controller();
+        
+        if(method_exists($controller, $method)) {
+            $controller->{$method}($params);
+        } else {
+            $fault = new Fault();
+            $fault->error_404();
+        }
+    }
+    ```
+  
+  - **Ejemplo de flujo completo**:
     - URL solicitada: `example.com/users/profile/42`
-    - Controlador: `Users` (carga el archivo `controllers/Users.php`)
-    - Método: `profile`
-    - Parámetro: `42` (ID de usuario)
-    - Ejecución: `$users->profile('42')`
+    - Análisis: Controlador=`Users`, Método=`profile`, Parámetro=`42`
+    - Proceso:
+      1. Se carga `controllers/Users.php`
+      2. Se crea una instancia: `$users = new Users()`
+      3. Se ejecuta: `$users->profile('42')`
+      4. El controlador obtiene datos del modelo: `UserDAO::get_user_by_id()`
+      5. Se renderiza la vista: `$this->view->render($this, 'profile', $data)`
 
-  - **Generación de URLs**:
-    - Se utilizan constantes predefinidas en `config.inc.php` para generar URLs consistentes
-    - Ejemplos:
-      ```php
-      define('USERS', 'users');
-      define('PROFILE', USERS . '/profile');
-      define('USERS_SEO_URL', BASE_URL . USERS);
-      define('PROFILE_SEO_URL', BASE_URL . PROFILE);
-      ```
-    - En el código se utilizan estas constantes: `Redirection::redirect(PROFILE_SEO_URL . '/' . $userId)`
+  - **Sistema de generación de URLs**:
+    - La aplicación utiliza constantes predefinidas en `config.inc.php` para generar URLs consistentes:
+    ```php
+    // Definición de rutas base
+    define('USERS', 'users');
+    define('PROFILE', USERS . '/profile');
+    
+    // URLs completas para SEO
+    define('USERS_SEO_URL', BASE_URL . USERS);
+    define('PROFILE_SEO_URL', BASE_URL . PROFILE);
+    ```
+    
+    - Uso en el código para redirecciones y enlaces:
+    ```php
+    // Redirección a perfil de usuario
+    Redirection::redirect(PROFILE_SEO_URL . '/' . $userId);
+    
+    // Generación de URL en vistas
+    <a href="<?php echo PROFILE_SEO_URL . '/' . $user->get_id(); ?>">Ver perfil</a>
+    ```
 
-  - **Características del sistema**:
-    - Simple y basado en convenciones (sin archivos de configuración de rutas)
-    - Estructura predecible que sigue el formato `/controlador/metodo/parametros`
-    - Mecanismo de manejo de errores para rutas no válidas
-    - Optimizado para SEO mediante URLs amigables
+  - **Características y ventajas**:
+    - **Simplicidad**: Sistema basado en convenciones sin configuración compleja de rutas
+    - **Predecible**: Estructura uniforme `/controlador/metodo/parametros`
+    - **Mantenible**: Fácil localización de archivos y responsabilidades
+    - **SEO-friendly**: URLs amigables y legibles
+    - **Seguridad**: Gestión centralizada de errores y validación de parámetros
+    - **Extensible**: Posibilidad de añadir nuevos controladores sin modificar el enrutador
 
 - **Patrón DAO**: La aplicación implementa Data Access Objects para abstraer completamente las operaciones de base de datos:
   - Cada entidad tiene su correspondiente clase DAO (ej: `UserDAO`, `PostDAO`)
