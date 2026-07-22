@@ -1,35 +1,7 @@
 <?php
-
-function loadEnv($path) {
-    if (!file_exists($path)) {
-        return;
-    }
-    $lines = file($path, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
-    foreach ($lines as $line) {
-        $line = trim($line);
-        if ($line === '' || str_starts_with($line, '#')) {
-            continue;
-        }
-        $parts = explode('=', $line, 2);
-        if (count($parts) !== 2) {
-            continue;
-        }
-        $key = trim($parts[0]);
-        $value = trim($parts[1]);
-        if (!array_key_exists($key, $_ENV) && !array_key_exists($key, $_SERVER)) {
-            putenv("$key=$value");
-            $_ENV[$key] = $value;
-            $_SERVER[$key] = $value;
-        }
-    }
-}
-
-loadEnv(realpath(__DIR__) . '/.env');
-
+define('ROOT_DIRECTORY', realpath(dirname(__FILE__) . '/..'));
 define('BASE_DIR', '/');
-define('BASE_URL', rtrim(($_ENV['APP_URL'] ?? 'http://' . $_SERVER['SERVER_NAME']) . BASE_DIR, '/'));
-
-// URLS------------>
+define('BASE_URL', 'http://localhost');
 define('VIEW_URL', BASE_URL . '/views/');
 define('APP_URL', BASE_URL . '/app/');
 define('STATIC_URL', BASE_URL . '/static/');
@@ -37,8 +9,6 @@ define('IMAGES_URL', STATIC_URL . 'img/');
 define('MODEL_URL', BASE_URL . '/model/');
 define('TEMPLATES_URL', BASE_URL . '/templates/');
 define('PLUGINS_URL', BASE_URL . '/plugins/');
-
-// FRIENDLY URLS---->
 define('CONTACT', 'about_us');
 define('HOME', '');
 define('USERS', 'users');
@@ -53,9 +23,7 @@ define('UPDATE_POST', POSTS . '/update');
 define('PAGE', 'page');
 define('GALLERY', 'image_gallery');
 define('GET_IMAGE', GALLERY . '/get');
-
 define('SEARCH', 'home/search');
-
 define('CONTACT_SEO_URL', BASE_URL . '/' . CONTACT);
 define('HOME_SEO_URL', BASE_URL . '/' . HOME);
 define('PROFILE_SEO_URL', BASE_URL . '/' . PROFILE);
@@ -70,9 +38,6 @@ define('UPDATE_POST_SEO_URL', BASE_URL . '/' . UPDATE_POST);
 define('GALLERY_SEO_URL', BASE_URL . '/' . GALLERY);
 define('IMAGE_SEO_URL', BASE_URL . '/' . GALLERY);
 define('SEARCH_POST_SEO_URL', BASE_URL . '/' . SEARCH);
-
-// PATHS----------->
-define("ROOT_DIRECTORY", realpath(__DIR__));
 define('VIEWS_PATH', ROOT_DIRECTORY . '/views/');
 define('APP_PATH', ROOT_DIRECTORY . '/app/');
 define('STATIC_PATH', ROOT_DIRECTORY . '/static/');
@@ -84,36 +49,19 @@ define('LIBS_PATH', ROOT_DIRECTORY . '/libs/');
 define('CORE_PATH', LIBS_PATH . 'core/');
 define('CONTROLLERS_PATH', ROOT_DIRECTORY . '/controllers/');
 define('ERROR_LOG_PATH', ROOT_DIRECTORY . '/php-error.log');
-
-// DB MYSQL-------->
-define('DB_TYPE', $_ENV['DB_TYPE'] ?? 'mysql');
-define('DB_HOST', $_ENV['DB_HOST'] ?? 'localhost');
-define('DB_USER', $_ENV['DB_USER'] ?? 'root');
-define('DB_PASSWORD', $_ENV['DB_PASSWORD'] ?? '');
-define('DB_NAME', $_ENV['DB_NAME'] ?? 'fictionplanetdb');
-define('DB_CHARSET', $_ENV['DB_CHARSET'] ?? 'utf8mb4');
-
-// APP----------->
-define('APP_DEBUG', filter_var($_ENV['APP_DEBUG'] ?? 'false', FILTER_VALIDATE_BOOLEAN));
-
-// TIPOS USUARIOS
+define('DB_TYPE', 'mysql');
+define('DB_HOST', 'localhost');
+define('DB_USER', 'root');
+define('DB_PASSWORD', '');
+define('DB_NAME', 'fictionplanetdb_test');
+define('DB_CHARSET', 'utf8mb4');
+define('APP_DEBUG', true);
 define('ROOT', 1);
 define('REGISTERED_USER', 4);
-
 define('UPLOAD_POSTS_DIR', '/uploads/posts/attachments/');
 define('UPLOAD_IMG_EDITOR_DIR', '/uploads/editor/img/');
 define('UPLOAD_IMG_GALLERY_DIR', '/uploads/gallery/');
 define('UPLOAD_IMG_GALLERY_URL', BASE_URL . '/uploads/gallery/');
-
-define('MODULE_1', 'users');
-define('MODULE_2', 'roles');
-define('MODULE_3', 'posts');
-define('MODULE_4', 'calendar_events');
-define('MODULE_5', 'publisher_data');
-define('MODULE_6', 'personal_data');
-define('MODULE_7', 'chat_services');
-define('MODULE_8', 'images');
-
 define('MDL_USERS', 1);
 define('MDL_ROLES', 2);
 define('MDL_POSTS', 3);
@@ -123,8 +71,35 @@ define('MDL_PRSN_DATA', 6);
 define('MDL_CHAT', 7);
 define('MDL_IMAGES', 8);
 
-define('OPERATION_1', 'view');
-define('OPERATION_2', 'create');
-define('OPERATION_3', 'edit');
-define('OPERATION_4', 'delete');
-define('OPERATION_5', 'list');
+require_once CORE_PATH . 'Connection.php';
+require_once CORE_PATH . 'AppException.php';
+require_once CORE_PATH . 'Controller.php';
+require_once CORE_PATH . 'View.php';
+require_once CORE_PATH . 'Redirection.php';
+require_once CORE_PATH . 'Utilities.php';
+require_once LIBS_PATH . 'Session.php';
+require_once LIBS_PATH . 'Pager.php';
+require_once MODELS_PATH . 'UserModel.php';
+require_once MODELS_PATH . 'RoleModel.php';
+require_once MODELS_PATH . 'PermissionModel.php';
+require_once MODELS_PATH . 'PostModel.php';
+require_once MODELS_PATH . 'ChatMessageModel.php';
+require_once MODELS_PATH . 'ContactModel.php';
+require_once MODELS_PATH . 'FriendRequestsModel.php';
+require_once MODELS_PATH . 'ImageGalleryModel.php';
+require_once MODELS_PATH . 'CalendarEventModel.php';
+require_once MODELS_PATH . 'ModuleModel.php';
+require_once DAO_PATH . 'UserDAO.php';
+require_once DAO_PATH . 'RoleDAO.php';
+require_once DAO_PATH . 'PermissionDAO.php';
+require_once DAO_PATH . 'PostDAO.php';
+require_once DAO_PATH . 'ChatMessageDAO.php';
+require_once DAO_PATH . 'ContactDAO.php';
+require_once DAO_PATH . 'FriendRequestsDAO.php';
+require_once DAO_PATH . 'ImageGalleryDAO.php';
+require_once DAO_PATH . 'CalendarEventsDAO.php';
+require_once DAO_PATH . 'ModuleDAO.php';
+require_once LIBS_PATH . 'validators/LoginValidator.php';
+require_once LIBS_PATH . 'validators/NewUserValidator.php';
+require_once LIBS_PATH . 'validators/NewPostsValidator.php';
+require_once LIBS_PATH . 'validators/UpdatedPostsValidator.php';

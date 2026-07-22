@@ -46,16 +46,16 @@ class Users extends Controller {
         Connection::close_connection();
         
         if (isset($_POST['submitNewUser'])) {
-            $userName = trim(htmlentities(addslashes($_POST['userNameNewUser']), ENT_QUOTES)); //Para evitar inyection SQL
-            $firstName = trim((htmlentities(addslashes($_POST['firstNameNewUser']), ENT_QUOTES)));
-            $lastName = trim(htmlentities(addslashes($_POST['lastNameNewUser']), ENT_QUOTES));
-            $email = trim(htmlentities(addslashes($_POST['emailNewUser']), ENT_QUOTES));
-            $password1 = trim(htmlentities(addslashes($_POST['password1NewUser']), ENT_QUOTES));
-            $password2 = trim(htmlentities(addslashes($_POST['password2NewUser']), ENT_QUOTES));
-            $address = trim(htmlentities(addslashes($_POST['addressNewUser']), ENT_QUOTES));
-            $country = trim(htmlentities(addslashes($_POST['countryNewUser']), ENT_QUOTES));
-            $phoneNumber = trim(htmlentities(addslashes($_POST['telephonNewUser']), ENT_QUOTES));
-            $role = trim(htmlentities(addslashes($_POST['roleNewUser']), ENT_QUOTES));
+            $userName = trim(htmlentities($_POST['userNameNewUser'], ENT_QUOTES)); //Para evitar inyection SQL
+            $firstName = trim((htmlentities($_POST['firstNameNewUser'], ENT_QUOTES)));
+            $lastName = trim(htmlentities($_POST['lastNameNewUser'], ENT_QUOTES));
+            $email = trim(htmlentities($_POST['emailNewUser'], ENT_QUOTES));
+            $password1 = trim(htmlentities($_POST['password1NewUser'], ENT_QUOTES));
+            $password2 = trim(htmlentities($_POST['password2NewUser'], ENT_QUOTES));
+            $address = trim(htmlentities($_POST['addressNewUser'], ENT_QUOTES));
+            $country = trim(htmlentities($_POST['countryNewUser'], ENT_QUOTES));
+            $phoneNumber = trim(htmlentities($_POST['telephonNewUser'], ENT_QUOTES));
+            $role = trim(htmlentities($_POST['roleNewUser'], ENT_QUOTES));
 
             if (isset($_POST['checkboxNewUser'])) { // No se valida con el validador
                 $active = true;
@@ -107,16 +107,16 @@ class Users extends Controller {
                     isset($_POST['lastNameEditProfile']) && isset($_POST['emailEditProfile']) && isset($_POST['addressEditProfile']) && 
                     isset($_POST['countryEditProfile']) && isset($_POST['newPassword'])) {
 
-                    $idEditUser = trim(htmlentities(addslashes($_POST['idUser']), ENT_QUOTES));
-                    $userName = trim(htmlentities(addslashes($_POST['userNameEditProfile']), ENT_QUOTES));
-                    $firstName = trim(htmlentities(addslashes($_POST['firstNameEditProfile']), ENT_QUOTES));
-                    $lastName = trim(htmlentities(addslashes($_POST['lastNameEditProfile']), ENT_QUOTES));
-                    $email = trim(htmlentities(addslashes($_POST['emailEditProfile']), ENT_QUOTES));
-                    $address = trim(htmlentities(addslashes($_POST['addressEditProfile']), ENT_QUOTES));
-                    $country = trim(htmlentities(addslashes($_POST['countryEditProfile']), ENT_QUOTES));
-                    $newPassword = trim(htmlentities(addslashes($_POST['newPassword']), ENT_QUOTES));
-                    $role = trim(htmlentities(addslashes($_POST['roleIdEditUser']), ENT_QUOTES));
-                    $status = trim(htmlentities(addslashes($_POST['statusEditUser']), ENT_QUOTES));
+                    $idEditUser = trim(htmlentities($_POST['idUser'], ENT_QUOTES));
+                    $userName = trim(htmlentities($_POST['userNameEditProfile'], ENT_QUOTES));
+                    $firstName = trim(htmlentities($_POST['firstNameEditProfile'], ENT_QUOTES));
+                    $lastName = trim(htmlentities($_POST['lastNameEditProfile'], ENT_QUOTES));
+                    $email = trim(htmlentities($_POST['emailEditProfile'], ENT_QUOTES));
+                    $address = trim(htmlentities($_POST['addressEditProfile'], ENT_QUOTES));
+                    $country = trim(htmlentities($_POST['countryEditProfile'], ENT_QUOTES));
+                    $newPassword = trim(htmlentities($_POST['newPassword'], ENT_QUOTES));
+                    $role = trim(htmlentities($_POST['roleIdEditUser'], ENT_QUOTES));
+                    $status = trim(htmlentities($_POST['statusEditUser'], ENT_QUOTES));
 
                     Connection::open_connection();    
                     $user = UserDAO::get_user_by_id(Connection::get_connection(), $idEditUser);
@@ -124,7 +124,7 @@ class Users extends Controller {
                     $oldUserName = $user->get_user_name();
 
                     $user->set_user_name($userName);
-                    $user->set_firs_name($firstName);
+                    $user->set_first_name($firstName);
                     $user->set_last_name($lastName);
                     $user->set_email($email);
                     $user->set_address($address);
@@ -137,7 +137,7 @@ class Users extends Controller {
                     }
 
                     if (isset($_POST['telephonEditProfile']) && $_POST['telephonEditProfile'] != '') {
-                        $user->set_phone_numbre(trim(htmlentities(addslashes($_POST['telephonEditProfile']), ENT_QUOTES)));
+                        $user->set_phone_number(trim(htmlentities($_POST['telephonEditProfile'], ENT_QUOTES)));
                     } 
 
                     if ($userName != $oldUserName && UserDAO::is_user_name_exist(Connection::get_connection(), $userName)) {
@@ -169,7 +169,7 @@ class Users extends Controller {
         if (Session::is_started() /*&& $_SESSION['permissions'][MDL_USERS]['d']*/) {
             if (isset($_POST['action']) && $_POST['action'] === 'deleteUser' && isset($_POST['idUser'])) {
                 Connection::open_connection();
-                $idUser = trim(htmlentities(addslashes($_POST['idUser']), ENT_QUOTES));
+                $idUser = trim(htmlentities($_POST['idUser'], ENT_QUOTES));
                 $user = UserDAO::get_user_by_id(Connection::get_connection(), $idUser);
                 $response = UserDAO::delete_user(Connection::get_connection(), $user);
                 Connection::close_connection();
@@ -398,7 +398,7 @@ class Users extends Controller {
     public function check_current_password() {
         if (Session::is_started()) {
             if (isset($_POST['action']) && $_POST['action'] === 'checkCurrentPassword') {
-                $currentPassword = trim(htmlentities(addslashes($_POST['currentPassword']), ENT_QUOTES));
+                $currentPassword = trim(htmlentities($_POST['currentPassword'], ENT_QUOTES));
 
                 Connection::open_connection();
                 $user = UserDAO::get_user_by_id(Connection::get_connection(), $_SESSION['idUser']);
@@ -416,8 +416,8 @@ class Users extends Controller {
         if (Session::is_started()) {
             if (isset($_POST['action']) && $_POST['action'] === 'submitChangePassword') {
                 if (isset($_POST['newPassword']) && isset($_POST['currentPassword'])) {
-                    $currentPassword = trim(htmlentities(addslashes($_POST['currentPassword']), ENT_QUOTES));
-                    $newPassword = trim(htmlentities(addslashes($_POST['newPassword']), ENT_QUOTES));
+                    $currentPassword = trim(htmlentities($_POST['currentPassword'], ENT_QUOTES));
+                    $newPassword = trim(htmlentities($_POST['newPassword'], ENT_QUOTES));
 
                     Connection::open_connection();
                     $user = UserDAO::get_user_by_id(Connection::get_connection(), $_SESSION['idUser']);
@@ -476,7 +476,7 @@ class Users extends Controller {
     public function check_user_name() {
         if (Session::is_started()) {
             if (isset($_POST['action']) && $_POST['action'] === 'checkUserName') {
-                $userName = trim(htmlentities(addslashes($_POST['userName']), ENT_QUOTES));
+                $userName = trim(htmlentities($_POST['userName'], ENT_QUOTES));
 
                 Connection::open_connection();
                 $response = UserDAO::is_user_name_exist(Connection::get_connection(), $userName);
@@ -491,7 +491,7 @@ class Users extends Controller {
     public function check_email() {
         if (Session::is_started()) {
             if (isset($_POST['action']) && $_POST['action'] === 'checkEmail') {
-                $email = trim(htmlentities(addslashes($_POST['email']), ENT_QUOTES));
+                $email = trim(htmlentities($_POST['email'], ENT_QUOTES));
 
                 Connection::open_connection();
                 $response = UserDAO::is_email_exist(Connection::get_connection(), $email);
@@ -509,12 +509,12 @@ class Users extends Controller {
                 if (isset($_POST['userNameEditProfile']) && isset($_POST['firstNameEditProfile']) && isset($_POST['lastNameEditProfile']) && isset($_POST['emailEditProfile']) 
                         && isset($_POST['addressEditProfile']) && isset($_POST['countryEditProfile'])) {
                     
-                    $userName = trim(htmlentities(addslashes($_POST['userNameEditProfile']), ENT_QUOTES));
-                    $firstName = trim(htmlentities(addslashes($_POST['firstNameEditProfile']), ENT_QUOTES));
-                    $lastName = trim(htmlentities(addslashes($_POST['lastNameEditProfile']), ENT_QUOTES));
-                    $email = trim(htmlentities(addslashes($_POST['emailEditProfile']), ENT_QUOTES));
-                    $address = trim(htmlentities(addslashes($_POST['addressEditProfile']), ENT_QUOTES));
-                    $country = trim(htmlentities(addslashes($_POST['countryEditProfile']), ENT_QUOTES));
+                    $userName = trim(htmlentities($_POST['userNameEditProfile'], ENT_QUOTES));
+                    $firstName = trim(htmlentities($_POST['firstNameEditProfile'], ENT_QUOTES));
+                    $lastName = trim(htmlentities($_POST['lastNameEditProfile'], ENT_QUOTES));
+                    $email = trim(htmlentities($_POST['emailEditProfile'], ENT_QUOTES));
+                    $address = trim(htmlentities($_POST['addressEditProfile'], ENT_QUOTES));
+                    $country = trim(htmlentities($_POST['countryEditProfile'], ENT_QUOTES));
 
                     Connection::open_connection();    
                     $user = UserDAO::get_user_by_id(Connection::get_connection(), $_SESSION['idUser']);
@@ -522,14 +522,14 @@ class Users extends Controller {
                     $oldUserName = $user->get_user_name();
 
                     $user->set_user_name($userName);
-                    $user->set_firs_name($firstName);
+                    $user->set_first_name($firstName);
                     $user->set_last_name($lastName);
                     $user->set_email($email);
                     $user->set_address($address);
                     $user->set_country($country);
 
                     if (isset($_POST['telephonEditProfile']) && $_POST['telephonEditProfile'] != '') {
-                        $user->set_phone_numbre(trim(htmlentities(addslashes($_POST['telephonEditProfile']), ENT_QUOTES)));
+                        $user->set_phone_number(trim(htmlentities($_POST['telephonEditProfile'], ENT_QUOTES)));
                     } 
 
                     if ($userName != $oldUserName && UserDAO::is_user_name_exist(Connection::get_connection(), $userName)) {
@@ -656,8 +656,8 @@ class Users extends Controller {
     public function accept_friend_request() {
         if (Session::is_started()) {
             if (isset($_POST['action']) && $_POST['action'] === 'acceptFriendRequest') {
-                $frndRequestId = trim(htmlentities(addslashes($_POST['frndRequestId']), ENT_QUOTES));
-                $fromUserId = trim(htmlentities(addslashes($_POST['fromUserId']), ENT_QUOTES));
+                $frndRequestId = trim(htmlentities($_POST['frndRequestId'], ENT_QUOTES));
+                $fromUserId = trim(htmlentities($_POST['fromUserId'], ENT_QUOTES));
                 
                 Connection::open_connection();
                 $result = FriendRequestsDAO::answer_friend_request(Connection::get_connection(), $frndRequestId, 1);
@@ -690,8 +690,8 @@ class Users extends Controller {
         public function reject_friend_request() {
         if (Session::is_started()) {
             if (isset($_POST['action']) && $_POST['action'] === 'rejectFriendRequest') {
-                $frndRequestId = trim(htmlentities(addslashes($_POST['frndRequestId']), ENT_QUOTES));
-                $fromUserId = trim(htmlentities(addslashes($_POST['fromUserId']), ENT_QUOTES));
+                $frndRequestId = trim(htmlentities($_POST['frndRequestId'], ENT_QUOTES));
+                $fromUserId = trim(htmlentities($_POST['fromUserId'], ENT_QUOTES));
                 
                 Connection::open_connection();
                 $result = FriendRequestsDAO::answer_friend_request(Connection::get_connection(), $frndRequestId, 0);
@@ -706,7 +706,7 @@ class Users extends Controller {
     public function request_friendship() {
         if (Session::is_started()) {
             if (isset($_POST['action']) && $_POST['action'] === 'requestFriendship') {
-                $toUserId = trim(htmlentities(addslashes($_POST['toUserId']), ENT_QUOTES));
+                $toUserId = trim(htmlentities($_POST['toUserId'], ENT_QUOTES));
                 $FriendRequestObject = new FriendRequestsModel(null, $_SESSION['idUser'], $toUserId, null, null, null, null);
                 
                 Connection::open_connection();

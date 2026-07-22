@@ -17,8 +17,15 @@ class Login extends Controller{
         }
         
         if (isset($_POST["submitLogin"])) {
-            $email = trim(htmlentities(addslashes($_POST['emailLogin']), ENT_QUOTES));
-            $password = trim(htmlentities(addslashes($_POST["passwordLogin"]), ENT_QUOTES));
+            if (!Session::verify_csrf()) {
+                $data['pageTitle'] = 'Iniciar sesión | Fiction Planet';
+                $data['error'] = 'Token de seguridad inválido. Por favor, recargue la página.';
+                $this->view->render($this, "login", $data);
+                return;
+            }
+
+            $email = trim(htmlentities($_POST['emailLogin'], ENT_QUOTES));
+            $password = trim(htmlentities($_POST["passwordLogin"], ENT_QUOTES));
 
             Connection::open_connection();
             $validator = new LoginValidator(Connection::get_connection(), $email, $password);

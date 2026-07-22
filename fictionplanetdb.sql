@@ -45,7 +45,7 @@ CREATE TABLE `calendar_events` (
 CREATE TABLE `chat_message` (
   `id` bigint(20) NOT NULL,
   `sender_user_id` bigint(20) UNSIGNED NOT NULL,
-  `reciever_user_id` bigint(20) UNSIGNED NOT NULL,
+  `receiver_user_id` bigint(20) UNSIGNED NOT NULL,
   `message` text CHARACTER SET utf8mb4 NOT NULL,
   `timestamp` timestamp NOT NULL DEFAULT current_timestamp(),
   `status` tinyint(1) NOT NULL
@@ -332,7 +332,7 @@ ALTER TABLE `calendar_events`
 ALTER TABLE `chat_message`
   ADD PRIMARY KEY (`id`),
   ADD KEY `FK_sender_user_id` (`sender_user_id`),
-  ADD KEY `FK_reciever_user_id` (`reciever_user_id`);
+  ADD KEY `FK_receiver_user_id` (`receiver_user_id`);
 
 --
 -- Indices de la tabla `contacts`
@@ -481,7 +481,7 @@ ALTER TABLE `users`
 -- Filtros para la tabla `chat_message`
 --
 ALTER TABLE `chat_message`
-  ADD CONSTRAINT `FK_reciever_user_id` FOREIGN KEY (`reciever_user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `FK_receiver_user_id` FOREIGN KEY (`receiver_user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `FK_sender_user_id` FOREIGN KEY (`sender_user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --

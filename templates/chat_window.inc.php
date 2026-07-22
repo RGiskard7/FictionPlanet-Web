@@ -3,7 +3,7 @@
         <div class="row">
             <div class="col-10">
                 <h5><img src="<?php echo IMAGES_URL . "f2.png"; ?>" class="avatar img-circle img-thumbnail" alt="avatar" style="border:0; vertical-align: left;">
-                <?php echo $recieverUserName; ?></h5>
+                <?php echo $receiverUserName; ?></h5>
             </div>
             <div class="col-2">
                 <button id="btnBackUserChatList" class="btn btn-outline-secondary pull-right gmd-1">

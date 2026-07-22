@@ -30,8 +30,7 @@ class ImageGalleryDAO {
                 $sentence->execute();
                 $postArray = self::fetch_images($sentence);
             } catch (PDOException $e) {
-                echo "Error line: " . $e->getLine();
-                die("Error: " . $e->getMessage());
+                throw new AppException("Database error: " . $e->getMessage(), 500, $e);
             }
         }
 
@@ -48,8 +47,7 @@ class ImageGalleryDAO {
                 $sentence->execute();
                 $imageArray = self::fetch_images($sentence);
             } catch (PDOException $e) {
-                echo "Error line: " . $e->getLine();
-                die("Error: " . $e->getMessage());
+                throw new AppException("Database error: " . $e->getMessage(), 500, $e);
             }
         }
 
@@ -65,8 +63,7 @@ class ImageGalleryDAO {
                 $sentence->execute();
                 $imageArray = self::fetch_posts($sentence);
             } catch (PDOException $e) {
-                echo "Error line: " . $e->getLine();
-                die("Error: " . $e->getMessage());
+                throw new AppException("Database error: " . $e->getMessage(), 500, $e);
             }
         }
 
@@ -83,8 +80,7 @@ class ImageGalleryDAO {
                 $sentence->execute();
                 $imageArray = self::fetch_images($sentence);
             } catch (PDOException $e) {
-                echo "Error line: " . $e->getLine();
-                die("Error: " . $e->getMessage());
+                throw new AppException("Database error: " . $e->getMessage(), 500, $e);
             }
         }
 
@@ -102,8 +98,7 @@ class ImageGalleryDAO {
                 $sentence->execute();
                 $imageArray = self::fetch_images($sentence);
             } catch (PDOException $e) {
-                echo "Error line: " . $e->getLine();
-                die("Error: " . $e->getMessage());
+                throw new AppException("Database error: " . $e->getMessage(), 500, $e);
             }
         }
 
@@ -122,8 +117,7 @@ class ImageGalleryDAO {
                 $sentence->execute();
                 $imageArray = self::fetch_images($sentence);
             } catch (PDOException $e) {
-                echo "Error line: " . $e->getLine();
-                die("Error: " . $e->getMessage());
+                throw new AppException("Database error: " . $e->getMessage(), 500, $e);
             }
         }
 
@@ -137,8 +131,7 @@ class ImageGalleryDAO {
                 $sentence->execute();
                 return $sentence->fetchColumn();
             } catch (PDOException $e) {
-                echo "Error line: " . $e->getLine();
-                die("Error: " . $e->getMessage());
+                throw new AppException("Database error: " . $e->getMessage(), 500, $e);
             }
         } else {
             return false; // 0
@@ -153,8 +146,7 @@ class ImageGalleryDAO {
                 $sentence->execute();
                 return $sentence->fetchColumn();
             } catch (PDOException $e) {
-                echo "Error line: " . $e->getLine();
-                die("Error: " . $e->getMessage());
+                throw new AppException("Database error: " . $e->getMessage(), 500, $e);
             }
         } else {
             return false; // 0
@@ -170,8 +162,7 @@ class ImageGalleryDAO {
                 $sentence->execute();
                 return $sentence->fetchColumn();
             } catch (PDOException $e) {
-                echo "Error line: " . $e->getLine();
-                die("Error: " . $e->getMessage());
+                throw new AppException("Database error: " . $e->getMessage(), 500, $e);
             }
         } else {
             return false; // 0
@@ -187,8 +178,7 @@ class ImageGalleryDAO {
                 $sentence->execute();
                 return $sentence->fetchColumn();
             } catch (PDOException $e) {
-                echo "Error line: " . $e->getLine();
-                die("Error: " . $e->getMessage());
+                throw new AppException("Database error: " . $e->getMessage(), 500, $e);
             }
         } else {
             return false; // 0
@@ -202,8 +192,7 @@ class ImageGalleryDAO {
                 $sentence->execute();
                 return $sentence->fetchColumn();
             } catch (PDOException $e) {
-                echo "Error line: " . $e->getLine();
-                die("Error: " . $e->getMessage());
+                throw new AppException("Database error: " . $e->getMessage(), 500, $e);
             }
         } else {
             return false; // 0
@@ -225,8 +214,7 @@ class ImageGalleryDAO {
                 
                 return $sentence->execute();
             } catch (PDOException $e) {
-                echo "Error line: " . $e->getLine();
-                die("Error: " . $e->getMessage());
+                throw new AppException("Database error: " . $e->getMessage(), 500, $e);
             }
         }
 

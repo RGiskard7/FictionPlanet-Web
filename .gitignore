@@ -14,3 +14,9 @@ uploads/editor/img/*
 !uploads/editor/img/.gitkeep
 
 node_modules
+
+.env
+.DS_Store
+php-error.log
+/vendor/
+**/Thumbs.db

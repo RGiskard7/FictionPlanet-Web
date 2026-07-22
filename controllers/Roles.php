@@ -149,7 +149,7 @@ class Roles extends Controller {
     public function check_new_role_name() {
         if (Session::is_started() /*&& $_SESSION['permissions'][MDL_ROLES]['u']*/) {
             if (isset($_POST['action']) && $_POST['action'] === 'check_new_role_name') {
-                $roleTitle = trim(htmlentities(addslashes($_POST['roleTitle']), ENT_QUOTES));
+                $roleTitle = trim(htmlentities($_POST['roleTitle'], ENT_QUOTES));
 
                 Connection::open_connection();
                 $response = RoleDAO::is_role_name_exist(Connection::get_connection(), $roleTitle);
@@ -188,8 +188,8 @@ class Roles extends Controller {
     public function insert_new_role() {
         if (Session::is_started() /*&& $_SESSION['permissions'][MDL_ROLES]['w']*/) {
             if (isset($_POST['action']) && $_POST['action'] === 'insert_new_role') {
-                $roleTitle = trim(htmlentities(addslashes($_POST['roleTitle']), ENT_QUOTES));
-                $roleDescription = trim(htmlentities(addslashes($_POST['roleDescription']), ENT_QUOTES));
+                $roleTitle = trim(htmlentities($_POST['roleTitle'], ENT_QUOTES));
+                $roleDescription = trim(htmlentities($_POST['roleDescription'], ENT_QUOTES));
 
                 Connection::open_connection();
                 $role = new RoleModel(null, $roleTitle, $roleDescription, $roleTitle);
@@ -212,8 +212,8 @@ class Roles extends Controller {
             if (isset($_POST['submitEditRole'])) {
                 //$roleID = trim($_POST['roleID']);
                 $roleID = trim($_POST['editRoleID']);
-                $editRoleTitle = trim(htmlentities(addslashes($_POST['editRoleTitle']), ENT_QUOTES));
-                $editRoleDescription = trim(htmlentities(addslashes($_POST['editRoleDescription']), ENT_QUOTES));
+                $editRoleTitle = trim(htmlentities($_POST['editRoleTitle'], ENT_QUOTES));
+                $editRoleDescription = trim(htmlentities($_POST['editRoleDescription'], ENT_QUOTES));
 
                 Connection::open_connection();
                 $role = RoleDAO::get_role_by_id(Connection::get_connection(), $roleID);

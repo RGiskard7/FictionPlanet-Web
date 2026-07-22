@@ -30,7 +30,7 @@ class ContactModel {
     }
     
     public function set_contact_id($contact_id) {
-        $this->contact_id = $this->contact_id;
+        $this->contact_id = $contact_id;
     }
     
     public function get_creation_date() {

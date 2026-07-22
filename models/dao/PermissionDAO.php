@@ -34,8 +34,7 @@ class PermissionDAO {
                 $sentence->execute();
                 $permissionArray = self::fetch_users($sentence);
             } catch (PDOException $e) {
-                echo "Error line: " . $e->getLine();
-                die("Error: " . $e->getMessage());
+                throw new AppException("Database error: " . $e->getMessage(), 500, $e);
             }
         }
 
@@ -59,8 +58,7 @@ class PermissionDAO {
                         $result["r"], $result["w"], $result["u"], $result["d"]);
                 }
             } catch (PDOException $e) {
-                echo "Error line: " . $e->getLine();
-                die("Error: " . $e->getMessage());
+                throw new AppException("Database error: " . $e->getMessage(), 500, $e);
             }
         }
 
@@ -86,8 +84,7 @@ class PermissionDAO {
                 
                 return $sentence->execute();
             } catch (PDOException $e) {
-                echo "Error line: " . $e->getLine();
-                die("Error: " . $e->getMessage());
+                throw new AppException("Database error: " . $e->getMessage(), 500, $e);
             }
         } else {
             return false;
@@ -107,8 +104,7 @@ class PermissionDAO {
                 $sentence->execute();
                 $permissionArray = self::fetch_permissions($connection, $sentence);
             } catch (PDOException $e) {
-                echo "Error line: " . $e->getLine();
-                die("Error: " . $e->getMessage());
+                throw new AppException("Database error: " . $e->getMessage(), 500, $e);
             }
         }
 
@@ -136,8 +132,7 @@ class PermissionDAO {
                 /*$request = $sentence->fetchAll(PDO::FETCH_ASSOC); Funciona*/
                 
             } catch (PDOException $e) {
-                echo "Error line: " . $e->getLine();
-                die("Error: " . $e->getMessage());
+                throw new AppException("Database error: " . $e->getMessage(), 500, $e);
             }
         }
         
@@ -164,8 +159,7 @@ class PermissionDAO {
                 /*$request = $sentence->fetchAll(PDO::FETCH_ASSOC); Funciona*/
                 
             } catch (PDOException $e) {
-                echo "Error line: " . $e->getLine();
-                die("Error: " . $e->getMessage());
+                throw new AppException("Database error: " . $e->getMessage(), 500, $e);
             }
         }
         
@@ -195,8 +189,7 @@ class PermissionDAO {
                     return false;
                 }
             } catch (PDOException $e) {
-                echo "Error line: " . $e->getLine();
-                die("Error: " . $e->getMessage());
+                throw new AppException("Database error: " . $e->getMessage(), 500, $e);
             }
         } else {
             return false; // 0

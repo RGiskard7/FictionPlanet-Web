@@ -33,8 +33,7 @@ class CalendarEventsDAO {
                     $calendarEventObject = new CalendarEventModel($result["id"], $result["start"], $result["end"], $result["title"], $result["color"]);
                 }
             } catch (PDOException $e) {
-                echo "Error line: " . $e->getLine();
-                die("Error: " . $e->getMessage());
+                throw new AppException("Database error: " . $e->getMessage(), 500, $e);
             }
         }
 
@@ -53,8 +52,7 @@ class CalendarEventsDAO {
                 $sentence->execute();
                 $calendarEventArray = self::fetch_calendar_events($connection, $sentence);
             } catch (PDOException $e) {
-                echo "Error line: " . $e->getLine();
-                die("Error: " . $e->getMessage());
+                throw new AppException("Database error: " . $e->getMessage(), 500, $e);
             }
         }
 
@@ -74,8 +72,7 @@ class CalendarEventsDAO {
                 
                 return $sentence->execute();
             } catch (PDOException $e) {
-                echo "Error line: " . $e->getLine();
-                die("Error: " . $e->getMessage());
+                throw new AppException("Database error: " . $e->getMessage(), 500, $e);
             }
         }
 
@@ -96,8 +93,7 @@ class CalendarEventsDAO {
 
                 return $sentence->execute();
             } catch (PDOException $e) {
-                echo "Error line: " . $e->getLine();
-                die("Error: " . $e->getMessage());
+                throw new AppException("Database error: " . $e->getMessage(), 500, $e);
             }
         } else {
             return false; // 0
@@ -111,8 +107,7 @@ class CalendarEventsDAO {
                 $sentence->bindValue(":id", $calendarEventObject->get_id(), PDO::PARAM_INT);
                 return $sentence->execute();
             } catch (PDOException $e) {
-                echo "Error line: " . $e->getLine();
-                die("Error: " . $e->getMessage());
+                throw new AppException("Database error: " . $e->getMessage(), 500, $e);
             }
         } else {
             return false; // 0

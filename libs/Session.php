@@ -79,5 +79,36 @@ class Session {
         }
         return false;
     }
+
+    public static function csrf_token() {
+        if (session_id() == '') {
+            session_start();
+        }
+        if (empty($_SESSION['csrf_token'])) {
+            $_SESSION['csrf_token'] = bin2hex(random_bytes(32));
+        }
+        return $_SESSION['csrf_token'];
+    }
+
+    public static function csrf_input() {
+        return '<input type="hidden" name="csrf_token" value="' . self::csrf_token() . '">';
+    }
+
+    public static function csrf_meta() {
+        return '<meta name="csrf-token" content="' . self::csrf_token() . '">';
+    }
+
+    public static function verify_csrf($token = null) {
+        if (session_id() == '') {
+            session_start();
+        }
+        if ($token === null) {
+            $token = $_POST['csrf_token'] ?? ($_SERVER['HTTP_X_CSRF_TOKEN'] ?? null);
+        }
+        if (empty($_SESSION['csrf_token']) || empty($token)) {
+            return false;
+        }
+        return hash_equals($_SESSION['csrf_token'], $token);
+    }
     
 }

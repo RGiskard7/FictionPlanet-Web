@@ -18,7 +18,6 @@ if (isset($_POST["submitUploadNewImage"])) {
         $file = $_FILES['imageFile']['name'];
         $file_image = '';
         if($_FILES['imageFile']['name'] != "") {
-            extract($_REQUEST);
             $infoExt = getimagesize($_FILES['imageFile']['tmp_name']);
             if(strtolower($infoExt['mime']) == 'image/jpeg' || strtolower($infoExt['mime']) == 'image/jpg' 
                     || strtolower($infoExt['mime']) == 'image/png'){

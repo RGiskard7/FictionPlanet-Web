@@ -29,8 +29,7 @@ class UserDAO {
                 $sentence->execute();
                 $userArray = self::fetch_users($sentence);
             } catch (PDOException $e) {
-                echo "Error line: " . $e->getLine();
-                die("Error: " . $e->getMessage());
+                throw new AppException("Database error: " . $e->getMessage(), 500, $e);
             }
         }
 
@@ -47,8 +46,7 @@ class UserDAO {
                 $sentence->execute();
                 $userArray = self::fetch_users($sentence);
             } catch (PDOException $e) {
-                echo "Error line: " . $e->getLine();
-                die("Error: " . $e->getMessage());
+                throw new AppException("Database error: " . $e->getMessage(), 500, $e);
             }
         }
 
@@ -65,8 +63,7 @@ class UserDAO {
                 $sentence->execute();
                 $userArray = self::fetch_users($sentence);
             } catch (PDOException $e) {
-                echo "Error line: " . $e->getLine();
-                die("Error: " . $e->getMessage());
+                throw new AppException("Database error: " . $e->getMessage(), 500, $e);
             }
         }
 
@@ -82,8 +79,7 @@ class UserDAO {
                 $sentence->execute();
                 $userArray = self::fetch_users($sentence);
             } catch (PDOException $e) {
-                echo "Error line: " . $e->getLine();
-                die("Error: " . $e->getMessage());
+                throw new AppException("Database error: " . $e->getMessage(), 500, $e);
             }
         }
 
@@ -106,8 +102,7 @@ class UserDAO {
                             $result["reg_date"], $result["last_update_date"], $result["last_access_date"]);
                 }
             } catch (PDOException $e) {
-                echo "Error line: " . $e->getLine();
-                die("Error: " . $e->getMessage());
+                throw new AppException("Database error: " . $e->getMessage(), 500, $e);
             }
         }
 
@@ -130,8 +125,7 @@ class UserDAO {
                             $result["reg_date"], $result["last_update_date"], $result["last_access_date"]);
                 }
             } catch (PDOException $e) {
-                echo "Error line: " . $e->getLine();
-                die("Error: " . $e->getMessage());
+                throw new AppException("Database error: " . $e->getMessage(), 500, $e);
             }
         }
         
@@ -154,8 +148,7 @@ class UserDAO {
                             $result["reg_date"], $result["last_update_date"], $result["last_access_date"]);
                 }
             } catch (PDOException $e) {
-                echo "Error line: " . $e->getLine();
-                die("Error: " . $e->getMessage());
+                throw new AppException("Database error: " . $e->getMessage(), 500, $e);
             }
         }
 
@@ -169,8 +162,7 @@ class UserDAO {
                 $sentence->execute();
                 return $sentence->fetchAll();
             } catch (PDOException $e) {
-                echo "Error line: " . $e->getLine();
-                die("Error: " . $e->getMessage());
+                throw new AppException("Database error: " . $e->getMessage(), 500, $e);
             }
         } else {
             return false; // 0
@@ -192,8 +184,7 @@ class UserDAO {
                     return false;
                 }
             } catch (Exception $ex) {
-                echo "Error line: " . $ex->getLine();
-                die("Error: " . $ex->getMessage());
+                throw new AppException("Database error: " . $ex->getMessage(), 500, $ex);
             }
         } else {
             return false; // 0
@@ -215,8 +206,7 @@ class UserDAO {
                     return false;
                 }
             } catch (Exception $ex) {
-                echo "Error line: " . $ex->getLine();
-                die("Error: " . $ex->getMessage());
+                throw new AppException("Database error: " . $ex->getMessage(), 500, $ex);
             }
         } else {
             return false; // 0
@@ -231,8 +221,7 @@ class UserDAO {
                 $sentence->bindValue(":idUser", $userObject->get_id(), PDO::PARAM_INT);
                 return $sentence->execute();
             } catch (Exception $ex) {
-                echo "Error line: " . $ex->getLine();
-                die("Error: " . $ex->getMessage());
+                throw new AppException("Database error: " . $ex->getMessage(), 500, $ex);
             } 
         } else {
             return false; // 0
@@ -260,8 +249,7 @@ class UserDAO {
 
                 return $sentence->execute(); //execute devuelve true si se ha realizado correctamente la consulta, o false en caso contrario
             } catch (PDOException $e) {
-                echo "Error line: " . $e->getLine();
-                die("Error: " . $e->getMessage());
+                throw new AppException("Database error: " . $e->getMessage(), 500, $e);
             }
         } else {
             return false; // 0
@@ -277,8 +265,7 @@ class UserDAO {
                 $sentence->bindValue(":password", $userObject->get_password(), PDO::PARAM_STR);
                 return $sentence->execute(); //execute devuelve true si se ha realizado correctamente la consulta, o false en caso contrario
             } catch (PDOException $e) {
-                echo "Error line: " . $e->getLine();
-                die("Error: " . $e->getMessage());
+                throw new AppException("Database error: " . $e->getMessage(), 500, $e);
             }
         } else {
             return false; // 0
@@ -308,8 +295,7 @@ class UserDAO {
 
                 return $sentence->execute();
             } catch (PDOException $e) {
-                echo "Error line: " . $e->getLine();
-                die("Error: " . $e->getMessage());
+                throw new AppException("Database error: " . $e->getMessage(), 500, $e);
             }
 
         } else {
@@ -326,8 +312,7 @@ class UserDAO {
 
                 return $sentence->execute();
             } catch (PDOException $e) {
-                echo "Error line: " . $e->getLine();
-                die("Error: " . $e->getMessage());
+                throw new AppException("Database error: " . $e->getMessage(), 500, $e);
             }
 
         } else {

@@ -12,8 +12,8 @@ require_once LIBS_PATH . "Session.php";
 if (isset($_POST["action"]) && $_POST["action"] === "view") {
     header('Content-Type: application/json');
     
-    $start = htmlentities(addslashes($_POST['start']), ENT_QUOTES);
-    $end = htmlentities(addslashes($_POST["end"]), ENT_QUOTES);
+    $start = htmlentities($_POST['start'], ENT_QUOTES);
+    $end = htmlentities($_POST["end"], ENT_QUOTES);
 
     Connection::open_connection();
     $result = CalendarEventsDAO::get_calendar_events_by_dates(Connection::get_connection(), $start, $end);
@@ -33,10 +33,10 @@ if (isset($_POST["action"]) && $_POST["action"] === "view") {
 }
 /*****************************************************************/
 if (isset($_POST["submitNewEvent"])) {
-    $start = date('Y-m-d H:i:s', strtotime(htmlentities(addslashes($_POST['start']), ENT_QUOTES)));
-    $end = date('Y-m-d H:i:s', strtotime(htmlentities(addslashes($_POST["end"]), ENT_QUOTES)));
-    $title = htmlentities(addslashes($_POST['title']), ENT_QUOTES);
-    $color = htmlentities(addslashes($_POST['color']), ENT_QUOTES);
+    $start = date('Y-m-d H:i:s', strtotime(htmlentities($_POST['start'], ENT_QUOTES)));
+    $end = date('Y-m-d H:i:s', strtotime(htmlentities($_POST["end"], ENT_QUOTES)));
+    $title = htmlentities($_POST['title'], ENT_QUOTES);
+    $color = htmlentities($_POST['color'], ENT_QUOTES);
 
     $objectCalendarEvents = new CalendarEventModel(0, $start, $end, $title, $color);
 
@@ -48,10 +48,10 @@ if (isset($_POST["submitNewEvent"])) {
 }
 /*****************************************************************/
 if (isset($_POST["submitUpdateEvent"])) {
-    $start = date('Y-m-d H:i:s', strtotime(htmlentities(addslashes($_POST['start']), ENT_QUOTES)));
-    $end = date('Y-m-d H:i:s', strtotime(htmlentities(addslashes($_POST["end"]), ENT_QUOTES)));
-    $title = htmlentities(addslashes($_POST['title']), ENT_QUOTES);
-    $color = htmlentities(addslashes($_POST['color']), ENT_QUOTES);
+    $start = date('Y-m-d H:i:s', strtotime(htmlentities($_POST['start'], ENT_QUOTES)));
+    $end = date('Y-m-d H:i:s', strtotime(htmlentities($_POST["end"], ENT_QUOTES)));
+    $title = htmlentities($_POST['title'], ENT_QUOTES);
+    $color = htmlentities($_POST['color'], ENT_QUOTES);
     
     $objectCalendarEvents = new CalendarEventModel($_POST["id"], $start, $end, $title, $color);
 

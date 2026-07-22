@@ -26,8 +26,7 @@ class ContactDAO {
                 $sentence->execute();
                 $contactsArray = self::fetch_contacts($sentence);
             } catch (PDOException $e) {
-                echo "Error line: " . $e->getLine();
-                die("Error: " . $e->getMessage());
+                throw new AppException("Database error: " . $e->getMessage(), 500, $e);
             }
         }
 
@@ -50,8 +49,7 @@ class ContactDAO {
                     return false;
                 }
             } catch (Exception $ex) {
-                echo "Error line: " . $ex->getLine();
-                die("Error: " . $ex->getMessage());
+                throw new AppException("Database error: " . $ex->getMessage(), 500, $ex);
             }
         } else {
             return false; // 0
@@ -69,8 +67,7 @@ class ContactDAO {
 
                 return $sentence->execute();
             } catch (PDOException $e) {
-                echo "Error line: " . $e->getLine();
-                die("Error: " . $e->getMessage());
+                throw new AppException("Database error: " . $e->getMessage(), 500, $e);
             }
         } else {
             return false; // 0
@@ -84,8 +81,7 @@ class ContactDAO {
                 $sentence->bindParam(":id", $id, PDO::PARAM_INT);
                 return $sentence->execute();
             } catch (PDOException $e) {
-                echo "Error line: " . $e->getLine();
-                die("Error: " . $e->getMessage());
+                throw new AppException("Database error: " . $e->getMessage(), 500, $e);
             }
         } else {
             return false; // 0

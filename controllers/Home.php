@@ -12,18 +12,13 @@ class Home extends Controller {
     private $postsPerPage = 5;
     private $maxLinksPager = 7;
     
-    /*public function __construct() {
-        parent::__construct();
-        session_start(); // Siempre se tiene que llamar a session_start para poder usar variables de sesion
-    }*/
-    
     public function home() {  
         $currentPage = 1;
         $firstPost = ($currentPage - 1) * $this->postsPerPage;
 
         Connection::open_connection();
         $numVisiblePosts = PostDAO::get_number_of_all_visible_posts(Connection::get_connection());
-        $postArray = PostDAO::get_all_visible_posts_by_last_update_date_desc(Connection::get_connection(), $firstPost, $this->postsPerPage); // TABLA DE POSTS
+        $postArray = PostDAO::get_all_visible_posts_by_last_update_date_desc_paginated(Connection::get_connection(), $firstPost, $this->postsPerPage); // TABLA DE POSTS
         Connection::close_connection();
         
         if ($postArray === null) {
@@ -53,7 +48,7 @@ class Home extends Controller {
         }
 
         $firstPost = ($currentPage - 1) * $this->postsPerPage;
-        $postArray = PostDAO::get_all_visible_posts_by_last_update_date_desc(Connection::get_connection(), $firstPost, $this->postsPerPage); // TABLA DE POSTS
+        $postArray = PostDAO::get_all_visible_posts_by_last_update_date_desc_paginated(Connection::get_connection(), $firstPost, $this->postsPerPage); // TABLA DE POSTS
         Connection::close_connection();
 
         if ($postArray === null) {
@@ -79,7 +74,7 @@ class Home extends Controller {
         $numVisiblePosts = PostDAO::get_number_of_all_visible_posts(Connection::get_connection());
 
         if (isset($_GET['search'])) {
-            $search = trim(htmlentities(addslashes($_GET['search']), ENT_QUOTES));
+            $search = trim(htmlentities($_GET['search'], ENT_QUOTES));
             
             //$postArray = PostDAO::search_post(Connection::get_connection(), $search, $firstPost, $this->postsPerPage);
             if (isset($_GET['searchBySelect'])) {

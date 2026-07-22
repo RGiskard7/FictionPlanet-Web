@@ -11,8 +11,7 @@ class Connection {
                 self::$connection = new PDO(DB_TYPE . ":host=" . DB_HOST . ";dbname=" . DB_NAME . ";charset=" . DB_CHARSET, DB_USER, DB_PASSWORD);
                 self::$connection->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION); // Cada vez que ocurra un error PDO lanza una excepcion
             } catch (PDOException $e) {
-                echo "Error line: " . $e->getLine() . "<br>";
-                die("Error: " . $e->getMessage());
+                throw new AppException("Database connection failed: " . $e->getMessage(), 500, $e);
             }
         }
     }

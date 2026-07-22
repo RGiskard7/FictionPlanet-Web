@@ -22,164 +22,128 @@ class PostDAO {
         return $postArray;
     }
 
-    public static function __callStatic($method, $args) { // __call($metodo, $argumentos) cuando no es estatico			
-        if ($method == 'get_all_posts_by_creation_date_desc') {
-            if (count($args) == 1) { // get_all_posts_by_date_creation_desc($connection)
-                $connection = $args[0];
-                $postArray = null;
-
-                if (isset($connection)) {
-                    try {
-                        $sentence = $connection->prepare("SELECT * FROM posts ORDER BY creation_date DESC;");
-                        $sentence->execute();
-                        $postArray = self::fetch_posts($sentence);
-                    } catch (PDOException $e) {
-                        echo "Error line: " . $e->getLine();
-                        die("Error: " . $e->getMessage());
-                    }
-                }
-
-                return $postArray;
-            } else if (count($args) == 3) { // get_all_posts_by_date_creation_desc($connection, $init, $limit)
-                $connection = $args[0];
-                $init = $args[1];
-                $limit = $args[2];
-                $postArray = null;
-
-                if (isset($connection)) {
-                    try {
-                        $sql = "SELECT * FROM posts ORDER BY creation_date DESC LIMIT :init, :limit;";
-                        $sentence = $connection->prepare($sql);
-                        $sentence->bindParam(":init", $init, PDO::PARAM_INT);
-                        $sentence->bindParam(":limit", $limit, PDO::PARAM_INT);
-                        $sentence->execute();
-                        $postArray = self::fetch_posts($sentence);
-                    } catch (PDOException $e) {
-                        echo "Error line: " . $e->getLine();
-                        die("Error: " . $e->getMessage());
-                    }
-                }
-
-                return $postArray;
-            }
-        } else if ($method == 'get_all_posts_by_last_update_date_desc') {
-            if (count($args) == 1) { // get_all_posts_by_last_update_date_desc($connection)
-                $connection = $args[0];
-                $postArray = null;
-
-                if (isset($connection)) {
-                    try {
-                        $sentence = $connection->prepare("SELECT * FROM posts ORDER BY last_update_date DESC;");
-                        $sentence->execute();
-                        $postArray = self::fetch_posts($sentence);
-                    } catch (PDOException $e) {
-                        echo "Error line: " . $e->getLine();
-                        die("Error: " . $e->getMessage());
-                    }
-                }
-
-                return $postArray;
-            } else if (count($args) == 3) { // get_all_posts_by_last_update_date_desc($connection, $init, $limit)
-                $connection = $args[0];
-                $init = $args[1];
-                $limit = $args[2];
-                $postArray = null;
-
-                if (isset($connection)) {
-                    try {
-                        $sql = "SELECT * FROM posts ORDER BY last_update_date DESC LIMIT :init, :limit;";
-                        $sentence = $connection->prepare($sql);
-                        $sentence->bindParam(":init", $init, PDO::PARAM_INT);
-                        $sentence->bindParam(":limit", $limit, PDO::PARAM_INT);
-                        $sentence->execute();
-                        $postArray = self::fetch_posts($sentence);
-                    } catch (PDOException $e) {
-                        echo "Error line: " . $e->getLine();
-                        die("Error: " . $e->getMessage());
-                    }
-                }
-
-                return $postArray;
-            }
-        } else if ($method == 'get_all_Posts') {
-            if (count($args) == 1) { // get_all_posts($connection)
-                $connection = $args[0];
-                $postArray = null;
-
-                if (isset($connection)) {
-                    try {
-                        $sentence = $connection->prepare("SELECT * FROM posts;");
-                        $sentence->execute();
-                        $postArray = self::fetch_posts($sentence);
-                    } catch (PDOException $e) {
-                        echo "Error line: " . $e->getLine();
-                        die("Error: " . $e->getMessage());
-                    }
-                }
-
-                return $postArray;
-            } else if (count($args) == 3) { // get_all_posts($connection, $init, $limit)
-                $connection = $args[0];
-                $init = $args[1];
-                $limit = $args[2];
-                $postArray = null;
-
-                if (isset($connection)) {
-                    try {
-                        $sql = "SELECT * FROM posts LIMIT :init, :limit;";
-                        $sentence = $connection->prepare($sql);
-                        $sentence->bindParam(":init", $init, PDO::PARAM_INT);
-                        $sentence->bindParam(":limit", $limit, PDO::PARAM_INT);
-                        $sentence->execute();
-                        $postArray = self::fetch_posts($sentence);
-                    } catch (PDOException $e) {
-                        echo "Error line: " . $e->getLine();
-                        die("Error: " . $e->getMessage());
-                    }
-                }
-
-                return $postArray;
-            }
-        } else if ($method == 'get_all_visible_posts_by_last_update_date_desc') {
-            if (count($args) == 1) { // get_all_visible_posts_by_last_update_date_desc($connection)
-                $connection = $args[0];
-                $postArray = null;
-
-                if (isset($connection)) {
-                    try {
-                        $sentence = $connection->prepare("SELECT * FROM posts WHERE visible = '1' ORDER BY last_update_date DESC;");
-                        $sentence->execute();
-                        $postArray = self::fetch_posts($sentence);
-                    } catch (PDOException $e) {
-                        echo "Error line: " . $e->getLine();
-                        die("Error: " . $e->getMessage());
-                    }
-                }
-
-                return $postArray;
-            } else if (count($args) == 3) { // get_all_visible_posts_by_last_update_date_desc($connection, $init, $limit)
-                $connection = $args[0];
-                $init = $args[1];
-                $limit = $args[2];
-                $postArray = null;
-
-                if (isset($connection)) {
-                    try {
-                        $sql = "SELECT * FROM posts WHERE visible = '1' ORDER BY last_update_date DESC LIMIT :init, :limit;";
-                        $sentence = $connection->prepare($sql);
-                        $sentence->bindParam(":init", $init, PDO::PARAM_INT);
-                        $sentence->bindParam(":limit", $limit, PDO::PARAM_INT);
-                        $sentence->execute();
-                        $postArray = self::fetch_posts($sentence);
-                    } catch (PDOException $e) {
-                        echo "Error line: " . $e->getLine();
-                        die("Error: " . $e->getMessage());
-                    }
-                }
-
-                return $postArray;
+    public static function get_all_posts_by_creation_date_desc($connection) {
+        $postArray = null;
+        if (isset($connection)) {
+            try {
+                $sentence = $connection->prepare("SELECT * FROM posts ORDER BY creation_date DESC;");
+                $sentence->execute();
+                $postArray = self::fetch_posts($sentence);
+            } catch (PDOException $e) {
+                throw new AppException("Database error: " . $e->getMessage(), 500, $e);
             }
         }
+        return $postArray;
+    }
+
+    public static function get_all_posts_by_creation_date_desc_paginated($connection, $init, $limit) {
+        $postArray = null;
+        if (isset($connection)) {
+            try {
+                $sql = "SELECT * FROM posts ORDER BY creation_date DESC LIMIT :init, :limit;";
+                $sentence = $connection->prepare($sql);
+                $sentence->bindParam(":init", $init, PDO::PARAM_INT);
+                $sentence->bindParam(":limit", $limit, PDO::PARAM_INT);
+                $sentence->execute();
+                $postArray = self::fetch_posts($sentence);
+            } catch (PDOException $e) {
+                throw new AppException("Database error: " . $e->getMessage(), 500, $e);
+            }
+        }
+        return $postArray;
+    }
+
+    public static function get_all_posts_by_last_update_date_desc($connection) {
+        $postArray = null;
+        if (isset($connection)) {
+            try {
+                $sentence = $connection->prepare("SELECT * FROM posts ORDER BY last_update_date DESC;");
+                $sentence->execute();
+                $postArray = self::fetch_posts($sentence);
+            } catch (PDOException $e) {
+                throw new AppException("Database error: " . $e->getMessage(), 500, $e);
+            }
+        }
+        return $postArray;
+    }
+
+    public static function get_all_posts_by_last_update_date_desc_paginated($connection, $init, $limit) {
+        $postArray = null;
+        if (isset($connection)) {
+            try {
+                $sql = "SELECT * FROM posts ORDER BY last_update_date DESC LIMIT :init, :limit;";
+                $sentence = $connection->prepare($sql);
+                $sentence->bindParam(":init", $init, PDO::PARAM_INT);
+                $sentence->bindParam(":limit", $limit, PDO::PARAM_INT);
+                $sentence->execute();
+                $postArray = self::fetch_posts($sentence);
+            } catch (PDOException $e) {
+                throw new AppException("Database error: " . $e->getMessage(), 500, $e);
+            }
+        }
+        return $postArray;
+    }
+
+    public static function get_all_posts($connection) {
+        $postArray = null;
+        if (isset($connection)) {
+            try {
+                $sentence = $connection->prepare("SELECT * FROM posts;");
+                $sentence->execute();
+                $postArray = self::fetch_posts($sentence);
+            } catch (PDOException $e) {
+                throw new AppException("Database error: " . $e->getMessage(), 500, $e);
+            }
+        }
+        return $postArray;
+    }
+
+    public static function get_all_posts_paginated($connection, $init, $limit) {
+        $postArray = null;
+        if (isset($connection)) {
+            try {
+                $sql = "SELECT * FROM posts LIMIT :init, :limit;";
+                $sentence = $connection->prepare($sql);
+                $sentence->bindParam(":init", $init, PDO::PARAM_INT);
+                $sentence->bindParam(":limit", $limit, PDO::PARAM_INT);
+                $sentence->execute();
+                $postArray = self::fetch_posts($sentence);
+            } catch (PDOException $e) {
+                throw new AppException("Database error: " . $e->getMessage(), 500, $e);
+            }
+        }
+        return $postArray;
+    }
+
+    public static function get_all_visible_posts_by_last_update_date_desc($connection) {
+        $postArray = null;
+        if (isset($connection)) {
+            try {
+                $sentence = $connection->prepare("SELECT * FROM posts WHERE visible = '1' ORDER BY last_update_date DESC;");
+                $sentence->execute();
+                $postArray = self::fetch_posts($sentence);
+            } catch (PDOException $e) {
+                throw new AppException("Database error: " . $e->getMessage(), 500, $e);
+            }
+        }
+        return $postArray;
+    }
+
+    public static function get_all_visible_posts_by_last_update_date_desc_paginated($connection, $init, $limit) {
+        $postArray = null;
+        if (isset($connection)) {
+            try {
+                $sql = "SELECT * FROM posts WHERE visible = '1' ORDER BY last_update_date DESC LIMIT :init, :limit;";
+                $sentence = $connection->prepare($sql);
+                $sentence->bindParam(":init", $init, PDO::PARAM_INT);
+                $sentence->bindParam(":limit", $limit, PDO::PARAM_INT);
+                $sentence->execute();
+                $postArray = self::fetch_posts($sentence);
+            } catch (PDOException $e) {
+                throw new AppException("Database error: " . $e->getMessage(), 500, $e);
+            }
+        }
+        return $postArray;
     }
 
     public static function get_post_by_id($connection, $idPost) {
@@ -197,8 +161,7 @@ class PostDAO {
                             $result["creation_date"], $result["last_update_date"], $result["visible"]);
                 }
             } catch (PDOException $e) {
-                echo "Error line: " . $e->getLine();
-                die("Error: " . $e->getMessage());
+                throw new AppException("Database error: " . $e->getMessage(), 500, $e);
             }
         }
 
@@ -216,8 +179,7 @@ class PostDAO {
                 $sentence->execute();
                 $postArray = self::fetch_posts($sentence);
             } catch (PDOException $e) {
-                echo "Error line: " . $e->getLine();
-                die("Error: " . $e->getMessage());
+                throw new AppException("Database error: " . $e->getMessage(), 500, $e);
             }
         }
 
@@ -237,8 +199,7 @@ class PostDAO {
                 $sentence->execute();
                 $postArray = self::fetch_posts($sentence);
             } catch (PDOException $e) {
-                echo "Error line: " . $e->getLine();
-                die("Error: " . $e->getMessage());
+                throw new AppException("Database error: " . $e->getMessage(), 500, $e);
             }
         }
 
@@ -256,8 +217,7 @@ class PostDAO {
                 $sentence->execute();
                 $postArray = self::fetch_posts($sentence);
             } catch (PDOException $e) {
-                echo "Error line: " . $e->getLine();
-                die("Error: " . $e->getMessage());
+                throw new AppException("Database error: " . $e->getMessage(), 500, $e);
             }
         }
 
@@ -279,8 +239,7 @@ class PostDAO {
                             $result["creation_date"], $result["last_update_date"], $result["visible"]);
                 }
             } catch (PDOException $e) {
-                echo "Error line: " . $e->getLine();
-                die("Error: " . $e->getMessage());
+                throw new AppException("Database error: " . $e->getMessage(), 500, $e);
             }
         }
 
@@ -302,8 +261,7 @@ class PostDAO {
                             $result["creation_date"], $result["last_update_date"], $result["visible"]);
                 }
             } catch (PDOException $e) {
-                echo "Error line: " . $e->getLine();
-                die("Error: " . $e->getMessage());
+                throw new AppException("Database error: " . $e->getMessage(), 500, $e);
             }
         }
 
@@ -317,8 +275,7 @@ class PostDAO {
                 $sentence->execute();
                 return $sentence->fetchColumn();
             } catch (PDOException $e) {
-                echo "Error line: " . $e->getLine();
-                die("Error: " . $e->getMessage());
+                throw new AppException("Database error: " . $e->getMessage(), 500, $e);
             }
         } else {
             return false; // 0
@@ -333,8 +290,7 @@ class PostDAO {
                 $sentence->execute();
                 return $sentence->fetchColumn();
             } catch (PDOException $e) {
-                echo "Error line: " . $e->getLine();
-                die("Error: " . $e->getMessage());
+                throw new AppException("Database error: " . $e->getMessage(), 500, $e);
             }
         } else {
             return false; // 0
@@ -349,8 +305,7 @@ class PostDAO {
                 $sentence->execute();
                 return $sentence->fetchColumn();
             } catch (PDOException $e) {
-                echo "Error line: " . $e->getLine();
-                die("Error: " . $e->getMessage());
+                throw new AppException("Database error: " . $e->getMessage(), 500, $e);
             }
         } else {
             return false; // 0
@@ -365,8 +320,7 @@ class PostDAO {
                 $sentence->execute();
                 return $sentence->fetchColumn();
             } catch (PDOException $e) {
-                echo "Error line: " . $e->getLine();
-                die("Error: " . $e->getMessage());
+                throw new AppException("Database error: " . $e->getMessage(), 500, $e);
             }
         } else {
             return false; // 0
@@ -380,8 +334,7 @@ class PostDAO {
                 $sentence->execute();
                 return $sentence->fetchColumn();
             } catch (PDOException $e) {
-                echo "Error line: " . $e->getLine();
-                die("Error: " . $e->getMessage());
+                throw new AppException("Database error: " . $e->getMessage(), 500, $e);
             }
         } else {
             return false; // 0
@@ -395,8 +348,7 @@ class PostDAO {
                 $sentence->execute();
                 return $sentence->fetchColumn();
             } catch (PDOException $e) {
-                echo "Error line: " . $e->getLine();
-                die("Error: " . $e->getMessage());
+                throw new AppException("Database error: " . $e->getMessage(), 500, $e);
             }
         } else {
             return false; // 0
@@ -418,8 +370,7 @@ class PostDAO {
                     return false;
                 }
             } catch (Exception $ex) {
-                echo "Error line: " . $ex->getLine();
-                die("Error: " . $ex->getMessage());
+                throw new AppException("Database error: " . $ex->getMessage(), 500, $ex);
             }
         } else {
             return false; // 0
@@ -441,8 +392,7 @@ class PostDAO {
                     return false;
                 }
             } catch (Exception $ex) {
-                echo "Error line: " . $ex->getLine();
-                die("Error: " . $ex->getMessage());
+                throw new AppException("Database error: " . $ex->getMessage(), 500, $ex);
             }
         } else {
             return false; // 0
@@ -464,8 +414,7 @@ class PostDAO {
                 
                 return $sentence->execute();
             } catch (PDOException $e) {
-                echo "Error line: " . $e->getLine();
-                die("Error: " . $e->getMessage());
+                throw new AppException("Database error: " . $e->getMessage(), 500, $e);
             }
         }
 
@@ -487,8 +436,7 @@ class PostDAO {
 
                 return $sentence->execute();
             } catch (PDOException $e) {
-                echo "Error line: " . $e->getLine();
-                die("Error: " . $e->getMessage());
+                throw new AppException("Database error: " . $e->getMessage(), 500, $e);
             }
         } else {
             return false; // 0
@@ -502,8 +450,7 @@ class PostDAO {
                 $sentence->bindParam(":idPost", $idPost, PDO::PARAM_INT);
                 return $sentence->execute();
             } catch (PDOException $e) {
-                echo "Error line: " . $e->getLine();
-                die("Error: " . $e->getMessage());
+                throw new AppException("Database error: " . $e->getMessage(), 500, $e);
             }
         } else {
             return false; // 0
@@ -530,8 +477,7 @@ class PostDAO {
                 $sentence->execute();
                 $postArray = self::fetch_posts($sentence);
             } catch (PDOException $e) {
-                echo "Error line: " . $e->getLine();
-                die("Error: " . $e->getMessage());
+                throw new AppException("Database error: " . $e->getMessage(), 500, $e);
             }
         }
 
@@ -563,8 +509,7 @@ class PostDAO {
                 $sentence->execute();
                 $postArray = self::fetch_posts($sentence);
             } catch (PDOException $e) {
-                echo "Error line: " . $e->getLine();
-                die("Error: " . $e->getMessage());
+                throw new AppException("Database error: " . $e->getMessage(), 500, $e);
             }
         }
 
@@ -622,8 +567,7 @@ class PostDAO {
                 $sentence->execute();
                 $postArray = self::fetch_posts($sentence);
             } catch (PDOException $e) {
-                echo "Error line: " . $e->getLine();
-                die("Error: " . $e->getMessage());
+                throw new AppException("Database error: " . $e->getMessage(), 500, $e);
             }
         }
 

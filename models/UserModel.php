@@ -55,7 +55,7 @@ class UserModel {
         return $this->first_name;
     }
 
-    public function set_firs_name($first_name) {
+    public function set_first_name($first_name) {
         $this->first_name = $first_name;
     }
 
@@ -103,7 +103,7 @@ class UserModel {
         return $this->phone_number;
     }
 
-    public function set_phone_numbre($phone_number) {
+    public function set_phone_number($phone_number) {
         $this->phone_number = $phone_number;
     }
 
@@ -143,8 +143,8 @@ class UserModel {
         return $this->last_access_date;
     }
     
-    public function set_last_access_date($last_acess_date) {
-        $this->last_acess_date = $last_acess_date;
+    public function set_last_access_date($last_access_date) {
+        $this->last_access_date = $last_access_date;
     }
 }
 

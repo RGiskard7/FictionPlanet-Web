@@ -1,27 +1,70 @@
 $(document).ready(function() {
     showUsersChatList();
-     
-    setInterval(function() {
-        updateUserChatHistory();
-        updateUnreadMessageCount();
-        updateAllUnreadMessageCount();
-    }, 1000);
+    
+    if (typeof(EventSource) !== "undefined") {
+        var sseSource = new EventSource(BASE_URL + '/app/sseController.php');
+        
+        sseSource.addEventListener('unreadCount', function(e) {
+            var count = parseInt(e.data);
+            if (count > 0) {
+                $('#allUnread, #allUnread2').removeAttr('hidden').html(count);
+            } else {
+                $('#allUnread, #allUnread2').attr('hidden', true);
+            }
+        });
+        
+        sseSource.addEventListener('chatUpdate', function(e) {
+            var data = JSON.parse(e.data);
+            var chatWindow = $('.chatHistoryWindow[data-touserid="' + data.receiverId + '"]');
+            if (chatWindow.length) {
+                var wasAtBottom = chatWindow.scrollTop() + chatWindow.innerHeight() >= chatWindow[0].scrollHeight - 50;
+                chatWindow.html(data.html);
+                if (wasAtBottom) {
+                    chatWindow.animate({scrollTop: chatWindow[0].scrollHeight}, 'fast');
+                }
+            }
+            if (data.unreadFrom) {
+                $('#unread_' + data.receiverId).html(data.unreadFrom);
+            }
+        });
+        
+        sseSource.onerror = function() {
+            console.log('SSE connection lost, reconnecting...');
+        };
+    } else {
+        setInterval(function() {
+            updateAllUnreadMessageCount();
+        }, 3000);
+    }
            
     $(document).on('click', '.startChatButton', function(){
-        var recieverUserId = $(this).data('touserid');
-        var recieverUserName = $(this).data('tousername');
-        showUserChatHistory(recieverUserId, recieverUserName);
+        var receiverUserId = $(this).data('touserid');
+        var receiverUserName = $(this).data('tousername');
+        showUserChatHistory(receiverUserId, receiverUserName);
     });	
     
     $(document).on('click', '.sendChatButton', function(){
-        var recieverUserId = $(this).data('touserid');
-        sendMessage(recieverUserId);
+        var receiverUserId = $(this).data('touserid');
+        sendMessage(receiverUserId);
     });
     
     $(document).on('click', '#btnBackUserChatList', function() {
+        $.ajax({
+            url: BASE_URL + '/instant_messaging/close_active_chat',
+            method: 'POST',
+            data: { action: 'closeActiveChat' }
+        });
         showUsersChatList();
     });
 });
+
+function setActiveChat(receiverUserId) {
+    $.ajax({
+        url: BASE_URL + '/instant_messaging/set_active_chat',
+        method: 'POST',
+        data: { receiverUserId: receiverUserId, action: 'setActiveChat' }
+    });
+}
 
 function showUsersChatList() {
     $.ajax({
@@ -34,89 +77,43 @@ function showUsersChatList() {
     });
 }
 
-function showUserChatHistory(recieverUserId, recieverUserName){
+function showUserChatHistory(receiverUserId, receiverUserName){
     $.ajax({
         url: BASE_URL + '/instant_messaging/show_user_chat_history',
         method: 'POST',
-        data:{recieverUserId: recieverUserId, recieverUserName: recieverUserName, action: 'showUserChatHistory'},
+        data:{receiverUserId: receiverUserId, receiverUserName: receiverUserName, action: 'showUserChatHistory'},
         success:function(data){
             $('#chatWindowContainer').html(data);
-            $('#chatMessage_' + recieverUserId).emojioneArea({
+            $('#chatMessage_' + receiverUserId).emojioneArea({
                 pickerPosition: 'top',
                 toneStyle: 'bullet',
                 inline: null,
                 autocomplete: false
             });
-            $('#unread_' + recieverUserId).html('');
+            $('#unread_' + receiverUserId).html('');
             $('.chatHistoryWindow').animate({scrollTop: 20000000}, 'fast');
+            
+            setActiveChat(receiverUserId);
         }
     });
 }
 
-function sendMessage(recieverUserId) {
-    var message = $.trim($('#chatMessage_' + recieverUserId).val());
+function sendMessage(receiverUserId) {
+    var message = $.trim($('#chatMessage_' + receiverUserId).val());
     if (message !== '') {
         $.ajax({
             url: BASE_URL + '/instant_messaging/insert_chat',
             method: 'POST',
-            data:{recieverUserId: recieverUserId, message: message, action: 'insertChat'},
+            data:{receiverUserId: receiverUserId, message: message, action: 'insertChat'},
             success:function(data) {
                 $('.chatHistoryWindow').html(data);
                 $('.chatHistoryWindow').animate({scrollTop: 20000000}, 'fast');
                 
-                var element = $('#chatMessage_' + recieverUserId).emojioneArea();
+                var element = $('#chatMessage_' + receiverUserId).emojioneArea();
                 element[0].emojioneArea.setText('');
             }
 	});
     }
-}
-
-function isElementVisible(elem) {
-    var $elem = $(elem);
-    var $window = $(window);
-
-    var docViewTop = $window.scrollTop();
-    var docViewBottom = docViewTop + $window.height();
-
-    var elemTop = $elem.offset().top;
-    var elemBottom = elemTop + $elem.height();
-
-    return ((elemBottom <= docViewBottom) && (elemTop >= docViewTop));
-}
-
-function updateUserChatHistory() {
-    // each itera sobre elementos de una clase, si el elemento no esta en el doom
-    $('.chatHistoryWindow').each(function() { 
-        //console.log("chatHistory visible");
-        var recieverUserId = $(this).data('touserid');
-        $.ajax({
-            url: BASE_URL + '/instant_messaging/update_user_chat_history',
-            method: 'POST',
-            data:{recieverUserId: recieverUserId, action: 'updateUserChatHistory'},
-            success:function(data) {
-                $('.chatHistoryWindow').html(data);
-                
-                if (isElementVisible($('.chatHistoryWindow ul li:last'))) {
-                    $('.chatHistoryWindow').animate({scrollTop: 20000000}, 'fast');
-                }
-            }
-        });
-    });
-    //console.log("fuera del for");
-}
-
-function updateUnreadMessageCount() {
-    $('.contact').each(function() {
-        var recieverUserId = $(this).data('touserid');
-        $.ajax({
-            url: BASE_URL + '/instant_messaging/update_unread_message',
-            method: 'POST',
-            data:{recieverUserId:recieverUserId, action: 'updateUnreadMessage'},
-            success:function(data){
-                $('#unread_' + recieverUserId).html(data);					
-            }
-        });
-    });
 }
 
 function updateAllUnreadMessageCount() {
@@ -150,11 +147,10 @@ function chatSidebarToggler() {
             document.getElementById("chatSidebar").style.width = "447px";
         }
         document.getElementById("scroll").style.right = "465px";
-        // Al cerrar el menu desplegable del chat, se cierra el chat abierto
         showUsersChatList(); 
         chatOpen = false;
     } else {
-        document.getElementById("chatSidebar").style.width = "0px"; // 85px
+        document.getElementById("chatSidebar").style.width = "0px";
         document.getElementById("scroll").style.right = "20px";
         chatOpen = true;
     }

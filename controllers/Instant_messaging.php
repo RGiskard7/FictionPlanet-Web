@@ -44,8 +44,8 @@ class Instant_messaging extends Controller {
         if ($this->check_chat_permissions()) {
             if (isset($_POST['action']) && $_POST['action'] === 'showUserChatHistory') {
                 $senderUserId = $_SESSION['idUser'];
-                $receiverUserId = $_POST['recieverUserId'];
-                $recieverUserName = $_POST['recieverUserName'];
+                $receiverUserId = $_POST['receiverUserId'];
+                $receiverUserName = $_POST['receiverUserName'];
 
                 Connection::open_connection();
                 $conversation = ChatMessageDAO::get_chat_message(Connection::get_connection(), $senderUserId, $receiverUserId);
@@ -69,10 +69,10 @@ class Instant_messaging extends Controller {
     public function update_user_chat_history() {
         if ($this->check_chat_permissions()) {
             if(isset($_POST['action']) && $_POST['action'] === 'updateUserChatHistory') {
-                $conversation = $this->get_chat_history($_SESSION['idUser'], $_POST['recieverUserId']); //Refresh
+                $conversation = $this->get_chat_history($_SESSION['idUser'], $_POST['receiverUserId']); //Refresh
 
                 Connection::open_connection();
-                ChatMessageDAO::set_status_chat_message(Connection::get_connection(), $_SESSION['idUser'], $_POST['recieverUserId'], 0, 1); //Cambiar a visto
+                ChatMessageDAO::set_status_chat_message(Connection::get_connection(), $_SESSION['idUser'], $_POST['receiverUserId'], 0, 1); //Cambiar a visto
                 Connection::close_connection();
 
                 echo $conversation;
@@ -84,14 +84,14 @@ class Instant_messaging extends Controller {
     public function insert_chat() {
         if ($this->check_chat_permissions()) {
             if (isset($_POST['action']) && $_POST['action'] === 'insertChat') {
-                $objectChatMessage = new ChatMessageModel(0, $_SESSION['idUser'], $_POST['recieverUserId'], $_POST['message'], 0, 0);
+                $objectChatMessage = new ChatMessageModel(0, $_SESSION['idUser'], $_POST['receiverUserId'], $_POST['message'], 0, 0);
 
                 Connection::open_connection();
                 $result = ChatMessageDAO::insert_chat_message(Connection::get_connection(), $objectChatMessage);
                 Connection::close_connection();
 
                 if (isset($result) && !empty($result)) {
-                    $conversation = $this->get_chat_history($_SESSION['idUser'], $_POST['recieverUserId']);
+                    $conversation = $this->get_chat_history($_SESSION['idUser'], $_POST['receiverUserId']);
                 } else {
                     $conversation = 'Error';
                 }
@@ -106,7 +106,7 @@ class Instant_messaging extends Controller {
         if ($this->check_chat_permissions()) {
             if (isset($_POST['action']) && $_POST['action'] === 'updateUnreadMessage') {
                 Connection::open_connection();
-                $unreadMessage = ChatMessageDAO::get_unread_message_count(Connection::get_connection(), $_POST['recieverUserId'], $_SESSION['idUser']);
+                $unreadMessage = ChatMessageDAO::get_unread_message_count(Connection::get_connection(), $_POST['receiverUserId'], $_SESSION['idUser']);
                 Connection::close_connection();
 
                 echo $unreadMessage;
@@ -162,6 +162,26 @@ class Instant_messaging extends Controller {
             return true;
         }
         return false;
+    }
+
+    public function set_active_chat() {
+        if ($this->check_chat_permissions()) {
+            if (isset($_POST['action']) && $_POST['action'] === 'setActiveChat') {
+                $_SESSION['sse_active_chat'] = (int) $_POST['receiverUserId'];
+                echo json_encode(['status' => 'ok']);
+            }
+        }
+        exit;
+    }
+
+    public function close_active_chat() {
+        if ($this->check_chat_permissions()) {
+            if (isset($_POST['action']) && $_POST['action'] === 'closeActiveChat') {
+                $_SESSION['sse_active_chat'] = 0;
+                echo json_encode(['status' => 'ok']);
+            }
+        }
+        exit;
     }
     
 }

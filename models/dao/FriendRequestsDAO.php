@@ -29,8 +29,7 @@ class FriendRequestsDAO {
                 $sentence->execute();
                 $requestsArray = self::fetch_requests($sentence);
             } catch (PDOException $e) {
-                echo "Error line: " . $e->getLine();
-                die("Error: " . $e->getMessage());
+                throw new AppException("Database error: " . $e->getMessage(), 500, $e);
             }
         }
 
@@ -53,8 +52,7 @@ class FriendRequestsDAO {
                             $record['accepted']);
                 }
             } catch (PDOException $e) {
-                echo "Error line: " . $e->getLine();
-                die("Error: " . $e->getMessage());
+                throw new AppException("Database error: " . $e->getMessage(), 500, $e);
             }
         }
 
@@ -72,8 +70,7 @@ class FriendRequestsDAO {
                 $sentence->execute();
                 $requestsArray = self::fetch_requests($sentence);
             } catch (PDOException $e) {
-                echo "Error line: " . $e->getLine();
-                die("Error: " . $e->getMessage());
+                throw new AppException("Database error: " . $e->getMessage(), 500, $e);
             }
         }
 
@@ -92,8 +89,7 @@ class FriendRequestsDAO {
                 $sentence->execute();
                 $requestsArray = self::fetch_requests($sentence);
             } catch (PDOException $e) {
-                echo "Error line: " . $e->getLine();
-                die("Error: " . $e->getMessage());
+                throw new AppException("Database error: " . $e->getMessage(), 500, $e);
             }
         }
 
@@ -114,8 +110,7 @@ class FriendRequestsDAO {
                 
                 return $sentence->execute();
             } catch (PDOException $e) {
-                echo "Error line: " . $e->getLine();
-                die("Error: " . $e->getMessage());
+                throw new AppException("Database error: " . $e->getMessage(), 500, $e);
             }
         } else {
             return false; // 0
@@ -134,8 +129,7 @@ class FriendRequestsDAO {
                 
                 return $sentence->execute();
             } catch (PDOException $e) {
-                echo "Error line: " . $e->getLine();
-                die("Error: " . $e->getMessage());
+                throw new AppException("Database error: " . $e->getMessage(), 500, $e);
             }
         } else {
             return false; // 0
@@ -158,8 +152,7 @@ class FriendRequestsDAO {
                     return false;
                 }
             } catch (Exception $ex) {
-                echo "Error line: " . $ex->getLine();
-                die("Error: " . $ex->getMessage());
+                throw new AppException("Database error: " . $ex->getMessage(), 500, $ex);
             }
         } else {
             return false; // 0
@@ -177,8 +170,7 @@ class FriendRequestsDAO {
 
                 return $sentence->execute();
             } catch (PDOException $e) {
-                echo "Error line: " . $e->getLine();
-                die("Error: " . $e->getMessage());
+                throw new AppException("Database error: " . $e->getMessage(), 500, $e);
             }
         } else {
             return false; // 0

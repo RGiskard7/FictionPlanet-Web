@@ -28,8 +28,7 @@ class ModuleDAO {
                 $sentence->execute();
                 $moduleArray = self::fetch_modules($sentence);
             } catch (PDOException $e) {
-                echo "Error line: " . $e->getLine();
-                die("Error: " . $e->getMessage());
+                throw new AppException("Database error: " . $e->getMessage(), 500, $e);
             }
         }
 
@@ -45,8 +44,7 @@ class ModuleDAO {
                 $sentence->execute();
                 $moduleArray = self::fetch_modules($sentence);
             } catch (PDOException $e) {
-                echo "Error line: " . $e->getLine();
-                die("Error: " . $e->getMessage());
+                throw new AppException("Database error: " . $e->getMessage(), 500, $e);
             }
         }
 
@@ -67,8 +65,7 @@ class ModuleDAO {
                     $moduleObject = new ModuleModel($result["id"], $result["name"]);
                 }
             } catch (PDOException $e) {
-                echo "Error line: " . $e->getLine();
-                die("Error: " . $e->getMessage());
+                throw new AppException("Database error: " . $e->getMessage(), 500, $e);
             }
         }
 
@@ -89,8 +86,7 @@ class ModuleDAO {
                     $moduleObject = new ModuleModel($result["id"], $result["name"]);
                 }
             } catch (PDOException $e) {
-                echo "Error line: " . $e->getLine();
-                die("Error: " . $e->getMessage());
+                throw new AppException("Database error: " . $e->getMessage(), 500, $e);
             }
         }
 

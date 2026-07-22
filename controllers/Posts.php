@@ -81,7 +81,7 @@ class Posts extends Controller {
         
         if (isset($_POST['submitNewPost'])) {
             //Para evitar inyection SQL
-            $postTitle = trim(htmlentities(addslashes($_POST['postTitle']), ENT_QUOTES)); 
+            $postTitle = trim(htmlentities($_POST['postTitle'], ENT_QUOTES)); 
             $postIntroduction = trim($_POST['postIntroduction']);
             $postContent = trim($_POST['postContent']);
             
@@ -162,10 +162,10 @@ class Posts extends Controller {
         }
         
         if (isset($_POST['submitPostUpdate'])) {
-            $postID = trim(htmlentities(addslashes($_POST['postID']), ENT_QUOTES));
-            $postURL = trim(htmlentities(addslashes($_POST['postURL']), ENT_QUOTES));
-            $oldPostTitle = trim(htmlentities(addslashes($_POST['oldPostTitle']), ENT_QUOTES));
-            $postTitle = trim(htmlentities(addslashes($_POST['postTitle']), ENT_QUOTES)); //Para evitar inyection SQL
+            $postID = trim(htmlentities($_POST['postID'], ENT_QUOTES));
+            $postURL = trim(htmlentities($_POST['postURL'], ENT_QUOTES));
+            $oldPostTitle = trim(htmlentities($_POST['oldPostTitle'], ENT_QUOTES));
+            $postTitle = trim(htmlentities($_POST['postTitle'], ENT_QUOTES)); //Para evitar inyection SQL
             $postIntroduction = $_POST['postIntroduction'];
             $postContent = $_POST['postContent'];
             

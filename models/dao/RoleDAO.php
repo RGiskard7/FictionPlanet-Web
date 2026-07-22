@@ -29,8 +29,7 @@ class RoleDAO {
                 $sentence->execute();
                 $roleArray = self::fetch_roles($sentence);
             } catch (PDOException $e) {
-                echo "Error line: " . $e->getLine();
-                die("Error: " . $e->getMessage());
+                throw new AppException("Database error: " . $e->getMessage(), 500, $e);
             }
         }
 
@@ -51,8 +50,7 @@ class RoleDAO {
                     $roleObject = new RoleModel($result["id"], $result["name"], $result["description"], $result["name_esp"]);
                 }
             } catch (PDOException $e) {
-                echo "Error line: " . $e->getLine();
-                die("Error: " . $e->getMessage());
+                throw new AppException("Database error: " . $e->getMessage(), 500, $e);
             }
         }
 
@@ -74,8 +72,7 @@ class RoleDAO {
                     return false;
                 }
             } catch (Exception $ex) {
-                echo "Error line: " . $ex->getLine();
-                die("Error: " . $ex->getMessage());
+                throw new AppException("Database error: " . $ex->getMessage(), 500, $ex);
             }
         } else {
             return false; // 0
@@ -95,8 +92,7 @@ class RoleDAO {
                 
                 return $sentence->execute();
             } catch (PDOException $e) {
-                echo "Error line: " . $e->getLine();
-                die("Error: " . $e->getMessage());
+                throw new AppException("Database error: " . $e->getMessage(), 500, $e);
             }
         } else {
             return false; // 0
@@ -112,8 +108,7 @@ class RoleDAO {
 
                 return $sentence->execute();
             } catch (PDOException $e) {
-                echo "Error line: " . $e->getLine();
-                die("Error: " . $e->getMessage());
+                throw new AppException("Database error: " . $e->getMessage(), 500, $e);
             }
 
         } else {
@@ -135,8 +130,7 @@ class RoleDAO {
                 
                 return $sentence->execute();
             } catch (PDOException $e) {
-                echo "Error line: " . $e->getLine();
-                die("Error: " . $e->getMessage());
+                throw new AppException("Database error: " . $e->getMessage(), 500, $e);
             }
             
         } else {
