@@ -58,7 +58,12 @@ HTTP → .htaccess → index.php → App (Front Controller)
 
 git clone https://github.com/RGiskard7/fiction-planet-web.git
 cd fiction-planet-web
-bash docker/setup.sh
+
+# Linux/macOS o Git Bash/WSL:
+bash ./docker/setup.sh
+
+# Windows PowerShell:
+.\docker\setup.ps1
 
 # Abrir http://localhost:8080
 # Login: Asimov / 1234 (Root) o Asimov2 / 1234 (Admin)

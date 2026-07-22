@@ -21,7 +21,8 @@ RUN composer install --no-dev --no-interaction --prefer-dist --optimize-autoload
 
 COPY . .
 
-RUN chown -R www-data:www-data /var/www/html/uploads && \
+RUN mkdir -p /var/www/html/uploads && \
+    chown -R www-data:www-data /var/www/html/uploads && \
     chmod -R 775 /var/www/html/uploads
 
 COPY docker/apache-config.conf /etc/apache2/sites-available/000-default.conf

@@ -1,18 +1,26 @@
-#!/bin/bash
-set -e
+#!/usr/bin/env bash
+set -Eeuo pipefail
+
+SCRIPT_DIR="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)"
+PROJECT_ROOT="$(cd -- "$SCRIPT_DIR/.." && pwd)"
+cd "$PROJECT_ROOT"
 
 echo "== FictionPlanet Docker Setup =="
 echo ""
 
-if ! command -v docker &> /dev/null; then
-    echo "Docker no instalado."
-    echo "Instala Docker Desktop para Apple Silicon:"
-    echo "  https://www.docker.com/products/docker-desktop/"
+if ! command -v docker >/dev/null 2>&1; then
+    echo "Docker no está instalado o no está disponible en PATH."
+    echo "Instala Docker Desktop: https://www.docker.com/products/docker-desktop/"
     exit 1
 fi
 
-echo "[1/4] Copiando .env.docker → .env"
-cp .env.docker .env
+if ! docker compose version >/dev/null 2>&1; then
+    echo "Docker Compose no está disponible. Abre Docker Desktop y vuelve a intentarlo."
+    exit 1
+fi
+
+echo "[1/4] Copiando .env.docker -> .env"
+cp -- .env.docker .env
 
 echo "[2/4] Construyendo imagen..."
 docker compose build
@@ -30,8 +38,8 @@ echo "Login:    Asimov / 1234 (Root)"
 echo "          Asimov2 / 1234 (Admin)"
 echo ""
 echo "Comandos útiles:"
-echo "  docker compose down          # Parar contenedores"
-echo "  docker compose up -d         # Iniciar en segundo plano"
-echo "  docker compose logs -f app   # Ver logs de la app"
-echo "  docker compose exec app bash # Shell dentro del contenedor"
-echo "  docker compose exec app composer test  # Ejecutar tests"
+echo "  docker compose down                 # Parar contenedores"
+echo "  docker compose up -d                # Iniciar en segundo plano"
+echo "  docker compose logs -f app          # Ver logs de la app"
+echo "  docker compose exec app bash        # Shell dentro del contenedor"
+echo "  docker compose exec app composer test"
