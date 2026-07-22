@@ -12,3 +12,5 @@ uploads/editor/img/*
 !uploads/gallery/.gitkeep
 !uploads/posts/attachments/.gitkeep
 !uploads/editor/img/.gitkeep
+
+node_modules
