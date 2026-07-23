@@ -55,8 +55,8 @@
                     <!--<div class="align-self-end">-->
                     <div class="navbar-text">
                         <?php if (Session::is_started()): ?>
-                            <a  id="userNameRigth" class="nav-link" href="<?= PROFILE_SEO_URL . "/" . $_SESSION['loggedInUser']->get_user_name(); ?>">
-                                <span style="vertical-align: middle;"><?= $_SESSION['loggedInUser']->get_user_name(); ?></span>&nbsp; 
+                            <a  id="userNameRigth" class="nav-link" href="<?= PROFILE_SEO_URL . "/" . h($_SESSION['loggedInUser']->get_user_name()); ?>">
+                                <span style="vertical-align: middle;"><?= h($_SESSION['loggedInUser']->get_user_name()); ?></span>&nbsp; 
                                 <i style="vertical-align: middle;" class="fa fa-2x fa-user-circle-o" aria-hidden="true"></i>
                             </a>
                         <?php else: ?>

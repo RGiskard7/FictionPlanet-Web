@@ -26,6 +26,10 @@ function loadEnv($path) {
 
 loadEnv(realpath(__DIR__) . '/.env');
 
+function h($s) {
+    return htmlspecialchars((string) $s, ENT_QUOTES, 'UTF-8');
+}
+
 define('BASE_DIR', '/');
 define('BASE_URL', (getenv('APP_URL') ?: 'http://' . $_SERVER['SERVER_NAME']) . BASE_DIR);
 

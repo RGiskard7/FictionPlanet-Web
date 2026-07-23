@@ -12,10 +12,10 @@
                     <div class="row">
                         <div class="col-md-12 text-center">
                             <strong>
-                                <?php echo $_SESSION['loggedInUser']->get_first_name(); ?>&nbsp;<?php echo $_SESSION['loggedInUser']->get_last_name(); ?>
+                                <?php echo h($_SESSION['loggedInUser']->get_first_name()); ?>&nbsp;<?php echo h($_SESSION['loggedInUser']->get_last_name()); ?>
                             </strong></br>
                             <strong style="vertical-align: middle;">
-                                <small><em><?php echo $_SESSION['loggedInUser']->get_user_name(); ?></em></small>
+                                <small><em><?php echo h($_SESSION['loggedInUser']->get_user_name()); ?></em></small>
                             </strong>
                         </div>
                     </div>
@@ -23,7 +23,7 @@
                         <div class="col-md-12 text-center">
                             <span class="badge badge-pill badge-secondary mt-2">
                                 <?php
-                                echo $_SESSION['role']->get_sp_name();
+                                echo h($_SESSION['role']->get_sp_name());
                                 ?>
                             </span>
                         </div>
@@ -33,7 +33,7 @@
         </div>
         <div class="row p-2">
             <div class="col-md-12">
-                <a class="list-group-item list-group-item-action gmd-1" href="<?php echo PROFILE_SEO_URL . "/" . $_SESSION['loggedInUser']->get_user_name(); ?>" role="menuitem">
+                <a class="list-group-item list-group-item-action gmd-1" href="<?php echo PROFILE_SEO_URL . "/" . h($_SESSION['loggedInUser']->get_user_name()); ?>" role="menuitem">
                     <i class="icon fa fa-home fa-fw" aria-hidden="true"></i> <!-- fa-fw para que se alineen verticalmente -->
                     <span>Área personal</span>
                 </a>
@@ -49,7 +49,7 @@
                     <span>Publicaciones</span>
                 </a>
                 <?php endif; ?>
-                <?php if ($_SESSION['permissions'][MDL_USERS]['r']): ?>
+                <?php if ($_SESSION['permissions'][MDL_USERS]['r'] || $_SESSION['permissions'][MDL_ROLES]['r']): ?>
                 <a class="list-group-item list-group-item-action caret gmd-1" role="menuitem">
                     <i class="icon fa fa-users fa-fw" aria-hidden="true"></i>
                     <span>Usuarios</span>

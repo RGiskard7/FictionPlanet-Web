@@ -50,9 +50,7 @@
         
         <a href="javascript:void(0);" id="scroll" class="gmd-5" title="Volver arriba">Top<span></span></a>
         
-        <?php if (Session::is_started() && $_SESSION['permissions'][MDL_CHAT]['r'] 
-                && $_SESSION['permissions'][MDL_CHAT]['w'] && $_SESSION['permissions'][MDL_CHAT]['u'] 
-                && $_SESSION['permissions'][MDL_CHAT]['d']): ?>
+        <?php if (Session::is_started() && $_SESSION['permissions'][MDL_CHAT]['r']): ?>
         <a href="javascript:void(0);" id="chatButton" class="gmd-5" title="Chats" onclick="chatSidebarToggler()">
             <span id="allUnread" class="badge rounded-pill badge-danger mb-5 pull-right gmd-3" hidden></span>
             <span id="iconChat">

@@ -17,12 +17,12 @@
                     <tr>
                         <td class="contact" data-touserid="<?php echo $user->get_id(); ?>">
                             <img src="<?php echo IMAGES_URL . "f2.png"; ?>" class="avatar img-circle img-thumbnail" alt="avatar" style="border:0;">
-                            <?php echo $user->get_user_name();?>
+                            <?php echo h($user->get_user_name());?>
                             <strong><span id="<?php echo 'unread_' . $user->get_id(); ?>" class="unread gmd-2"><?php echo $unreadMessage; ?></span></strong>
                         </td>
                         <td class="text-right">
                             <button id="startChatButton" type="button" class="btn btn-info btn-sm startChatButton gmd-1" 
-                                    data-touserid="<?php echo $user->get_id(); ?>" data-tousername="<?php echo $user->get_user_name(); ?>"><i class="fa fa-chevron-right" aria-hidden="true"></i></button>
+                                    data-touserid="<?php echo $user->get_id(); ?>" data-tousername="<?php echo h($user->get_user_name()); ?>"><i class="fa fa-chevron-right" aria-hidden="true"></i></button>
                         </td>
                     </tr>
                 <?php endforeach;?>

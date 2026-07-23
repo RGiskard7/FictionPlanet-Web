@@ -119,10 +119,11 @@ INSERT INTO `modules` (`id`, `name`, `name_esp`) VALUES
 (1, 'users', 'Usuarios'),
 (2, 'roles', 'Roles'),
 (3, 'posts', 'Publicaciones'),
-(4, 'calendar_events', 'Eventos de calendario público'),
+(4, 'calendar_events', 'Eventos de calendario publico'),
 (5, 'publisher_data', 'Datos de publicaciones'),
 (6, 'personal_data', 'Datos personales'),
-(7, 'chat_services', 'Chat en vivo');
+(7, 'chat_services', 'Chat en vivo'),
+(8, 'images', 'Imagenes');
 
 -- --------------------------------------------------------
 
@@ -193,7 +194,10 @@ INSERT INTO `permissions` (`id`, `role_id`, `module_id`, `r`, `w`, `u`, `d`) VAL
 (163, 50, 5, 0, 0, 0, 0),
 (164, 50, 6, 0, 0, 0, 0),
 (165, 50, 7, 0, 0, 0, 0),
-(167, 4, 5, 0, 0, 0, 0);
+(167, 4, 5, 0, 0, 0, 0),
+(168, 1, 8, 1, 1, 1, 1),
+(169, 2, 8, 1, 1, 1, 0),
+(170, 4, 8, 1, 1, 0, 0);
 
 -- --------------------------------------------------------
 

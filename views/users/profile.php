@@ -34,14 +34,14 @@ include TEMPLATES_PATH . 'modals/upload_new_image_modal.inc.php';
                         <img src="<?= IMAGES_URL . "avatar_2x.png"; ?>" class="img-thumbnail rounded mb-4" alt="avatar">
                     </div>
                     <div class="col-lg-8 col-md-8 col-sm-10">
-                        <h2 id="profileUsername"><?= $user->get_user_name(); ?></h2>
+                        <h2 id="profileUsername"><?= h($user->get_user_name()); ?></h2>
                         <i class="fa fa-calendar mr-2"></i><strong>Miembro registrado desde: </strong><?= date('d-m-Y H:i:s', strtotime($user->get_reg_date()));?></br>
                         <i class="fa fa-clock-o mr-2"></i><strong>Último acceso al sitio: </strong><?= date('d-m-Y H:i:s', strtotime($user->get_last_access_date())); ?></br>
 
                         <span><b><?= $numPosts; ?></b>&nbsp;Publicaciones <small><em>(<?= $numVisiblePosts; ?>&nbsp;visibles, <?= $numNotVisiblePosts; ?>&nbsp;no visibles)</em></small></span></br>
 
                         <span class="badge badge-pill badge-secondary mt-2">
-                        <?= $_SESSION['role']->get_sp_name(); ?>
+                        <?= h($_SESSION['role']->get_sp_name()); ?>
                         </span>
 
                         <span class="badge badge-pill badge-secondary mb-1">  
@@ -83,12 +83,14 @@ include TEMPLATES_PATH . 'modals/upload_new_image_modal.inc.php';
                                     <div class="card bg-white border" style="border-radius: 10px;">
                                         <div class="card-header"><strong>Información personal</strong></div>
                                         <div class="card-body p-4">
-                                            <label><b>Nombre:</b></label>&nbsp;&nbsp;&nbsp;<?php echo $user->get_first_name(); ?></br>
-                                            <label><b>Apellidos:</b></label>&nbsp;&nbsp;&nbsp;<?php echo $user->get_last_name(); ?></br>
-                                            <label><b>Email:</b></label>&nbsp;&nbsp;&nbsp;<?php echo $user->get_email(); ?></br>
-                                            <label><b>Dirección:</b></label>&nbsp;&nbsp;&nbsp;<?php echo $user->get_address(); ?></br>
-                                            <label><b>País:</b></label>&nbsp;&nbsp;&nbsp;<?php echo $user->get_country(); ?></br>
-                                            <label><b>Número de teléfono:</b></label>&nbsp;&nbsp;&nbsp;<?php echo $user->get_phone_number(); ?></br>
+                                            <label><b>Nombre:</b></label>&nbsp;&nbsp;&nbsp;<?php echo h($user->get_first_name()); ?></br>
+                                            <label><b>Apellidos:</b></label>&nbsp;&nbsp;&nbsp;<?php echo h($user->get_last_name()); ?></br>
+                                            <?php if (Session::is_started() && $_SESSION['permissions'][MDL_PRSN_DATA]['r']): ?>
+                                            <label><b>Email:</b></label>&nbsp;&nbsp;&nbsp;<?php echo h($user->get_email()); ?></br>
+                                            <label><b>Direccion:</b></label>&nbsp;&nbsp;&nbsp;<?php echo h($user->get_address()); ?></br>
+                                            <label><b>Pais:</b></label>&nbsp;&nbsp;&nbsp;<?php echo h($user->get_country()); ?></br>
+                                            <label><b>Numero de telefono:</b></label>&nbsp;&nbsp;&nbsp;<?php echo h($user->get_phone_number()); ?></br>
+                                            <?php endif; ?>
                                         </div>
                                     </div>
                                 </div>
@@ -97,16 +99,18 @@ include TEMPLATES_PATH . 'modals/upload_new_image_modal.inc.php';
                                         <li class="nav-item" role="presentation">
                                             <button class="nav-link active" id="pills-home-tab" data-toggle="pill" data-target="#pills-home" type="button" role="tab" aria-controls="pills-home" aria-selected="true">Lista</button>
                                         </li>
+                                        <?php if (Session::is_started() && $_SESSION['permissions'][MDL_POSTS]['r']): ?>
                                         <li class="nav-item" role="presentation">
                                             <button class="nav-link" id="pills-profile-tab" data-toggle="pill" data-target="#pills-profile" type="button" role="tab" aria-controls="pills-profile" aria-selected="false">Crud</button>
                                         </li>
+                                        <?php endif; ?>
                                     </ul>
                                    <div class="tab-content" id="pills-tabContent">
                                         <div class="tab-pane fade show active" id="pills-home" role="tabpanel" aria-labelledby="pills-home-tab">
                                             <div id="postListCard" class="card bg-white border">
                                                 <div class='card-body mr-2 ml-2'>
                                                 <?php
-                                                $urlPager = "/users/profile/" . $user->get_user_name() . "/posts/";
+                                                $urlPager = "/users/profile/" . h($user->get_user_name()) . "/posts/";
                                                 $pager = new Pager($urlPager, $numVisiblePosts, $postsPerPage, $maxLinksPager, $currentPagePost); // PAGINATOR
                                                 $htmlPager = $pager->get_data_pager();
 
@@ -134,7 +138,7 @@ include TEMPLATES_PATH . 'modals/upload_new_image_modal.inc.php';
 
                                             <?php endif; ?>
                                             <?php
-                                            $urlPager = "/users/profile/" . $user->get_user_name() . "/image_gallery/";
+                                            $urlPager = "/users/profile/" . h($user->get_user_name()) . "/image_gallery/";
                                             $pager = new Pager($urlPager, $numVisibleImages, $imagesPerPage, $maxLinksPager, $currentPage); // PAGINATOR
                                             $htmlPager = $pager->get_data_pager();
 

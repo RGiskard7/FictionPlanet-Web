@@ -142,12 +142,16 @@ class NewUserValidator {
             return "Complete este campo.";
         }
 
+        if (strlen($password1) < 8) {
+            return "La contrasena debe tener al menos 8 caracteres.";
+        }
+
         return "";
     }
 
     private function validate_password2($password1, $password2) {
         if (!$this->is_variable_started($password1)) {
-            return "Primero debes rellenar la contraseña.";
+            return "Primero debes rellenar la contrasena.";
         }
 
         if (!$this->is_variable_started($password2)) {
@@ -155,7 +159,7 @@ class NewUserValidator {
         }
 
         if ($password1 !== $password2) {
-            return "Ambas contraseñas deben coincidir.";
+            return "Ambas contrasenas deben coincidir.";
         }
 
         return "";

@@ -1,42 +1,48 @@
 <?php
 require_once realpath(dirname(__FILE__)) . "/../config.inc.php";
+require_once LIBS_PATH . "Session.php";
 
-$paths= array();
-$processStatus = NULL;
-$directory = NULL;
+if (!Session::is_started()) {
+    http_response_code(403);
+    echo json_encode(['error' => 'No autorizado']);
+    exit;
+}
 
-// DEFINICIÓN DE LAS VARIABLES DE TRABAJO (CONSTANTES, ARRAYS Y VARIABLES)
+$paths = array();
+$processStatus = null;
+
+// DEFINICION DE LAS VARIABLES DE TRABAJO (CONSTANTES, ARRAYS Y VARIABLES)
 // ************************************************************************
 
 // Definimos la constante con el directorio de destino de las descargas
-define('DIR_DESCARGAS', ROOT_DIRECTORY . UPLOAD_POSTS_DIR . $_POST["idUser"]);
+define('DIR_DESCARGAS', ROOT_DIRECTORY . UPLOAD_POSTS_DIR . $_SESSION['idUser']);
 // Obtenemos el array de ficheros enviados
 $ficheros = $_FILES['uploadFile'];
 // Establecemos el indicador de proceso correcto (simplemente no indicando nada)
-$processStatus = NULL;
+$processStatus = null;
 // Paths para almacenar
 $paths = array();
 // Obtenemos los nombres de los ficheros
 $nombres_ficheros = $ficheros['name'];
 
-// LÍNEAS ENCARGADAS DE REALIZAR EL PROCESO DE UPLOAD POR CADA FICHERO RECIBIDO
+// LINEAS ENCARGADAS DE REALIZAR EL PROCESO DE UPLOAD POR CADA FICHERO RECIBIDO
 // ****************************************************************************
 
 // Si no existe la carpeta de destino la creamos
 if(!file_exists(DIR_DESCARGAS)) @mkdir(DIR_DESCARGAS);
-// Sólo en el caso de que exista esta carpeta realizaremos el proceso
+// Solo en el caso de que exista esta carpeta realizaremos el proceso
 if(file_exists(DIR_DESCARGAS)) {
     // Recorremos el array de nombres para realizar proceso de upload
     for($i=0; $i < count($_FILES['uploadFile']['name']); $i++){
-        // Extraemos el nombre y la extensión del nombre completo del fichero
+        // Extraemos el nombre y la extension del nombre completo del fichero
         $nombre_extension = explode('.', basename($_FILES['uploadFile']['name'][$i]));
-        // Obtenemos la extensión
+        // Obtenemos la extension
         $extension = array_pop($nombre_extension);
         // Obtenemos el nombre
         $nombre = array_pop($nombre_extension);
         // Creamos la ruta de destino
         $archivo_destino = DIR_DESCARGAS . DIRECTORY_SEPARATOR . utf8_decode($nombre) . '.' . $extension;
-        // Mover el archivo de la carpeta temporal a la nueva ubicación
+        // Mover el archivo de la carpeta temporal a la nueva ubicacion
         if(move_uploaded_file($_FILES['uploadFile']['tmp_name'][$i], $archivo_destino)) {
                 // Activamos el indicador de proceso correcto
                 $processStatus = true;
@@ -55,7 +61,7 @@ $reply = array();
 if ($processStatus) {
     $reply = ['dirupload' => basename(DIR_DESCARGAS), 'total'=>count($paths)]; 
 } elseif (!$processStatus) {
-    $reply = ['error'=>'Error al subir los archivos. Póngase en contacto con el administrador del sistema'];
+    $reply = ['error'=>'Error al subir los archivos. Pongase en contacto con el administrador del sistema'];
     foreach ($paths as $file) {
         unlink($file);
     }

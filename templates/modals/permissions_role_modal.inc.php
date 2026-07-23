@@ -9,6 +9,7 @@
             </div>
             <div class="modal-body">
                 <form action="<?= ROLES_SEO_URL . '/submit_permissions_role'; ?>" method="post" id="permissionForm" name="permissionForm">
+                    <?= Session::csrf_input(); ?>
                     <input type="hidden" id="rolePermissionsID" name="rolePermissionsID" value="<?= $role->get_id(); ?>" required>
                     <div class="table-responsive">
                         <table id="permissionTable" class="table table-hover table-striped">

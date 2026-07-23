@@ -31,8 +31,9 @@ class Posts extends Controller {
             if (!$post->is_visible()) {
                 // Si el post no es visible y no se ha iniciado sesion o no se tienen
                 // los permisos para ver post no visibles, se devuelve a la pag principal
-                if (Session::is_started() && $author->get_id() != $_SESSION['idUser'] 
-                        && !$_SESSION['permissions'][MDL_POSTS]['r'] || !Session::is_started()) {
+                if (!Session::is_started() || 
+                    (Session::is_started() && $author->get_id() != $_SESSION['idUser'] 
+                        && !$_SESSION['permissions'][MDL_POSTS]['r'])) {
                     Redirection::redirect(BASE_URL);
                 } 
                 $postStatus = 'Publicación no visible';
@@ -80,6 +81,9 @@ class Posts extends Controller {
         }
         
         if (isset($_POST['submitNewPost'])) {
+            if (!Session::verify_csrf()) {
+                Redirection::redirect(CREATE_POST_SEO_URL);
+            }
             //Para evitar inyection SQL
             $postTitle = trim(htmlentities($_POST['postTitle'], ENT_QUOTES)); 
             $postIntroduction = trim($_POST['postIntroduction']);
@@ -162,6 +166,9 @@ class Posts extends Controller {
         }
         
         if (isset($_POST['submitPostUpdate'])) {
+            if (!Session::verify_csrf()) {
+                Redirection::redirect(POSTS_SEO_URL);
+            }
             $postID = trim(htmlentities($_POST['postID'], ENT_QUOTES));
             $postURL = trim(htmlentities($_POST['postURL'], ENT_QUOTES));
             $oldPostTitle = trim(htmlentities($_POST['oldPostTitle'], ENT_QUOTES));
@@ -214,7 +221,7 @@ class Posts extends Controller {
     }
     
     public function delete() {
-        if (Session::is_started() /*&& $_SESSION['permissions'][MDL_POSTS]['d']*/) {
+        if (Session::is_started() && $_SESSION['permissions'][MDL_POSTS]['d']) {
             if (isset($_POST['action']) && $_POST['action'] === 'deletePost') {
                 Connection::open_connection();
                 $result = PostDAO::delete_post(Connection::get_connection(), trim($_POST['idPost']));
@@ -247,8 +254,8 @@ class Posts extends Controller {
     }
     
     public function remove_attached_file() {
-        if (Session::is_started() /*&& $_SESSION['permissions'][MDL_POSTS]['w'] 
-                && $_SESSION['permissions'][MDL_POSTS]['u']*/) {
+        if (Session::is_started() && $_SESSION['permissions'][MDL_POSTS]['w'] 
+                && $_SESSION['permissions'][MDL_POSTS]['u']) {
             
             if (isset($_POST['action']) && $_POST['action'] === 'removeAttachedFile' && isset($_POST['nameFile'])) {
                 if (Utilities::delete_file_of_directory($this->tempDirectory . $_SESSION['idUser'], trim($_POST['nameFile']))) {
@@ -273,7 +280,7 @@ class Posts extends Controller {
     }
 
     public function posts_data_table_load($isProfile = false) {
-        if (Session::is_started() /*&& $_SESSION['permissions'][MDL_POSTS]['r']*/) {
+        if (Session::is_started() && $_SESSION['permissions'][MDL_POSTS]['r']) {
             
             if (isset($_POST['action']) && $_POST['action'] === 'postsDataTableLoad') {
                 $postsDataTable = array();

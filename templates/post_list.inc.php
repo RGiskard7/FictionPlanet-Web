@@ -7,7 +7,7 @@ $index = 1;
         <?php if (!empty($postArray)): ?>
             <?php foreach($postArray as $post): ?>
                 <div>
-                    <a class="titlePostLink" href="<?= POST_SEO_URL . '/' . $post->get_url(); ?>"><h4 class='card-title'><?= $post->get_title(); ?></h4></a>
+                    <a class="titlePostLink" href="<?= POST_SEO_URL . '/' . $post->get_url(); ?>"><h4 class='card-title'><?= h($post->get_title()); ?></h4></a>
                 </div>
 
                 <div class="mb-4">
@@ -38,7 +38,7 @@ $index = 1;
 
                 <div class="mb-2">
                     <i class='fa fa-user'></i> Publicado por 
-                    <a href="<?= PROFILE_SEO_URL . "/" . $author->get_user_name(); ?>"><?= $author->get_user_name(); ?></a>
+                    <a href="<?= PROFILE_SEO_URL . "/" . h($author->get_user_name()); ?>"><?= h($author->get_user_name()); ?></a>
                     &nbsp;|&nbsp;
                     <i class='fa fa-calendar'></i> <?= date('d-m-Y H:i:s', strtotime($post->get_date_creation())); ?>
                     <?php if($post->get_date_last_update() !== $post->get_date_creation()): ?>

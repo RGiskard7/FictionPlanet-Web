@@ -19,6 +19,7 @@ include TEMPLATES_PATH . 'head.inc.php';
             </div>
             <div class="card-body">
                 <form id="formNewPost" rol="form" method="post" action="<?= POSTS_SEO_URL . '/submit_new_post' ?>" name="formNewPost" enctype="multipart/form-data">
+                    <?= Session::csrf_input(); ?>
                     <?php
                     if (isset($data['validator'])) {
                         $validator = $data['validator'];

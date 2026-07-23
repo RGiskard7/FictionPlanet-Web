@@ -3,7 +3,7 @@
         <div class="row">
             <div class="col-10">
                 <h5><img src="<?php echo IMAGES_URL . "f2.png"; ?>" class="avatar img-circle img-thumbnail" alt="avatar" style="border:0; vertical-align: left;">
-                <?php echo $receiverUserName; ?></h5>
+                <?php echo h($receiverUserName); ?></h5>
             </div>
             <div class="col-2">
                 <button id="btnBackUserChatList" class="btn btn-outline-secondary pull-right gmd-1">
@@ -22,9 +22,9 @@
                         <li class="replies">
                     <?php endif; ?>
                         <p>
-                            <?php echo str_replace(chr(10),"<br>",$message->getMessage()); ?>
+                            <?php echo nl2br(h($message->getMessage())); ?>
                             <br>
-                            <font size = 1><small><em><?php echo $message->getTimestamp(); ?></em></small></font>
+                            <font size = 1><small><em><?php echo h($message->getTimestamp()); ?></em></small></font>
                         </p>
                     </li>
                 <?php endforeach; ?>

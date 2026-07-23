@@ -47,16 +47,16 @@ class FriendRequestsDAO {
                 $result = $sentence->fetch(PDO::FETCH_ASSOC);
 
                 if (!empty($result)) {
-                    $friendRequestObject = new FriendRequestsModel($record['id'], $record['from_user_id'], 
-                            $record['to_user_id'], $record['creation_date'], $record['last_update_date'], $record['status'], 
-                            $record['accepted']);
+                    $friendRequestObject = new FriendRequestsModel($result['id'], $result['from_user_id'], 
+                            $result['to_user_id'], $result['creation_date'], $result['last_update_date'], $result['status'], 
+                            $result['accepted']);
                 }
             } catch (PDOException $e) {
                 throw new AppException("Database error: " . $e->getMessage(), 500, $e);
             }
         }
 
-        return $postObject;
+        return $friendRequestObject;
     }
     
     public static function get_friend_request_not_answered_by_to_user_id($connection, $toUserId) {

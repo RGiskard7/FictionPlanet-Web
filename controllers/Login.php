@@ -23,12 +23,26 @@ class Login extends Controller{
                 return;
             }
 
+            $now = time();
+            $attempts = $_SESSION['login_attempts'] ?? ['count' => 0, 'first_at' => $now];
+            if ($attempts['count'] >= 5 && ($now - $attempts['first_at']) < 60) {
+                $wait = 60 - ($now - $attempts['first_at']);
+                $data['pageTitle'] = 'Iniciar sesión | Fiction Planet';
+                $data['rate_limit'] = "Demasiados intentos. Espere {$wait} segundos.";
+                $this->view->render($this, "login", $data);
+                return;
+            }
+            if (($now - $attempts['first_at']) >= 60) {
+                $attempts = ['count' => 0, 'first_at' => $now];
+            }
+
             $email = trim(htmlentities($_POST['emailLogin'], ENT_QUOTES));
             $password = trim(htmlentities($_POST["passwordLogin"], ENT_QUOTES));
 
             Connection::open_connection();
             $validator = new LoginValidator(Connection::get_connection(), $email, $password);
             if ($validator->get_error() === '' && !is_null($validator->get_user())) {
+                unset($_SESSION['login_attempts']);
                 $role = RoleDAO::get_role_by_id(Connection::get_connection(), $validator->get_user()->get_role());
                 $permissions = PermissionDAO::get_permissions_of_role_ordered_by_module(Connection::get_connection(), $role);
 
@@ -38,6 +52,7 @@ class Login extends Controller{
             }
             Connection::close_connection();
 
+            $_SESSION['login_attempts'] = ['count' => $attempts['count'] + 1, 'first_at' => $attempts['first_at']];
             $data['validator'] = $validator;
             $data['lastEmail'] = $email;
         }

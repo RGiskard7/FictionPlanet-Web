@@ -13,6 +13,9 @@ include TEMPLATES_PATH . 'head.inc.php';
                         <h2>Iniciar sesión</h2>
                     </div>
                     <div class="card-body">
+                        <?php if (!empty($data['rate_limit'])): ?>
+                            <div class="alert alert-warning"><?= h($data['rate_limit']) ?></div>
+                        <?php endif; ?>
                         <form rol="form" class="px-4 py-3" method="post" action="<?= LOGIN_SEO_URL; ?>">
                             <?= Session::csrf_input(); ?>
                             <div class="form-group">

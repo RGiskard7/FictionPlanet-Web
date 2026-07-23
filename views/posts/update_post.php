@@ -22,6 +22,7 @@ include TEMPLATES_PATH . 'head.inc.php';
 
             <div class="card-body">					
                 <form id="formUpdatePost" rol="form" name="formUpdatePost" method="post" action="<?= POSTS_SEO_URL . '/submit_post_update' ?>" enctype="multipart/form-data">
+                    <?= Session::csrf_input(); ?>
                     <input type="hidden" name="postID" class="form-control" value="<?= $post->get_id(); ?>">
                     <input type="hidden" name="postURL" class="form-control" value="<?= $post->get_url(); ?>">
                     <input type="hidden" name="oldPostTitle" class="form-control" value="<?= $post->get_title(); ?>">

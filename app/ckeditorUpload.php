@@ -1,5 +1,11 @@
 <?php
 require_once realpath(dirname(__FILE__)) . "/../config.inc.php";
+require_once LIBS_PATH . "Session.php";
+
+if (!Session::is_started()) {
+    http_response_code(403);
+    exit;
+}
 
 $upload_dir = array( 
     'img'=> UPLOAD_IMG_EDITOR_DIR, 

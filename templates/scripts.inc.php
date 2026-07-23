@@ -59,9 +59,7 @@
 
 
 <script type="text/javascript" src="<?= STATIC_URL . "js/main.js"; ?>"></script>
-<?php if (Session::is_started() && $_SESSION['permissions'][MDL_CHAT]['r'] 
-        && $_SESSION['permissions'][MDL_CHAT]['w'] && $_SESSION['permissions'][MDL_CHAT]['u'] 
-        && $_SESSION['permissions'][MDL_CHAT]['d']): ?>
+<?php if (Session::is_started() && $_SESSION['permissions'][MDL_CHAT]['r']): ?>
 <script type="text/javascript" src="<?= STATIC_URL . "js/chatFunctions.js"; ?>"></script>
 <?php endif; ?>
 <script type="text/javascript" src="<?= STATIC_URL . "js/fileInput.js"; ?>"></script>

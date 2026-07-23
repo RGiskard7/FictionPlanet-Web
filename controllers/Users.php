@@ -46,6 +46,10 @@ class Users extends Controller {
         Connection::close_connection();
         
         if (isset($_POST['submitNewUser'])) {
+            if (!Session::verify_csrf()) {
+                echo json_encode(['error' => 'Token de seguridad invalido']);
+                exit;
+            }
             $userName = trim(htmlentities($_POST['userNameNewUser'], ENT_QUOTES)); //Para evitar inyection SQL
             $firstName = trim((htmlentities($_POST['firstNameNewUser'], ENT_QUOTES)));
             $lastName = trim(htmlentities($_POST['lastNameNewUser'], ENT_QUOTES));
@@ -101,7 +105,7 @@ class Users extends Controller {
     }
     
     public function update() {
-        if (Session::is_started() /*&& $_SESSION['permissions'][MDL_USERS]['u']*/) {
+        if (Session::is_started() && $_SESSION['permissions'][MDL_USERS]['u']) {
             if (isset($_POST['action']) && $_POST['action'] === 'submitEditUser') {
                 if (isset($_POST['idUser']) && isset($_POST['userNameEditProfile']) && isset($_POST['firstNameEditProfile']) && 
                     isset($_POST['lastNameEditProfile']) && isset($_POST['emailEditProfile']) && isset($_POST['addressEditProfile']) && 
@@ -120,6 +124,18 @@ class Users extends Controller {
 
                     Connection::open_connection();    
                     $user = UserDAO::get_user_by_id(Connection::get_connection(), $idEditUser);
+
+                    if ($user && $user->get_role() == ROOT && $_SESSION['role']->get_id() != ROOT) {
+                        Connection::close_connection();
+                        echo json_encode(['error' => 'No autorizado']);
+                        exit;
+                    }
+
+                    if ($role == ROOT && $_SESSION['role']->get_id() != ROOT) {
+                        Connection::close_connection();
+                        echo json_encode(['error' => 'No puedes asignar el rol Root']);
+                        exit;
+                    }
 
                     $oldUserName = $user->get_user_name();
 
@@ -166,11 +182,18 @@ class Users extends Controller {
     }
     
     public function delete() {
-        if (Session::is_started() /*&& $_SESSION['permissions'][MDL_USERS]['d']*/) {
+        if (Session::is_started() && $_SESSION['permissions'][MDL_USERS]['d']) {
             if (isset($_POST['action']) && $_POST['action'] === 'deleteUser' && isset($_POST['idUser'])) {
                 Connection::open_connection();
                 $idUser = trim(htmlentities($_POST['idUser'], ENT_QUOTES));
                 $user = UserDAO::get_user_by_id(Connection::get_connection(), $idUser);
+
+                if ($user && $user->get_role() == ROOT) {
+                    Connection::close_connection();
+                    echo 0;
+                    exit;
+                }
+
                 $response = UserDAO::delete_user(Connection::get_connection(), $user);
                 Connection::close_connection();
 
@@ -279,7 +302,7 @@ class Users extends Controller {
     }
         
     public function get_data() {
-        if (Session::is_started() /*&& $_SESSION['permissions'][MDL_USERS]['r']*/) {
+        if (Session::is_started() && $_SESSION['permissions'][MDL_USERS]['r']) {
             
             if (isset($_POST['action']) && $_POST['action'] === 'getUserData' && isset($_POST['idUser'])) {
                 Connection::open_connection();
@@ -321,7 +344,7 @@ class Users extends Controller {
     }
     
     public function users_data_table_load() {
-        if (Session::is_started() /*&& $_SESSION['permissions'][MDL_USERS]['r']*/) {
+        if (Session::is_started() && $_SESSION['permissions'][MDL_USERS]['r']) {
             
             if (isset($_POST['action']) && $_POST['action'] === 'userDataTableLoad') {
                 $usersDataTable = array();
@@ -330,7 +353,8 @@ class Users extends Controller {
                 $userArray = UserDAO::get_all_user(Connection::get_connection());
 
                 if (!is_null($userArray)) {
-                    //$roleArray = RoleDAO::get_all_roles(Connection::get_connection());
+                    $canManageUsers = $_SESSION['permissions'][MDL_USERS]['u'] 
+                        || $_SESSION['permissions'][MDL_USERS]['d'];
                     
                     for ($i = 0; $i < count($userArray); $i++) {
                         $role = RoleDAO::get_role_by_id(Connection::get_connection(), $userArray[$i]->get_role());
@@ -373,11 +397,11 @@ class Users extends Controller {
                         $usersDataTable[$i]['user_name'] = $userArray[$i]->get_user_name();
                         $usersDataTable[$i]['first_name'] = $userArray[$i]->get_first_name();
                         $usersDataTable[$i]['last_name'] = $userArray[$i]->get_last_name();
-                        $usersDataTable[$i]['email'] = $userArray[$i]->get_email();
+                        $usersDataTable[$i]['email'] = $canManageUsers ? $userArray[$i]->get_email() : '-';
                         $usersDataTable[$i]['password'] = '*****';
-                        $usersDataTable[$i]['address'] = $userArray[$i]->get_address();
-                        $usersDataTable[$i]['country'] = $userArray[$i]->get_country();
-                        $usersDataTable[$i]['phone_number'] = $userArray[$i]->get_phone_number();
+                        $usersDataTable[$i]['address'] = $canManageUsers ? $userArray[$i]->get_address() : '-';
+                        $usersDataTable[$i]['country'] = $canManageUsers ? $userArray[$i]->get_country() : '-';
+                        $usersDataTable[$i]['phone_number'] = $canManageUsers ? $userArray[$i]->get_phone_number() : '-';
                         $usersDataTable[$i]['role'] = $role->get_sp_name();
                         $usersDataTable[$i]['reg_date'] = $userArray[$i]->get_reg_date();
                         $usersDataTable[$i]['last_update_date'] = $userArray[$i]->get_last_update_date();

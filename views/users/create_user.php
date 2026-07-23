@@ -20,6 +20,7 @@ include TEMPLATES_PATH . 'head.inc.php';
                     </div>
                     <div class="card-body">									
                         <form rol="form" method="post" action="<?php echo CREATE_USER_SEO_URL; ?>" name="formNewUser">
+                            <?= Session::csrf_input(); ?>
                             <?php
                             if (isset($data['validator'])) {
                                 $validator = $data['validator'];

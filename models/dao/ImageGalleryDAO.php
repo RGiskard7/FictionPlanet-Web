@@ -42,8 +42,10 @@ class ImageGalleryDAO {
 
         if (isset($connection)) {
             try {
-                $sql = "SELECT * FROM image_gallery ORDER BY creation_date DESC LIMIT " . $init . ", " . $limit . ";";
+                $sql = "SELECT * FROM image_gallery ORDER BY creation_date DESC LIMIT :init, :limit;";
                 $sentence = $connection->prepare($sql);
+                $sentence->bindParam(":init", $init, PDO::PARAM_INT);
+                $sentence->bindParam(":limit", $limit, PDO::PARAM_INT);
                 $sentence->execute();
                 $imageArray = self::fetch_images($sentence);
             } catch (PDOException $e) {
@@ -75,8 +77,10 @@ class ImageGalleryDAO {
 
         if (isset($connection)) {
             try {
-                $sql = "SELECT * FROM image_gallery WHERE visible = '1' ORDER BY last_update_date DESC LIMIT " . $init . ", " . $limit . ";";
+                $sql = "SELECT * FROM image_gallery WHERE visible = '1' ORDER BY last_update_date DESC LIMIT :init, :limit;";
                 $sentence = $connection->prepare($sql);
+                $sentence->bindParam(":init", $init, PDO::PARAM_INT);
+                $sentence->bindParam(":limit", $limit, PDO::PARAM_INT);
                 $sentence->execute();
                 $imageArray = self::fetch_images($sentence);
             } catch (PDOException $e) {
@@ -111,9 +115,11 @@ class ImageGalleryDAO {
         if (isset($connection)) {
             try {                
                 $sql = "SELECT * FROM image_gallery WHERE author_id = :authorId AND "
-                        . "visible = 1 ORDER BY last_update_date DESC LIMIT " . $init . ", " . $limit . ";";
+                        . "visible = 1 ORDER BY last_update_date DESC LIMIT :init, :limit;";
                 $sentence = $connection->prepare($sql);
-                $sentence->bindParam(":authorId", $authorId, PDO::PARAM_INT); // bindValue en lugar de bindParam
+                $sentence->bindParam(":authorId", $authorId, PDO::PARAM_INT);
+                $sentence->bindParam(":init", $init, PDO::PARAM_INT);
+                $sentence->bindParam(":limit", $limit, PDO::PARAM_INT);
                 $sentence->execute();
                 $imageArray = self::fetch_images($sentence);
             } catch (PDOException $e) {

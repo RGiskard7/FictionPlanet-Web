@@ -77,7 +77,7 @@ class Roles extends Controller {
     }
     
     public function get_role_permissions() {
-        if (Session::is_started() /*&& $_SESSION['permissions'][MDL_ROLES]['u']*/) {
+        if (Session::is_started() && $_SESSION['permissions'][MDL_ROLES]['u']) {
             if (isset($_POST['action']) && $_POST['action'] === 'get_role_permissions' && isset($_POST['roleID'])) {
                 Connection::open_connection();
                 $role = RoleDAO::get_role_by_id(Connection::get_connection(), trim($_POST['roleID']));
@@ -96,11 +96,17 @@ class Roles extends Controller {
     }
     
     public function submit_permissions_role() {
-        if (Session::is_started() /*&& $_SESSION['permissions'][MDL_ROLES]['u']*/) {
+        if (Session::is_started() && $_SESSION['permissions'][MDL_ROLES]['u']) {
             if (isset($_POST['submitPermissionsRole'])) {
+                if (!Session::verify_csrf()) {
+                    echo json_encode(['error' => 'Token invalido']);
+                    exit;
+                }
                 $idRole = $_POST['rolePermissionsID'];
                 $numModules = $_POST['numModulesPermissions'];
+                $response = true;
 
+                Connection::open_connection();
                 for($i = 0; $i < $numModules; $i++) {
                     $moduleID = $_POST['moduleID-' . ($i + 1)];
                     if (isset($_POST['module-' . $moduleID])) {
@@ -131,14 +137,13 @@ class Roles extends Controller {
                         $dCheck = 0;
                     }
 
-                    Connection::open_connection();
                     $response = PermissionDAO::update_permissions_role(Connection::get_connection(), $moduleID, $idRole, $rCheck, $wCheck, $uCheck, $dCheck);
-                    Connection::close_connection();
 
                     if (!$response) {
                         break;
                     }
                 }
+                Connection::close_connection();
 
                 echo $response;
             }
@@ -147,7 +152,7 @@ class Roles extends Controller {
     }
     
     public function check_new_role_name() {
-        if (Session::is_started() /*&& $_SESSION['permissions'][MDL_ROLES]['u']*/) {
+        if (Session::is_started() && $_SESSION['permissions'][MDL_ROLES]['w']) {
             if (isset($_POST['action']) && $_POST['action'] === 'check_new_role_name') {
                 $roleTitle = trim(htmlentities($_POST['roleTitle'], ENT_QUOTES));
 
@@ -162,7 +167,7 @@ class Roles extends Controller {
     }
     
     public function get_role_data() {
-        if (Session::is_started() /*&& $_SESSION['permissions'][MDL_ROLES]['r']*/) {
+        if (Session::is_started() && $_SESSION['permissions'][MDL_ROLES]['r']) {
             if (isset($_POST['action']) && $_POST['action'] === 'get_role_data' &&  isset($_POST['roleID'])) {
                 Connection::open_connection();
                 $role = RoleDAO::get_role_by_id(Connection::get_connection(), trim($_POST['roleID']));
@@ -186,7 +191,7 @@ class Roles extends Controller {
     }
     
     public function insert_new_role() {
-        if (Session::is_started() /*&& $_SESSION['permissions'][MDL_ROLES]['w']*/) {
+        if (Session::is_started() && $_SESSION['permissions'][MDL_ROLES]['w']) {
             if (isset($_POST['action']) && $_POST['action'] === 'insert_new_role') {
                 $roleTitle = trim(htmlentities($_POST['roleTitle'], ENT_QUOTES));
                 $roleDescription = trim(htmlentities($_POST['roleDescription'], ENT_QUOTES));
@@ -207,7 +212,7 @@ class Roles extends Controller {
     }
     
     public function submit_edit_role() {
-        if (Session::is_started() /*&& $_SESSION['permissions'][MDL_ROLES]['u']*/) {
+        if (Session::is_started() && $_SESSION['permissions'][MDL_ROLES]['u']) {
             /*if (isset($_POST["action"]) && $_POST["action"] === "submit_edit_role") {*/
             if (isset($_POST['submitEditRole'])) {
                 //$roleID = trim($_POST['roleID']);
@@ -217,6 +222,12 @@ class Roles extends Controller {
 
                 Connection::open_connection();
                 $role = RoleDAO::get_role_by_id(Connection::get_connection(), $roleID);
+
+                if ($role && ($role->get_id() == ROOT || $role->get_id() == REGISTERED_USER)) {
+                    Connection::close_connection();
+                    echo 0;
+                    exit;
+                }
 
                 $role->set_name($editRoleTitle);
                 $role->set_description($editRoleDescription);
@@ -232,10 +243,17 @@ class Roles extends Controller {
     }
     
     public function delete_role() {
-        if (Session::is_started() /*&& $_SESSION['permissions'][MDL_ROLES]['d']*/) {
+        if (Session::is_started() && $_SESSION['permissions'][MDL_ROLES]['d']) {
             if (isset($_POST["action"]) && $_POST["action"] === "delete_role" && isset($_POST["roleID"])) {
                 Connection::open_connection();
                 $role = RoleDAO::get_role_by_id(Connection::get_connection(), trim($_POST["roleID"]));
+
+                if ($role && ($role->get_id() == ROOT || $role->get_id() == REGISTERED_USER)) {
+                    Connection::close_connection();
+                    echo 0;
+                    exit;
+                }
+
                 $result = RoleDAO::delete_role(Connection::get_connection(), $role);
                 Connection::close_connection();
 

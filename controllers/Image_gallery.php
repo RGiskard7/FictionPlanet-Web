@@ -62,7 +62,7 @@ class Image_gallery extends Controller {
     }
     
     public function images_data_table_load() {
-        if (Session::is_started()) {
+        if (Session::is_started() && $_SESSION['permissions'][MDL_IMAGES]['r']) {
             if (isset($_POST['action']) && $_POST['action'] === 'imagesDataTableLoad') {
                 $imagesDataTable = array();
 

@@ -156,9 +156,7 @@ class Instant_messaging extends Controller {
     }
     
     private function check_chat_permissions() {
-        if (Session::is_started() && $_SESSION['permissions'][MDL_CHAT]['r'] 
-                && $_SESSION['permissions'][MDL_CHAT]['w'] && $_SESSION['permissions'][MDL_CHAT]['u'] 
-                && $_SESSION['permissions'][MDL_CHAT]['d']) {
+        if (Session::is_started() && $_SESSION['permissions'][MDL_CHAT]['r']) {
             return true;
         }
         return false;

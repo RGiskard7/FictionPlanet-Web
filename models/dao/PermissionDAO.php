@@ -32,7 +32,7 @@ class PermissionDAO {
             try {
                 $sentence = $connection->prepare("SELECT * FROM permissions");
                 $sentence->execute();
-                $permissionArray = self::fetch_users($sentence);
+                $permissionArray = self::fetch_permissions($connection, $sentence);
             } catch (PDOException $e) {
                 throw new AppException("Database error: " . $e->getMessage(), 500, $e);
             }
@@ -153,7 +153,7 @@ class PermissionDAO {
                 $sentence->execute();
                 $modulePermissionsArray = array();
                 while ($record = $sentence->fetch(PDO::FETCH_ASSOC)) {
-                    $modulePermissionsArray[$record["role_id"]] = $record;
+                    $modulePermissionsArray[$record["role_id"]][] = $record;
                 }
                 
                 /*$request = $sentence->fetchAll(PDO::FETCH_ASSOC); Funciona*/
@@ -184,7 +184,7 @@ class PermissionDAO {
                             break;
                         }
                     }
-                    return $resulta;
+                    return $result;
                 } else {
                     return false;
                 }
