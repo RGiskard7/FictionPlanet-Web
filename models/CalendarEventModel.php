@@ -36,6 +36,3 @@ class CalendarEventModel {
         return $this->color;
     }
 }
-
-?>
-

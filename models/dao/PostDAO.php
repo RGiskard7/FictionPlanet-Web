@@ -574,5 +574,3 @@ class PostDAO {
         return $postArray;
     }
 }
-
-?>

@@ -93,6 +93,3 @@ class ImageGalleryModel {
         $this->visible = $visible;
     }
 }
-
-?>
-

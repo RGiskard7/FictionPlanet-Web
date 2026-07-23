@@ -88,5 +88,3 @@ class PostModel {
         $this->visible = $visible;
     }
 }
-
-?>

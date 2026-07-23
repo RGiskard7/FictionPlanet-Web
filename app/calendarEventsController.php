@@ -73,5 +73,3 @@ if (isset($_POST["submitDeleteEvent"])) {
 
     Redirection::redirect($_SERVER['HTTP_REFERER']);
 }
-?>
-

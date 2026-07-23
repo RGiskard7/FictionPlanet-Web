@@ -37,6 +37,3 @@ class ContactModel {
         return $this->creation_date;
     }
 }
-
-?>
-

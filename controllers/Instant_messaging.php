@@ -163,25 +163,5 @@ class Instant_messaging extends Controller {
         }
         return false;
     }
-
-    public function set_active_chat() {
-        if ($this->check_chat_permissions()) {
-            if (isset($_POST['action']) && $_POST['action'] === 'setActiveChat') {
-                $_SESSION['sse_active_chat'] = (int) $_POST['receiverUserId'];
-                echo json_encode(['status' => 'ok']);
-            }
-        }
-        exit;
-    }
-
-    public function close_active_chat() {
-        if ($this->check_chat_permissions()) {
-            if (isset($_POST['action']) && $_POST['action'] === 'closeActiveChat') {
-                $_SESSION['sse_active_chat'] = 0;
-                echo json_encode(['status' => 'ok']);
-            }
-        }
-        exit;
-    }
     
 }

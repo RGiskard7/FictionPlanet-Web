@@ -27,16 +27,16 @@ function loadEnv($path) {
 loadEnv(realpath(__DIR__) . '/.env');
 
 define('BASE_DIR', '/');
-define('BASE_URL', rtrim(($_ENV['APP_URL'] ?? 'http://' . $_SERVER['SERVER_NAME']) . BASE_DIR, '/'));
+define('BASE_URL', (getenv('APP_URL') ?: 'http://' . $_SERVER['SERVER_NAME']) . BASE_DIR);
 
 // URLS------------>
-define('VIEW_URL', BASE_URL . '/views/');
-define('APP_URL', BASE_URL . '/app/');
-define('STATIC_URL', BASE_URL . '/static/');
+define('VIEW_URL', BASE_URL . 'views/');
+define('APP_URL', BASE_URL . 'app/');
+define('STATIC_URL', BASE_URL . 'static/');
 define('IMAGES_URL', STATIC_URL . 'img/');
-define('MODEL_URL', BASE_URL . '/model/');
-define('TEMPLATES_URL', BASE_URL . '/templates/');
-define('PLUGINS_URL', BASE_URL . '/plugins/');
+define('MODEL_URL', BASE_URL . 'model/');
+define('TEMPLATES_URL', BASE_URL . 'templates/');
+define('PLUGINS_URL', BASE_URL . 'plugins/');
 
 // FRIENDLY URLS---->
 define('CONTACT', 'about_us');
@@ -56,20 +56,20 @@ define('GET_IMAGE', GALLERY . '/get');
 
 define('SEARCH', 'home/search');
 
-define('CONTACT_SEO_URL', BASE_URL . '/' . CONTACT);
-define('HOME_SEO_URL', BASE_URL . '/' . HOME);
-define('PROFILE_SEO_URL', BASE_URL . '/' . PROFILE);
-define('USERS_SEO_URL', BASE_URL . '/' . USERS);
-define('POST_SEO_URL', BASE_URL . '/' . GET_POST);
-define('POSTS_SEO_URL', BASE_URL . '/' . POSTS);
-define('ROLES_SEO_URL', BASE_URL . '/' . ROLES);
-define('LOGIN_SEO_URL', BASE_URL . '/' . LOGIN);
-define('CREATE_POST_SEO_URL', BASE_URL . '/' . CREATE_POST);
-define('CREATE_USER_SEO_URL', BASE_URL . '/' . CREATE_USER);
-define('UPDATE_POST_SEO_URL', BASE_URL . '/' . UPDATE_POST);
-define('GALLERY_SEO_URL', BASE_URL . '/' . GALLERY);
-define('IMAGE_SEO_URL', BASE_URL . '/' . GALLERY);
-define('SEARCH_POST_SEO_URL', BASE_URL . '/' . SEARCH);
+define('CONTACT_SEO_URL', BASE_URL . CONTACT);
+define('HOME_SEO_URL', BASE_URL . HOME);
+define('PROFILE_SEO_URL', BASE_URL . PROFILE);
+define('USERS_SEO_URL', BASE_URL . USERS);
+define('POST_SEO_URL', BASE_URL . GET_POST);
+define('POSTS_SEO_URL', BASE_URL . POSTS);
+define('ROLES_SEO_URL', BASE_URL . ROLES);
+define('LOGIN_SEO_URL', BASE_URL . LOGIN);
+define('CREATE_POST_SEO_URL', BASE_URL . CREATE_POST);
+define('CREATE_USER_SEO_URL', BASE_URL . CREATE_USER);
+define('UPDATE_POST_SEO_URL', BASE_URL . UPDATE_POST);
+define('GALLERY_SEO_URL', BASE_URL . GALLERY);
+define('IMAGE_SEO_URL', BASE_URL . GALLERY);
+define('SEARCH_POST_SEO_URL', BASE_URL . SEARCH);
 
 // PATHS----------->
 define("ROOT_DIRECTORY", realpath(__DIR__));
@@ -103,7 +103,7 @@ define('REGISTERED_USER', 4);
 define('UPLOAD_POSTS_DIR', '/uploads/posts/attachments/');
 define('UPLOAD_IMG_EDITOR_DIR', '/uploads/editor/img/');
 define('UPLOAD_IMG_GALLERY_DIR', '/uploads/gallery/');
-define('UPLOAD_IMG_GALLERY_URL', BASE_URL . '/uploads/gallery/');
+define('UPLOAD_IMG_GALLERY_URL', BASE_URL . 'uploads/gallery/');
 
 define('MODULE_1', 'users');
 define('MODULE_2', 'roles');

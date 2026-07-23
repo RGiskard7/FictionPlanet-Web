@@ -14,6 +14,7 @@ include TEMPLATES_PATH . 'head.inc.php';
                     </div>
                     <div class="card-body">
                         <form rol="form" class="px-4 py-3" method="post" action="<?= LOGIN_SEO_URL; ?>">
+                            <?= Session::csrf_input(); ?>
                             <div class="form-group">
                                 <input type="email" class="form-control shadow" id="emailLogin" name="emailLogin" placeholder="email@example.com" 
                                 <?php

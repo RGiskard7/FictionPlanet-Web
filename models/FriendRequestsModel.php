@@ -59,6 +59,3 @@ class FriendRequestsModel {
         $this->accepted = $accepted;
     }
 }
-
-?>
-

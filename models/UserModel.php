@@ -147,5 +147,3 @@ class UserModel {
         $this->last_access_date = $last_access_date;
     }
 }
-
-?>

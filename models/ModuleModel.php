@@ -26,6 +26,3 @@ class ModuleModel {
         $this->name = $name;
     }
 }
-
-?>
-

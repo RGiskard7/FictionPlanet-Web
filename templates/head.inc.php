@@ -12,7 +12,7 @@
         <meta name="owner" content="Fiction Planet">
         <meta name="author" content="Eduardo Diaz">
         <meta name="robots" content="index, follow">
-        <?php echo Session::csrf_meta(); ?>
+        <?= Session::csrf_meta(); ?>
         
         <!--<link rel="icon" type="image/png" href="<?= IMAGES_URL . "logo8.png"; ?>">-->
         <link rel="icon" type="image/png" href="<?= IMAGES_URL . "logo_gpt_3.png"; ?>">

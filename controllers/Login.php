@@ -19,7 +19,6 @@ class Login extends Controller{
         if (isset($_POST["submitLogin"])) {
             if (!Session::verify_csrf()) {
                 $data['pageTitle'] = 'Iniciar sesión | Fiction Planet';
-                $data['error'] = 'Token de seguridad inválido. Por favor, recargue la página.';
                 $this->view->render($this, "login", $data);
                 return;
             }

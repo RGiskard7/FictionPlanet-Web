@@ -1,9 +1,10 @@
 $(document).ready(function() {
     var csrfToken = $('meta[name="csrf-token"]').attr('content');
-    $.ajaxSetup({
-        headers: { 'X-CSRF-Token': csrfToken },
-        data: { csrf_token: csrfToken }
-    });
+    if (csrfToken) {
+        $.ajaxSetup({
+            headers: { 'X-CSRF-Token': csrfToken }
+        });
+    }
 
     $(window).scroll(function() { // Buttom top jquery
         if ($(this).scrollTop() > 100) {
