@@ -10,50 +10,38 @@ include TEMPLATES_PATH . 'head.inc.php';
 
 <div id="main">
     <div id="postViewContainer" class="container">
-        <div id="postCard" class="card gmd-2 bg-white border">
-            <div class="card-header">
-                <button class="btn btn-sm btn-outline-secondary mt-2 mr-2 ml-2 mb-2 gmd-1" onclick="history.back()"><i class="fa fa-arrow-left"></i></button>
-            </div>
-            <div class="card-body justify-content-center">
-                <div class="row pl-2 pr-2">
-                    <div class="col-md-12">
-                        <h1 class="primary-heading">
-                            <?= h($post->get_title()); ?>
-                        </h1>
-                        <span>
-                        <hr class="featurette-divider mb-2">
-                        <span>
-                            <i class='fa fa-user'></i> Publicado por <a href="<?= PROFILE_SEO_URL . "/" . h($author->get_user_name()); ?>">
-                            <?= h($author->get_user_name()); ?></a>
-                            &nbsp;|&nbsp;
-                            <i class="fa fa-calendar"></i> Creado en <?= date('d-m-Y H:i:s', strtotime($post->get_date_creation())); ?>
-                            <?php if ($post->get_date_creation() !== $post->get_date_last_update()): ?>
-                            &nbsp;|&nbsp; <i class="fa fa-clock-o"></i> Actualizado en <?= date('d-m-Y H:i:s', strtotime($post->get_date_last_update())); ?>
-                            <?php endif; ?>
-                            <?php if (!empty($postStatus)): ?>
-                            <strong><em>&nbsp;&nbsp;(<?= h($postStatus); ?>)</em></strong>
-                            <?php endif; ?>
-                        </span>
-                        <hr class="featurette-divider mt-2 mb-0">
-                    </div>
+            <div class="card">
+            <div class="card-body p-4">
+                <button class="btn btn-sm btn-light mb-3 gmd-1" onclick="history.back()"><i class="fa fa-arrow-left mr-1"></i>Volver</button>
+                
+                <h1 class="font-weight-bold mb-2"><?= h($post->get_title()); ?></h1>
+                
+                <div class="d-flex align-items-center text-muted small mb-3">
+                    <img src="<?= IMAGES_URL . "f2.png"; ?>" class="rounded-circle mr-2" width="28" height="28" alt="" style="border:1px solid #E4E6EB;">
+                    <a href="<?= PROFILE_SEO_URL . "/" . h($author->get_user_name()); ?>" class="font-weight-bold mr-2"><?= h($author->get_user_name()); ?></a>
+                    <span class="mr-2"><?= date('d/m/Y H:i', strtotime($post->get_date_creation())); ?></span>
+                    <?php if ($post->get_date_creation() !== $post->get_date_last_update()): ?>
+                    <span class="mr-2">&middot; Actualizado <?= date('d/m/Y H:i', strtotime($post->get_date_last_update())); ?></span>
+                    <?php endif; ?>
+                    <?php if (!empty($postStatus)): ?>
+                    <span class="badge badge-warning"><?= h($postStatus); ?></span>
+                    <?php endif; ?>
                 </div>
                 
-                <div class="row pl-2 pr-2">
-                    <div class="col-md-12">
-                        <p><?= html_entity_decode($post->get_introduction(), ENT_QUOTES, "UTF-8"); ?></p>
-                        <p><?= html_entity_decode($post->get_content(), ENT_QUOTES, "UTF-8"); ?></p>
-                    </div>
+                <hr>
+
+                <div class="post-content" style="font-size:1.05rem;line-height:1.7;">
+                    <?= html_entity_decode($post->get_introduction(), ENT_QUOTES, "UTF-8"); ?>
+                    <?= html_entity_decode($post->get_content(), ENT_QUOTES, "UTF-8"); ?>
                 </div>
                 
                 <?php if (isset($attachedFiles) && !empty($attachedFiles)): ?>
-                <div class="row pt-0 pl-2 pr-2 pb-2">
-                    <div class="col-md-12">
-                        <hr class="featurette-divider mt-0 mb-4">
-                        <div class="card" style="border-radius: 10px;"> 
-                            <div class="card-header">
-                                <h6><i class="fa fa-paperclip" aria-hidden="true"></i>&nbsp&nbsp&nbspArchivos adjuntos:</h6>
-                            </div>
-                            <div class="card-body p-4">
+                <hr class="mt-4 mb-3">
+                <div class="card">
+                    <div class="card-header">
+                        <h6 class="mb-0"><i class="fa fa-paperclip mr-2"></i>Archivos adjuntos</h6>
+                    </div>
+                    <div class="card-body">
                                 <div class="table-responsive">
                                     <table class="table table-sm table-hover">
                                         <thead>
@@ -107,15 +95,13 @@ include TEMPLATES_PATH . 'head.inc.php';
                                         <?php $num++; ?>
                                         <?php endforeach; ?>
                                     </table>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
                 </div>
-                <?php endif; ?>
-                
             </div>
         </div>
+        <?php endif; ?>
+
+    </div>
+</div>
     </div>
 </div>
 

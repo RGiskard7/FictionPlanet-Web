@@ -12,7 +12,7 @@ include TEMPLATES_PATH . 'modals/edit_user_modal.inc.php';
     <div class="container">
         <div id="usersCard" class="card gmd-0 bg-white">
             <div class="card-header">
-                <h3><i class="fa fa-users fa-fw" aria-hidden="true"></i> USUARIOS</h3>
+                <h5 class="mb-0"><i class="fa fa-users fa-fw mr-1"></i>Usuarios</h5>
             </div>
             <div class="card-body p-4">
                 <?php

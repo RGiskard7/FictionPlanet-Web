@@ -49,10 +49,9 @@ include TEMPLATES_PATH . 'head.inc.php';
                     </div>
                 </div>  
 
-                <i class="fa fa-exclamation-triangle" aria-hidden="true" style="color: #ffcc00"></i>&nbsp;&nbsp;<strong>ATENCIÓN:</strong> No se olvide de subir los archivos adjuntos antes de publicar.
-                </br>
-                <i class="fa fa-exclamation-triangle" aria-hidden="true" style="color: #ffcc00"></i>&nbsp;&nbsp;<strong>ATENCIÓN:</strong> Si desea que la publicación sea visible después de actualizar, no 
-                se olvide de marcar la casilla <strong><em>Publicación visible</em></strong>.
+                <i class="fa fa-exclamation-triangle text-warning mr-1"></i><small>No olvides subir los archivos adjuntos antes de publicar.</small>
+                <br>
+                <i class="fa fa-exclamation-triangle text-warning mr-1"></i><small>Marca la casilla <strong>Publicacion visible</strong> si quieres que se muestre.</small>
                 <br>
                 <br>
                 <div class="text-center">

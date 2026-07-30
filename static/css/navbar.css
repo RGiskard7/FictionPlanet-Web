@@ -3,62 +3,48 @@
 #topNavbar {
     transition: margin-left .5s;
     top: 0;
-    height: auto;
     z-index: 5;
-    background-color: rgb(255, 255, 255);
-    padding-top: 0;
-    padding-bottom: 0;
+    min-height: 52px;
+    padding: 0;
     display: flex;
+    align-items: stretch;
 }
-    
-.navbar .navbar-header,
-.navbar .navbar-text {
-    position: absolute;
+
+#topNavbar .container-fluid {
+    padding: 0;
+    display: flex;
+    align-items: stretch;
 }
 
 .navbar .navbar-header {
-    left: 0.625em;
+    display: flex;
+    align-items: center;
+    padding-left: 0.75rem;
+    width: 280px;
+    flex-shrink: 0;
 }
 
 .navbar .navbar-text {
-    right: 0.625em;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    padding-right: 0.75rem;
+    width: 200px;
+    flex-shrink: 0;
 }
 
 #navbarTogglerMenu {
     justify-content: center;
+    flex: 1 1 auto;
 }
 
-#homeLink, #galleryLink, #aboutUsLink {
+.navbar-nav .nav-item {
     display: flex;
-    flex-direction: column;
-    align-items: center;
-    text-decoration: none;
-}
-
-#userNameRigth {
-    padding: 0;
-}
-
-.topBarElement:hover {
-    background-color: #CBCACA73;
-}
-
-.topBarElement:hover a span {
-    color: dodgerblue;
-}
-
-.topBarElementActive {
-    background-color: #CBCACA73;
-    border-radius: 10px;
+    align-items: stretch;
 }
 
 #sidebarTogglerBtn {
-    margin-left: 0.313em;
-    margin-right: 1.25em;
-}
-
-#userNameBtn {
-    margin-right: 0.313em;
+    margin: 0;
 }
 
 #loginBtn {
@@ -73,9 +59,9 @@
     z-index: 4;
     top: 0;
     left: 0;
-    background-color: rgb(255, 255, 255);
+    background-color: #fff;
     overflow-x: hidden;
-    padding-top: 6.250em;
+    padding-top: 4em;
     transition: 0.3s;
     white-space: nowrap;
 }
@@ -113,44 +99,28 @@
     z-index: 5;
     top: 0;
     right: 0;
-    background-color: rgb(255, 255, 255);
+    background-color: #fff;
     overflow: auto;
     transition: 0.3s;
     white-space: nowrap;
 }
 
 @media (max-width: 767.98px) {
-    .navbar .navbar-header,
-    .navbar .navbar-text {
-        position: static;
-        display: inline-block;
-        align-items: normal;
-        left: auto;
-        right: auto;
+    #topNavbar {
+        height: auto;
+        flex-wrap: wrap;
     }
     
-    .navbar-nav > li > a {
-        padding-top: 15px;
-        padding-bottom: 15px;
-        line-height: 0;
-    }
-    
-    .topBarElement:hover {
-        background-color: #CBCACA73;
-        border-radius: 10px;
-        padding-left: 15px;
-        padding-right: 15px;
+    .navbar-nav .nav-item {
+        height: auto;
     }
     
     #navbarTogglerMenu ul li {
-        margin-left: 0.063em;
         margin-top: 0.5em;
         margin-bottom: 0.5em;
     }
-    
-    #homeLink, #galleryLink, #aboutUsLink {
-        display: flex;
-        flex-direction: row;
-        text-decoration: none;
+
+    #optionSidebar {
+        padding-top: 3.5em;
     }
 }

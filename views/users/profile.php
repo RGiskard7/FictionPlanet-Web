@@ -28,68 +28,68 @@ include TEMPLATES_PATH . 'modals/upload_new_image_modal.inc.php';
 <div id="main">
     <div class="container">
         <div id="personalPageCard" class="card gmd-0">            
-            <div class="card-body pl-4 pr-4 pb-4">
-                <div class="row">
-                    <div class="col-lg-2 col-md-2 col-sm-12 text-center">
-                        <img src="<?= IMAGES_URL . "avatar_2x.png"; ?>" class="img-thumbnail rounded mb-4" alt="avatar">
+            <div class="card-body p-4">
+                <div class="row align-items-center">
+                    <div class="col-lg-2 col-md-3 col-sm-12 text-center mb-3 mb-md-0">
+                        <img src="<?= IMAGES_URL . "avatar_2x.png"; ?>" class="rounded-circle" width="90" height="90" alt="avatar" style="border: 3px solid #E4E6EB; padding: 3px; object-fit: cover;">
                     </div>
-                    <div class="col-lg-8 col-md-8 col-sm-10">
-                        <h2 id="profileUsername"><?= h($user->get_user_name()); ?></h2>
-                        <i class="fa fa-calendar mr-2"></i><strong>Miembro registrado desde: </strong><?= date('d-m-Y H:i:s', strtotime($user->get_reg_date()));?></br>
-                        <i class="fa fa-clock-o mr-2"></i><strong>Último acceso al sitio: </strong><?= date('d-m-Y H:i:s', strtotime($user->get_last_access_date())); ?></br>
-
-                        <span><b><?= $numPosts; ?></b>&nbsp;Publicaciones <small><em>(<?= $numVisiblePosts; ?>&nbsp;visibles, <?= $numNotVisiblePosts; ?>&nbsp;no visibles)</em></small></span></br>
-
-                        <span class="badge badge-pill badge-secondary mt-2">
-                        <?= h($_SESSION['role']->get_sp_name()); ?>
-                        </span>
-
-                        <span class="badge badge-pill badge-secondary mb-1">  
-                        <?= ($user->is_active() == 1) ? "Activo" : "No activo"; ?>
+                    <div class="col-lg-7 col-md-6 col-sm-12">
+                        <h2 id="profileUsername" class="mb-1"><?= h($user->get_user_name()); ?></h2>
+                        <div class="text-muted small mb-2">
+                            <i class="fa fa-calendar mr-1"></i>Miembro desde <?= date('d/m/Y', strtotime($user->get_reg_date())); ?>
+                            &nbsp;|&nbsp;
+                            <i class="fa fa-clock-o mr-1"></i>Ultimo acceso <?= date('d/m/Y', strtotime($user->get_last_access_date())); ?>
+                        </div>
+                        <span class="mr-3"><b><?= $numPosts; ?></b> publicaciones <small class="text-muted">(<?= $numVisiblePosts; ?> visibles)</small></span>
+                        <span class="badge mr-1" style="background:#E7F3FF;color:#1877F2;"><?= h($_SESSION['role']->get_sp_name()); ?></span>
+                        <span class="badge badge-pill <?= ($user->is_active() == 1) ? 'badge-success' : 'badge-danger'; ?>">
+                            <?= ($user->is_active() == 1) ? "Activo" : "Inactivo"; ?>
                         </span>
                     </div>
-                    <div class="col-lg-2 col-md-2 col-sm-2">
+                    <div class="col-lg-3 col-md-3 text-right">
                         <div class="dropdown">
-                            <button class="ml-auto btn btn-outline-secondary dropdown-toggle rounded-lg pull-right gmd-1" type="button" id="dropdownProfileConfiguration" 
-                                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <i class="fa fa-cog fa-fw" aria-hidden="true"></i>
-                                <span>...</span>
+                            <button class="btn btn-light gmd-1 rounded-circle" type="button" id="dropdownProfileConfiguration" 
+                                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="width:40px;height:40px;padding:0;">
+                                <i class="fa fa-ellipsis-h"></i>
                             </button>
                             <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownProfileConfiguration">
-                                <a id="editProfileBtn" class="dropdown-item" href="#">Editar perfil</a>
-                                <a id="changePasswordBtn" class="dropdown-item" href="#" data-toggle="modal" data-target="#changePasswordModal">Cambiar contraseña</a>
-                                <a class="dropdown-item" href="#">Desactivar cuenta</a>
+                                <a id="editProfileBtn" class="dropdown-item" href="#"><i class="fa fa-pencil mr-2"></i>Editar perfil</a>
+                                <a id="changePasswordBtn" class="dropdown-item" href="#" data-toggle="modal" data-target="#changePasswordModal"><i class="fa fa-lock mr-2"></i>Cambiar contrasena</a>
+                                <div class="dropdown-divider"></div>
+                                <a class="dropdown-item text-danger" href="#"><i class="fa fa-ban mr-2"></i>Desactivar cuenta</a>
                             </div>
                         </div>
                     </div>
                 </div>
                 
-                <hr class=" featurette-divider mt-2 mb-3 border">
+                <hr class="mt-3 mb-0">
                 
                 <div class="row">
-                    <div class="col-lg-12 col-md-12 col-sm-12">
+                    <div class="col-12">
                         <div id="tabs" class="project-tab">
                             <nav>
                                 <div class="nav nav-tabs" id="profileTabs" role="tablist">
-                                    <a class="nav-item nav-link active" id="content-tab" data-toggle="tab" href="#content" role="tab" aria-controls="content" aria-selected="true">Publicaciones</a>
-                                    <a class="nav-item nav-link" id="images-tab" data-toggle="tab" href="#images" role="tab" aria-controls="images" aria-selected="true">Imagenes</a>
-                                    <a class="nav-item nav-link" id="contacts-tab" data-toggle="tab" href="#contacts" role="tab" aria-controls="contacts" aria-selected="true">Contactos</a>
-                                    <a class="nav-item nav-link" id="aboutMe-tab" data-toggle="tab" href="#aboutMe" role="tab" aria-controls="aboutMe" aria-selected="true">Acerca de</a>
+                                    <a class="nav-item nav-link active" id="content-tab" data-toggle="tab" href="#content" role="tab">Publicaciones</a>
+                                    <a class="nav-item nav-link" id="images-tab" data-toggle="tab" href="#images" role="tab">Imagenes</a>
+                                    <a class="nav-item nav-link" id="contacts-tab" data-toggle="tab" href="#contacts" role="tab">Contactos</a>
+                                    <a class="nav-item nav-link" id="aboutMe-tab" data-toggle="tab" href="#aboutMe" role="tab">Acerca de</a>
                                 </div> 
                             </nav>
                             <div class="tab-content mt-4" id="nav-tabContent">
-                                <div class="tab-pane fade" id="aboutMe" role="tabpanel" aria-labelledby="aboutMe-tab">
-                                    <div class="card bg-white border" style="border-radius: 10px;">
-                                        <div class="card-header"><strong>Información personal</strong></div>
-                                        <div class="card-body p-4">
-                                            <label><b>Nombre:</b></label>&nbsp;&nbsp;&nbsp;<?php echo h($user->get_first_name()); ?></br>
-                                            <label><b>Apellidos:</b></label>&nbsp;&nbsp;&nbsp;<?php echo h($user->get_last_name()); ?></br>
-                                            <?php if (Session::is_started() && $_SESSION['permissions'][MDL_PRSN_DATA]['r']): ?>
-                                            <label><b>Email:</b></label>&nbsp;&nbsp;&nbsp;<?php echo h($user->get_email()); ?></br>
-                                            <label><b>Direccion:</b></label>&nbsp;&nbsp;&nbsp;<?php echo h($user->get_address()); ?></br>
-                                            <label><b>Pais:</b></label>&nbsp;&nbsp;&nbsp;<?php echo h($user->get_country()); ?></br>
-                                            <label><b>Numero de telefono:</b></label>&nbsp;&nbsp;&nbsp;<?php echo h($user->get_phone_number()); ?></br>
-                                            <?php endif; ?>
+                                <div class="tab-pane fade" id="aboutMe" role="tabpanel">
+                                    <div class="card">
+                                        <div class="card-header"><strong>Informacion personal</strong></div>
+                                        <div class="card-body">
+                                            <div class="row">
+                                                <div class="col-md-6 mb-2"><strong>Nombre:</strong> <?php echo h($user->get_first_name()); ?></div>
+                                                <div class="col-md-6 mb-2"><strong>Apellidos:</strong> <?php echo h($user->get_last_name()); ?></div>
+                                                <?php if (Session::is_started() && $_SESSION['permissions'][MDL_PRSN_DATA]['r']): ?>
+                                                <div class="col-md-6 mb-2"><strong>Email:</strong> <?php echo h($user->get_email()); ?></div>
+                                                <div class="col-md-6 mb-2"><strong>Direccion:</strong> <?php echo h($user->get_address()); ?></div>
+                                                <div class="col-md-6 mb-2"><strong>Pais:</strong> <?php echo h($user->get_country()); ?></div>
+                                                <div class="col-md-6 mb-2"><strong>Telefono:</strong> <?php echo h($user->get_phone_number()); ?></div>
+                                                <?php endif; ?>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -106,9 +106,9 @@ include TEMPLATES_PATH . 'modals/upload_new_image_modal.inc.php';
                                     </ul>
                                    <div class="tab-content" id="pills-tabContent">
                                         <div class="tab-pane fade show active" id="pills-home" role="tabpanel" aria-labelledby="pills-home-tab">
-                                            <div id="postListCard" class="card bg-white border">
-                                                <div class='card-body mr-2 ml-2'>
-                                                <?php
+                                             <div class="card mb-0">
+                                                 <div class='card-body'>
+                                                 <?php
                                                 $urlPager = "/users/profile/" . h($user->get_user_name()) . "/posts/";
                                                 $pager = new Pager($urlPager, $numVisiblePosts, $postsPerPage, $maxLinksPager, $currentPagePost); // PAGINATOR
                                                 $htmlPager = $pager->get_data_pager();

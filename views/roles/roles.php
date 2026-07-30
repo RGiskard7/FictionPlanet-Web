@@ -13,7 +13,7 @@ include TEMPLATES_PATH . 'modals/edit_role_modal.inc.php';
     <div class="container">
         <div id="rolesCard" class="card gmd-0 bg-white">
             <div class="card-header">
-                <h3><i class="fa fa-id-card-o" aria-hidden="true"></i> ROLES</h3>
+                <h5 class="mb-0"><i class="fa fa-id-card-o fa-fw mr-1"></i>Roles</h5>
             </div>
             <div class="card-body p-4">
                 <?php

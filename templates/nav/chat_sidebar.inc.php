@@ -1,19 +1,14 @@
 <?php if (Session::is_started()): ?>    
-<div id="chatSidebar" class="gmd-2">
-    <div class="container">
-        <div class="row">
-            <div class="col-md-12">
-                <button class="btn btn-default" onclick="chatSidebarToggler()">
-                    <i class="fa fa-2x fa-angle-double-right" aria-hidden="true"></i>
-                    <span id="allUnread2" class="badge badge-danger gmd-2 mb-2" hidden></span>
-                </button>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-md-12">
-                <div id="chatWindowContainer"></div>
-            </div>
-        </div>
+<div id="chatSidebar">
+    <div class="p-3 border-bottom d-flex align-items-center justify-content-between">
+        <h6 class="mb-0 font-weight-bold">Chats</h6>
+        <button class="btn btn-sm btn-light rounded-circle" onclick="chatSidebarToggler()" style="width:32px;height:32px;padding:0;">
+            <i class="fa fa-times"></i>
+        </button>
+    </div>
+    <div class="p-2">
+        <span id="allUnread2" class="badge badge-danger gmd-2 mb-2" hidden></span>
+        <div id="chatWindowContainer"></div>
     </div>
 </div>
 <?php endif; ?>

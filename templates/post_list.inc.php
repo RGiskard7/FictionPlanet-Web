@@ -1,69 +1,51 @@
-<?php
-$index = 1;
-?>
+<?php $index = 1; ?>
 
 <div>
-    <?php if (isset($postArray)): ?>                 
-        <?php if (!empty($postArray)): ?>
-            <?php foreach($postArray as $post): ?>
-                <div>
-                    <a class="titlePostLink" href="<?= POST_SEO_URL . '/' . $post->get_url(); ?>"><h4 class='card-title'><?= h($post->get_title()); ?></h4></a>
+    <?php if (isset($postArray) && !empty($postArray)): ?>
+        <?php foreach($postArray as $post): ?>
+        <?php
+        Connection::open_connection();
+        $author = UserDAO::get_user_by_id(Connection::get_connection(), $post->get_author_id());
+        Connection::close_connection();
+        ?>
+        <div class="card mb-3">
+            <div class="card-body">
+                <div class="d-flex align-items-center mb-3">
+                    <img src="<?= IMAGES_URL . "f2.png"; ?>" class="rounded-circle mr-2" width="40" height="40" alt="" style="border:2px solid #E4E6EB;padding:1px;">
+                    <div>
+                        <a href="<?= PROFILE_SEO_URL . "/" . h($author->get_user_name()); ?>" class="font-weight-bold text-dark"><?= h($author->get_user_name()); ?></a>
+                        <div class="text-muted" style="font-size:0.8rem;">
+                            <?= date('d/m/Y H:i', strtotime($post->get_date_creation())); ?>
+                            <?php if($post->get_date_last_update() !== $post->get_date_creation()): ?>
+                            &middot; <i class="fa fa-clock-o"></i> Actualizado
+                            <?php endif; ?>
+                        </div>
+                    </div>
                 </div>
 
-                <div class="mb-4">
+                <a class="titlePostLink" href="<?= POST_SEO_URL . '/' . $post->get_url(); ?>">
+                    <h5 class="font-weight-bold mb-2"><?= h($post->get_title()); ?></h5>
+                </a>
+
+                <div class="mb-3" style="font-size:0.9375rem;line-height:1.5;">
                     <?php 
-                    $introduction = "<p>" . html_entity_decode($post->get_introduction(), ENT_QUOTES, "UTF-8") . "</p>";   
-                    $introduction = strip_tags($introduction, "<p><br><strong><em><h4><h5><h6>");
-
-                    $content = "<p>" . html_entity_decode($post->get_content(), ENT_QUOTES, "UTF-8") . "</p>";
-                    $content = strip_tags($content, "<p><br>");
-                    $content = Utilities::summarize_text($content, 1000);
-
-                    echo $introduction;
-                    echo $content;
+                    $intro = strip_tags(html_entity_decode($post->get_introduction(), ENT_QUOTES, "UTF-8"), "<p><br><strong><em>");
+                    $content = Utilities::summarize_text(strip_tags(html_entity_decode($post->get_content(), ENT_QUOTES, "UTF-8"), "<p><br>"), 800);
+                    echo $intro;
+                    if ($content !== $intro) echo "<p class='text-muted'>" . $content . "</p>";
                     ?>
                 </div>
 
-                <div class="mb-4">
-                    <a id="keepReading" href="<?= POST_SEO_URL . '/' . $post->get_url(); ?>">
-                        <button class="btn btn-sm btn-primary gmd-1">Seguir leyendo</button>
-                    </a>
-                </div>
-
-                <?php
-                Connection::open_connection();
-                $author = UserDAO::get_user_by_id(Connection::get_connection(), $post->get_author_id());
-                Connection::close_connection();
-                ?>
-
-                <div class="mb-2">
-                    <i class='fa fa-user'></i> Publicado por 
-                    <a href="<?= PROFILE_SEO_URL . "/" . h($author->get_user_name()); ?>"><?= h($author->get_user_name()); ?></a>
-                    &nbsp;|&nbsp;
-                    <i class='fa fa-calendar'></i> <?= date('d-m-Y H:i:s', strtotime($post->get_date_creation())); ?>
-                    <?php if($post->get_date_last_update() !== $post->get_date_creation()): ?>
-                    &nbsp;|&nbsp;
-                    <i class='fa fa-clock-o'></i> <?= date('d-m-Y H:i:s', strtotime($post->get_date_last_update())); ?>
-                    <?php endif; ?>
-                </div>
-
-                <?php 
-                if ($index < count($postArray)) {
-                    echo "<hr class='featurette-divider mt-4'>";
-                }
-
-                $index++;
-                ?>
-            <?php endforeach; ?>
-        <?php else: ?>
-            <div class='alert alert-warning m-0 text-center border' role='alert'>
-                <!--No hay ningún artículo publicado todavía.-->
-                No se ha encontrado ninguna publicación
-            </div>      
-        <?php endif; ?>
-    <?php else: ?>
-        <div class='alert alert-danger m-0 text-center border' role='alert'>
-            Error inesperado.
+                <a id="keepReading" href="<?= POST_SEO_URL . '/' . $post->get_url(); ?>">
+                    <button class="btn btn-sm btn-light gmd-1">Seguir leyendo</button>
+                </a>
+            </div>
         </div>
-    <?php endif; ?> 
+        <?php $index++; ?>
+        <?php endforeach; ?>
+    <?php elseif (isset($postArray) && empty($postArray)): ?>
+        <div class="alert alert-warning text-center m-0">No se ha encontrado ninguna publicacion</div>
+    <?php else: ?>
+        <div class="alert alert-danger text-center m-0">Error inesperado</div>
+    <?php endif; ?>
 </div>

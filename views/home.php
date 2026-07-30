@@ -16,9 +16,7 @@ if (Session::is_started() && $_SESSION['permissions'][MDL_PUBLIC_CALENDAR]['w'])
 ?>
 
 <script>
-    document.getElementById("homeLink").style.color="#1e90ff"; 
-    document.getElementById("homeLink").style.borderBottom="0.219em solid dodgerblue"; 
-    /*document.getElementById("homeLink").style.fontWeight="700";*/
+    document.getElementById("homeLink").classList.add("active-nav");
 </script>
 
 <div id="main">
@@ -73,37 +71,34 @@ if (Session::is_started() && $_SESSION['permissions'][MDL_PUBLIC_CALENDAR]['w'])
             </div>
         </div>
 
-        <div class="row justify-content-center">
+                <div class="row justify-content-center">
             <div class="col-12 col-sm-12 col-md-8">
-                <?php //if ($numVisiblePosts > $maxLinksPager): ?>
-                <div class ="row">
+                <div class ="row mb-3">
                     <div class="col-md-12">
-                        <div id="searchBarHome" class="card gmd-0 p-2 mb-2">
-                            <form id="formSearchPost" role="form" method="get" action="<?= SEARCH_POST_SEO_URL ?>" name="formSearchPost">
-                                <div class="input-group">
-                                    <input type="search" id="search" name="search" class="form-control" placeholder="Búsqueda..." />
-                                    <div class="input-group-append">
-                                        <select class="custom-select input-group-text" id="searchBySelect" name="searchBySelect" style="text-align: left;">
-                                            <optgroup label="Buscar por:">
+                        <div id="searchBarHome" class="card gmd-0">
+                            <div class="card-body p-2">
+                                <form id="formSearchPost" role="form" method="get" action="<?= SEARCH_POST_SEO_URL ?>" name="formSearchPost">
+                                    <div class="input-group">
+                                        <input type="search" id="search" name="search" class="form-control border-0" placeholder="Buscar publicaciones..." style="background:transparent;" />
+                                        <div class="input-group-append">
+                                            <select class="custom-select" id="searchBySelect" name="searchBySelect" style="max-width:120px;">
                                                 <option value="all" selected>Todo</option>
                                                 <option value="title">Titulo</option>
                                                 <option value="author">Autor</option>
-                                                <option value="introduction">Introducción</option>
+                                                <option value="introduction">Intro</option>
                                                 <option value="content">Contenido</option>
                                                 <option value="date">Fecha</option>
-                                            </optgroup>
-                                        </select>
-                                        <!--<button type="submit" name="submitSearchPost" class="btn btn-primary">-->
-                                        <button type="submit" class="btn btn-primary">
-                                            <i class="fa fa-search"></i>
-                                        </button>
+                                            </select>
+                                            <button type="submit" class="btn btn-primary">
+                                                <i class="fa fa-search"></i>
+                                            </button>
+                                        </div>
                                     </div>
-                                </div>
-                            </form>
+                                </form>
+                            </div>
                         </div>
-                    </div><!-- comment -->
+                    </div>
                 </div>
-                <?php //endif; ?>     
                 <div class="row">
                     <div class="col-md-12">
                         <div id="postListHomeCard" class="card gmd-0 bg-white">

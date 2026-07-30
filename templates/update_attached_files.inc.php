@@ -2,7 +2,7 @@
     <div class="card-header">
         <div class="row">
             <div class="col-md-10">
-                <h6><i class="fa fa-paperclip" aria-hidden="true"></i>&nbsp&nbsp&nbspArchivos adjuntados <small><em>(Refrescar para visualizar las modificaciones)</small></em><h6>
+                <h6><i class="fa fa-paperclip mr-2"></i>Archivos adjuntados <small class="text-muted">(Refrescar para ver cambios)</small></h6>
             </div>
             <div class="col-md-2">
                 <button type="button" id="syncAttachedFilesBtn" class="btn btn-default p-0 pull-right" title="Actualizar archivos">
@@ -53,7 +53,7 @@
                             $fileName = $attachedFile;
                         } ?> 
 
-                        <td><?php echo $icon . "&nbsp&nbsp&nbsp"; ?><a id="viewFile" title="Visualizar archivo" href="<?php echo BASE_URL . 
+                        <td><?php echo $icon; ?><a id="viewFile" title="Visualizar archivo" href="<?php echo BASE_URL . 
                                     UPLOAD_POSTS_DIR . 'temp-' . $_SESSION["idUser"] . '/' . $attachedFile; ?>"target="_blank"><?php echo $fileName; ?></a></td>
 
                         <?php $size = round(filesize(ROOT_DIRECTORY . UPLOAD_POSTS_DIR . 'temp-' . $_SESSION["idUser"] . '/' . $attachedFile) / 1024, 3); ?>
