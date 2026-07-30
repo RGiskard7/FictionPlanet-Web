@@ -61,7 +61,7 @@ $(document).ready(function() {
                 
         events: function(start, end, timezone, callback) {
             jQuery.ajax({
-                url: '/app/calendarEventsController.php',
+                url: '/calendar/view',
                 type: 'POST',
                 dataType: 'json',
                 data: {
@@ -127,7 +127,7 @@ $(document).ready(function() {
                 
         events: function(start, end, timezone, callback) {
             jQuery.ajax({
-                url: '/app/calendarEventsController.php',
+                url: '/calendar/view',
                 type: 'POST',
                 dataType: 'json',
                 data: {

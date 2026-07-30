@@ -516,7 +516,7 @@ class PostDAO {
         return $postArray;
     }
     
-    public static function advanced_search_post($connection, $title='', $author='', $introduction='', $content='', $date='', $init, $limit) {
+    public static function advanced_search_post($connection, $title='', $author='', $introduction='', $content='', $date='', $init=0, $limit=0) {
         $postArray = null;
 
         if (isset($connection)) {

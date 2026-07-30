@@ -58,7 +58,7 @@ $(document).ready(function () {
                         formData.append("submitUploadNewImage", 1);
 
                         $.ajax({
-                            url: "/app/imageGalleryController.php",
+                            url: "/image_gallery/upload",
                             type: "POST",
                             data: formData,
                             cache: false,

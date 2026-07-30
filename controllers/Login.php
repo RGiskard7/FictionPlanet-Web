@@ -61,5 +61,10 @@ class Login extends Controller{
         
         $this->view->render($this, "login", $data);
     }
+
+    public function logout() {
+        Session::log_out();
+        Redirection::redirect(BASE_URL);
+    }
     
 }

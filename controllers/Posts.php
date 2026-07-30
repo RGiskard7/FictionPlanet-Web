@@ -8,6 +8,8 @@ require_once DAO_PATH . 'PostDAO.php';
 require_once LIBS_PATH . 'validators/NewPostsValidator.php';
 require_once LIBS_PATH . 'validators/UpdatedPostsValidator.php';
 
+require_once CORE_PATH . 'Utilities.php';
+
 class Posts extends Controller {
     private $tempDirectory = ROOT_DIRECTORY . UPLOAD_POSTS_DIR . 'temp-';
     private $attachedFileDirectory = ROOT_DIRECTORY . UPLOAD_POSTS_DIR;
@@ -371,6 +373,123 @@ class Posts extends Controller {
             setcookie('sourceURL', '', time() - 100);
         }
         return $sourceURL;
+    }
+
+    public function upload_editor_image() {
+        if (!Session::is_started() || !($_SESSION['permissions'][MDL_POSTS]['w'] ?? 0)) {
+            http_response_code(403);
+            exit;
+        }
+
+        $upload_dir = array('img' => UPLOAD_IMG_EDITOR_DIR);
+        $imgset = array(
+            'maxsize' => 50000,
+            'maxwidth' => 4096, 'maxheight' => 2160,
+            'minwidth' => 10, 'minheight' => 10,
+            'type' => array('bmp', 'gif', 'jpg', 'jpeg', 'png'),
+        );
+
+        define('RENAME_F', 1);
+
+        $re = '';
+        if (isset($_FILES['upload']) && strlen($_FILES['upload']['name']) > 1) {
+            define('F_NAME', preg_replace('/\.(.+?)$/i', '', basename($_FILES['upload']['name'])));
+
+            $sepext = explode('.', strtolower($_FILES['upload']['name']));
+            $type = end($sepext);
+
+            $upload_dir_path = in_array($type, $imgset['type']) ? $upload_dir['img'] : $upload_dir['img'];
+            $upload_dir_path = trim($upload_dir_path, '/') . '/';
+
+            if (in_array($type, $imgset['type'])) {
+                list($width, $height) = getimagesize($_FILES['upload']['tmp_name']);
+                if (isset($width) && isset($height)) {
+                    if ($width > $imgset['maxwidth'] || $height > $imgset['maxheight']) {
+                        $re .= '\\n Width x Height = ' . $width . ' x ' . $height . ' \\n The maximum Width x Height must be: ' . $imgset['maxwidth'] . ' x ' . $imgset['maxheight'];
+                    }
+                    if ($width < $imgset['minwidth'] || $height < $imgset['minheight']) {
+                        $re .= '\\n Width x Height = ' . $width . ' x ' . $height . '\\n The minimum Width x Height must be: ' . $imgset['minwidth'] . ' x ' . $imgset['minheight'];
+                    }
+                    if ($_FILES['upload']['size'] > $imgset['maxsize'] * 1000) {
+                        $re .= '\\n Maximum file size must be: ' . $imgset['maxsize'] . ' KB.';
+                    }
+                }
+            } else {
+                $re .= 'The file: ' . $_FILES['upload']['name'] . ' has not the allowed extension type.';
+            }
+
+            $f_name = self::set_ckeditor_fname(ROOT_DIRECTORY . '/' . $upload_dir_path, F_NAME, ".$type", 0);
+            $uploadpath = ROOT_DIRECTORY . '/' . $upload_dir_path . $f_name;
+
+            if ($re == '') {
+                if (move_uploaded_file($_FILES['upload']['tmp_name'], $uploadpath)) {
+                    $CKEditorFuncNum = $_GET['CKEditorFuncNum'];
+                    $url = BASE_URL . $upload_dir_path . $f_name;
+                    $msg = F_NAME . '.' . $type . ' successfully uploaded: \\n- Size: ' . number_format($_FILES['upload']['size'] / 1024, 2, '.', '') . ' KB';
+                    $re = in_array($type, $imgset['type']) ? "<script>window.parent.CKEDITOR.tools.callFunction($CKEditorFuncNum, '$url', '$msg')</script>" : '<script>var cke_ob = window.parent.CKEDITOR; for(var ckid in cke_ob.instances) { if(cke_ob.instances[ckid].focusManager.hasFocus) break;} cke_ob.instances[ckid].insertHtml(\' \', \'unfiltered_html\'); alert("' . $msg . '"); var dialog = cke_ob.dialog.getCurrent();dialog.hide();</script>';
+                } else {
+                    $re = '<script>alert("Unable to upload the file")</script>';
+                }
+            } else {
+                $re = '<script>alert("' . $re . '")</script>';
+            }
+        }
+
+        @header('Content-type: text/html; charset=utf-8');
+        echo $re;
+    }
+
+    public function upload_attachment() {
+        if (!Session::is_started() || !($_SESSION['permissions'][MDL_POSTS]['w'] ?? 0)) {
+            http_response_code(403);
+            echo json_encode(['error' => 'No autorizado']);
+            exit;
+        }
+
+        define('DIR_DESCARGAS', ROOT_DIRECTORY . UPLOAD_POSTS_DIR . 'temp-' . $_SESSION['idUser']);
+
+        $paths = array();
+        $processStatus = null;
+        $ficheros = $_FILES['uploadFile'];
+        $nombres_ficheros = $ficheros['name'];
+
+        if (!file_exists(DIR_DESCARGAS)) @mkdir(DIR_DESCARGAS);
+        if (file_exists(DIR_DESCARGAS)) {
+            for ($i = 0; $i < count($_FILES['uploadFile']['name']); $i++) {
+                $nombre_extension = explode('.', basename($_FILES['uploadFile']['name'][$i]));
+                $extension = array_pop($nombre_extension);
+                $nombre = array_pop($nombre_extension);
+                $archivo_destino = DIR_DESCARGAS . DIRECTORY_SEPARATOR . utf8_decode($nombre) . '.' . $extension;
+                if (move_uploaded_file($_FILES['uploadFile']['tmp_name'][$i], $archivo_destino)) {
+                    $processStatus = true;
+                    $paths[] = $archivo_destino;
+                } else {
+                    $processStatus = false;
+                    break;
+                }
+            }
+        }
+
+        $reply = array();
+        if ($processStatus) {
+            $reply = ['dirupload' => basename(DIR_DESCARGAS), 'total' => count($paths)];
+        } elseif (!$processStatus) {
+            $reply = ['error' => 'Error al subir los archivos.'];
+            foreach ($paths as $file) {
+                unlink($file);
+            }
+        } else {
+            $reply = ['error' => 'No se ha procesado ficheros.'];
+        }
+
+        echo json_encode($reply);
+    }
+
+    private static function set_ckeditor_fname($p, $fn, $ex, $i) {
+        if (RENAME_F == 1 && file_exists($p . $fn . $ex)) {
+            return self::set_ckeditor_fname($p, F_NAME . '_' . ($i + 1), $ex, ($i + 1));
+        }
+        return $fn . $ex;
     }
     
 }

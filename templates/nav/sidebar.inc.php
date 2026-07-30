@@ -63,7 +63,7 @@
                     <?php endif; ?>
                 </ul>
                 <?php endif; ?>
-                <a class="list-group-item list-group-item-action gmd-1" href="<?php echo APP_URL . 'logoutController.php'; ?>" 
+                <a class="list-group-item list-group-item-action gmd-1" href="<?php echo LOGIN_SEO_URL . '/logout'; ?>" 
                 data-confirm="¿Desea cerrar sesión?" role="menuitem">
                     <i class="icon fa fa-sign-out fa-fw" aria-hidden="true"></i>
                     <span>Salir</span>

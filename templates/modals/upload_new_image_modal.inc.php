@@ -9,7 +9,7 @@
             </div>
             <div class="modal-body">
                 <div id="msgNewImage"></div>
-                <form action="<?= APP_URL . 'imageGalleryController.php'; ?>" method="post" class="form-horizontal" 
+                <form action="<?= BASE_URL . 'image_gallery/upload'; ?>" method="post" class="form-horizontal" 
                       id="image-form" role="form" enctype="multipart/form-data">
                     <?= Session::csrf_input(); ?>
                     <div class="form-group">

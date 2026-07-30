@@ -68,7 +68,7 @@ include TEMPLATES_PATH . 'head.inc.php';
     window.onload = function() {
         CKEDITOR.replace('postContent', {
             height: 500,
-            filebrowserUploadUrl: '/app/ckeditorUpload.php',
+            filebrowserUploadUrl: '/posts/upload_editor_image',
             filebrowserUploadMethod: 'form'
         });
 

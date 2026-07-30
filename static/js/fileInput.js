@@ -13,7 +13,7 @@ $(document).ready(function () {
     $('#uploadFile').fileinput({
         theme: "fa",
         language: 'es',
-        uploadUrl: '/app/uploadAttachments-fileinput.php',
+        uploadUrl: '/posts/upload_attachment',
         uploadAsync: false, /* Con false se realizará una sola llamada al servidor enviando toda la información en un array. Recomendable en Ajax */
         maxFileCount: 15,
         maxFileSize: 5120, //KB

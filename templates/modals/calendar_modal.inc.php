@@ -7,7 +7,7 @@
                 <button type="button" class="close" data-dismiss="modal">×</button>
             </div>
             <div class="modal-body pl-4 pr-4">
-                <form id="formUpdateEventCalendar" class="form-horizontal" role="form" method="POST" action="/app/calendarEventsController.php">
+                <form id="formUpdateEventCalendar" class="form-horizontal" role="form" method="POST" action="<?= BASE_URL . 'calendar/update'; ?>">
                     <?= Session::csrf_input(); ?>
                     <div class="form-group">
                         <label for="title" class="control-label">Título</label>
@@ -53,7 +53,7 @@
                 <h5 id="modalTitle" class="modal-title"></h5></br>
                 <div id="modalWhen" style="margin-top:5px;"></div>
                 <?php if (Session::is_started() && $_SESSION['permissions'][MDL_PUBLIC_CALENDAR]['d']): ?>
-                <form class="form-horizontal mt-4" role="form" method="POST" action="/app/calendarEventsController.php">
+                <form class="form-horizontal mt-4" role="form" method="POST" action="<?= BASE_URL . 'calendar/delete'; ?>">
                     <?= Session::csrf_input(); ?>
                     <input type="hidden" name="id" class="form-control" id="eventID2">
                     <button type="submit" name="submitDeleteEvent" class="btn btn-danger gmd-1 pull-right" 

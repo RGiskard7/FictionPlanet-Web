@@ -204,7 +204,7 @@ class Users extends Controller {
                 echo $response;     
             }
         }
-        } else {
+        else {
             http_response_code(403);
             echo json_encode(['error' => 'No autorizado']);
         }

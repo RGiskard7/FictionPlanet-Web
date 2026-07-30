@@ -4,20 +4,19 @@
     "type": "project",
     "license": "MIT",
     "autoload": {
-        "psr-4": {
-            "App\\": "app/",
-            "Controllers\\": "controllers/",
-            "Models\\": "models/",
-            "Models\\Dao\\": "models/dao/",
-            "Libs\\": "libs/",
-            "Libs\\Core\\": "libs/core/",
-            "Libs\\Validators\\": "libs/validators/"
-        }
+        "classmap": [
+            "controllers/",
+            "models/",
+            "models/dao/",
+            "libs/",
+            "libs/core/",
+            "libs/validators/"
+        ]
     },
     "autoload-dev": {
-        "psr-4": {
-            "Tests\\": "tests/"
-        }
+        "classmap": [
+            "tests/"
+        ]
     },
     "require": {
         "php": ">=8.0"

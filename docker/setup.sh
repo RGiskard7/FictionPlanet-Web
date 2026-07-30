@@ -29,7 +29,7 @@ echo "[3/4] Levantando contenedores (PHP + MariaDB)..."
 docker compose up -d
 
 echo "[4/4] Instalando dependencias Composer..."
-docker compose exec app composer install --no-interaction --optimize-autoloader
+docker compose exec app composer install --no-interaction --optimize-autoloader --quiet
 
 echo ""
 echo "== Listo =="
