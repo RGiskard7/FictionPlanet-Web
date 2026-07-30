@@ -223,6 +223,10 @@ class Posts extends Controller {
     public function delete() {
         if (Session::is_started() && $_SESSION['permissions'][MDL_POSTS]['d']) {
             if (isset($_POST['action']) && $_POST['action'] === 'deletePost') {
+                if (!Session::verify_csrf()) {
+                    echo 0;
+                    exit;
+                }
                 Connection::open_connection();
                 $result = PostDAO::delete_post(Connection::get_connection(), trim($_POST['idPost']));
                 Connection::close_connection();

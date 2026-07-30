@@ -11,6 +11,7 @@
                 <div id="msgNewImage"></div>
                 <form action="<?= APP_URL . 'imageGalleryController.php'; ?>" method="post" class="form-horizontal" 
                       id="image-form" role="form" enctype="multipart/form-data">
+                    <?= Session::csrf_input(); ?>
                     <div class="form-group">
                         <input class="form-control" id="imageTitle" name="imageTitle" placeholder="Título (255 carácteres max.)" type="text">
                         <div id="feddbackImageTitle" class="invalid-feedback"></div>

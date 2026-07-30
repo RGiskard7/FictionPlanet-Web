@@ -1,8 +1,11 @@
 <?php
 require_once realpath(dirname(__FILE__)) . "/../config.inc.php";
+
+ini_set('display_errors', '0');
+
 require_once LIBS_PATH . "Session.php";
 
-if (!Session::is_started()) {
+if (!Session::is_started() || !$_SESSION['permissions'][MDL_POSTS]['w']) {
     http_response_code(403);
     echo json_encode(['error' => 'No autorizado']);
     exit;

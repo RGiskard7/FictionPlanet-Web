@@ -184,6 +184,10 @@ class Users extends Controller {
     public function delete() {
         if (Session::is_started() && $_SESSION['permissions'][MDL_USERS]['d']) {
             if (isset($_POST['action']) && $_POST['action'] === 'deleteUser' && isset($_POST['idUser'])) {
+                if (!Session::verify_csrf()) {
+                    echo 0;
+                    exit;
+                }
                 Connection::open_connection();
                 $idUser = trim(htmlentities($_POST['idUser'], ENT_QUOTES));
                 $user = UserDAO::get_user_by_id(Connection::get_connection(), $idUser);
@@ -199,6 +203,10 @@ class Users extends Controller {
 
                 echo $response;     
             }
+        }
+        } else {
+            http_response_code(403);
+            echo json_encode(['error' => 'No autorizado']);
         }
         exit;
     }
@@ -684,6 +692,12 @@ class Users extends Controller {
                 $fromUserId = trim(htmlentities($_POST['fromUserId'], ENT_QUOTES));
                 
                 Connection::open_connection();
+                $request = FriendRequestsDAO::get_friend_request_by_id(Connection::get_connection(), $frndRequestId);
+                if (!$request || $request->get_to_user_id() != $_SESSION['idUser']) {
+                    Connection::close_connection();
+                    echo 0;
+                    exit;
+                }
                 $result = FriendRequestsDAO::answer_friend_request(Connection::get_connection(), $frndRequestId, 1);
                 if ($result) {
                     $contactObject1 = new ContactModel(null, $_SESSION['idUser'], $fromUserId, null);
@@ -718,6 +732,12 @@ class Users extends Controller {
                 $fromUserId = trim(htmlentities($_POST['fromUserId'], ENT_QUOTES));
                 
                 Connection::open_connection();
+                $request = FriendRequestsDAO::get_friend_request_by_id(Connection::get_connection(), $frndRequestId);
+                if (!$request || $request->get_to_user_id() != $_SESSION['idUser']) {
+                    Connection::close_connection();
+                    echo 0;
+                    exit;
+                }
                 $result = FriendRequestsDAO::answer_friend_request(Connection::get_connection(), $frndRequestId, 0);
                 Connection::close_connection();
             }

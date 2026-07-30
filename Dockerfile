@@ -21,7 +21,7 @@ RUN composer install --no-dev --no-interaction --prefer-dist --optimize-autoload
 
 COPY . .
 
-RUN mkdir -p /var/www/html/uploads && \
+RUN mkdir -p /var/www/html/uploads/editor/img /var/www/html/uploads/gallery /var/www/html/uploads/posts/attachments && \
     chown -R www-data:www-data /var/www/html/uploads && \
     chmod -R 775 /var/www/html/uploads
 

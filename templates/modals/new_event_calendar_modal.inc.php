@@ -6,7 +6,8 @@
                 <button type="button" class="close" data-dismiss="modal">×</button>
             </div>
             <div class="modal-body pl-4 pr-4">
-                <form id="formNewEventCalendar" class="form-horizontal" role="form" method="POST" action="/app/calendarEventsController.php?action=add">
+                <form id="formNewEventCalendar" class="form-horizontal" role="form" method="POST" action="/app/calendarEventsController.php">
+                    <?= Session::csrf_input(); ?>
                     <div class="form-group">
                         <label for="title" class="control-label">Título</label>
                         <input type="text" name="title" class="form-control" id="title" placeholder="Titulo el evento">

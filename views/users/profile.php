@@ -130,10 +130,10 @@ include TEMPLATES_PATH . 'modals/upload_new_image_modal.inc.php';
                                 </div>
                                 <div class ="tab-pane fade" id="images" role="tabpanel" aria-labelledby="images-tab">
 
-                                            <?php if (Session::is_started()): ?> <!-- Quitar, comprobar permisos -->
+                                            <?php if (Session::is_started() && ($_SESSION['permissions'][MDL_IMAGES]['w'] ?? 0)): ?>
 
                                                     <button id="uploadNewImageBtn" name="uploadNewImageBtn" type="button" class="btn btn-primary gmd-1">
-                                                        <i class="fa fa-plus-circle" aria-hidden="true"></i>&nbsp;&nbsp;Subir nueva imágen
+                                                        <i class="fa fa-plus-circle" aria-hidden="true"></i>&nbsp;&nbsp;Subir nueva imagen
                                                     </button>
 
                                             <?php endif; ?>

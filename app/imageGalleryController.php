@@ -1,6 +1,8 @@
 <?php
 require_once realpath(dirname(__FILE__)) . "/../config.inc.php";
 
+ini_set('display_errors', '0');
+
 require_once CORE_PATH . "Connection.php";
 require_once CORE_PATH . "Utilities.php";
 
@@ -9,10 +11,16 @@ require_once LIBS_PATH . "Session.php";
 require_once MODELS_PATH . "ImageGalleryModel.php";
 require_once DAO_PATH . "ImageGalleryDAO.php";
 
-if (!Session::is_started()) {
-    Redirection::redirect(BASE_URL);
+if (!Session::is_started() || !($_SESSION['permissions'][MDL_IMAGES]['w'] ?? 0)) {
+    http_response_code(403);
+    exit;
 }
-/*****************************************************************/
+
+if (!Session::verify_csrf()) {
+    http_response_code(403);
+    exit;
+}
+
 if (isset($_POST["submitUploadNewImage"])) {
     if ($_POST["imageTitle"] !== "") {
         $file = $_FILES['imageFile']['name'];

@@ -62,7 +62,7 @@ class Image_gallery extends Controller {
     }
     
     public function images_data_table_load() {
-        if (Session::is_started() && $_SESSION['permissions'][MDL_IMAGES]['r']) {
+        if (Session::is_started() && ($_SESSION['permissions'][MDL_IMAGES]['r'] ?? 0)) {
             if (isset($_POST['action']) && $_POST['action'] === 'imagesDataTableLoad') {
                 $imagesDataTable = array();
 
@@ -118,6 +118,53 @@ class Image_gallery extends Controller {
 
                 $response = json_encode($imagesDataTable, JSON_UNESCAPED_UNICODE);
                 echo $response;
+            }
+        }
+        exit;
+    }
+
+    public function update() {
+        if (Session::is_started() && ($_SESSION['permissions'][MDL_IMAGES]['u'] ?? 0)) {
+            if (isset($_POST['action']) && $_POST['action'] === 'updateImage') {
+                if (!Session::verify_csrf()) {
+                    echo json_encode(['error' => 'Token invalido']);
+                    exit;
+                }
+
+                Connection::open_connection();
+                $image = ImageGalleryDAO::get_image_by_id(Connection::get_connection(), $_POST['idImage']);
+                if ($image && $image->get_author_id() == $_SESSION['idUser']) {
+                    $image->set_title($_POST['title']);
+                    $image->set_description($_POST['description'] ?? '');
+                    $image->set_visible((int) ($_POST['visible'] ?? 1));
+                    $result = ImageGalleryDAO::update_image(Connection::get_connection(), $image);
+                    echo json_encode(['success' => (bool) $result]);
+                } else {
+                    echo json_encode(['error' => 'No autorizado']);
+                }
+                Connection::close_connection();
+            }
+        }
+        exit;
+    }
+
+    public function delete() {
+        if (Session::is_started() && ($_SESSION['permissions'][MDL_IMAGES]['d'] ?? 0)) {
+            if (isset($_POST['action']) && $_POST['action'] === 'deleteImage') {
+                if (!Session::verify_csrf()) {
+                    echo json_encode(['error' => 'Token invalido']);
+                    exit;
+                }
+
+                Connection::open_connection();
+                $image = ImageGalleryDAO::get_image_by_id(Connection::get_connection(), $_POST['idImage']);
+                if ($image && $image->get_author_id() == $_SESSION['idUser']) {
+                    $result = ImageGalleryDAO::delete_image(Connection::get_connection(), $_POST['idImage']);
+                    echo json_encode(['success' => (bool) $result]);
+                } else {
+                    echo json_encode(['error' => 'No autorizado']);
+                }
+                Connection::close_connection();
             }
         }
         exit;

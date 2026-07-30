@@ -193,6 +193,10 @@ class Roles extends Controller {
     public function insert_new_role() {
         if (Session::is_started() && $_SESSION['permissions'][MDL_ROLES]['w']) {
             if (isset($_POST['action']) && $_POST['action'] === 'insert_new_role') {
+                if (!Session::verify_csrf()) {
+                    echo 0;
+                    exit;
+                }
                 $roleTitle = trim(htmlentities($_POST['roleTitle'], ENT_QUOTES));
                 $roleDescription = trim(htmlentities($_POST['roleDescription'], ENT_QUOTES));
 
@@ -245,6 +249,10 @@ class Roles extends Controller {
     public function delete_role() {
         if (Session::is_started() && $_SESSION['permissions'][MDL_ROLES]['d']) {
             if (isset($_POST["action"]) && $_POST["action"] === "delete_role" && isset($_POST["roleID"])) {
+                if (!Session::verify_csrf()) {
+                    echo 0;
+                    exit;
+                }
                 Connection::open_connection();
                 $role = RoleDAO::get_role_by_id(Connection::get_connection(), trim($_POST["roleID"]));
 

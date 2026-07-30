@@ -226,5 +226,64 @@ class ImageGalleryDAO {
 
         return false; // 0
     }
+
+    public static function get_image_by_id($connection, $id) {
+        $imageObject = null;
+
+        if (isset($connection)) {
+            try {
+                $sentence = $connection->prepare("SELECT * FROM image_gallery WHERE id = :id;");
+                $sentence->bindParam(":id", $id, PDO::PARAM_INT);
+                $sentence->execute();
+                $result = $sentence->fetch(PDO::FETCH_ASSOC);
+
+                if (!empty($result)) {
+                    $imageObject = new ImageGalleryModel(
+                        $result["id"], $result["author_id"], $result["title"], $result["description"],
+                        $result["url"], $result["path"], $result["creation_date"], $result["last_update_date"],
+                        $result["visible"]
+                    );
+                }
+            } catch (PDOException $e) {
+                throw new AppException("Database error: " . $e->getMessage(), 500, $e);
+            }
+        }
+
+        return $imageObject;
+    }
+
+    public static function update_image($connection, ImageGalleryModel $imageObject) {
+        if (isset($connection)) {
+            try {
+                $updateSql = "UPDATE image_gallery SET title = :title, description = :description, visible = :visible WHERE id = :id;";
+
+                $sentence = $connection->prepare($updateSql);
+                $sentence->bindValue(":title", $imageObject->get_title(), PDO::PARAM_STR);
+                $sentence->bindValue(":description", $imageObject->get_description(), PDO::PARAM_STR);
+                $sentence->bindValue(":visible", $imageObject->is_visible(), PDO::PARAM_INT);
+                $sentence->bindValue(":id", $imageObject->get_id(), PDO::PARAM_INT);
+
+                return $sentence->execute();
+            } catch (PDOException $e) {
+                throw new AppException("Database error: " . $e->getMessage(), 500, $e);
+            }
+        }
+
+        return false;
+    }
+
+    public static function delete_image($connection, $id) {
+        if (isset($connection)) {
+            try {
+                $sentence = $connection->prepare("DELETE FROM image_gallery WHERE id = :id;");
+                $sentence->bindParam(":id", $id, PDO::PARAM_INT);
+                return $sentence->execute();
+            } catch (PDOException $e) {
+                throw new AppException("Database error: " . $e->getMessage(), 500, $e);
+            }
+        }
+
+        return false;
+    }
     
 }
