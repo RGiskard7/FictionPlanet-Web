@@ -73,7 +73,7 @@ if (Session::is_started() && $_SESSION['permissions'][MDL_PUBLIC_CALENDAR]['w'])
             </div>
         </div>
 
-        <div class="row row-cols-2 justify-content-center">
+        <div class="row justify-content-center">
             <div class="col-12 col-sm-12 col-md-8">
                 <?php //if ($numVisiblePosts > $maxLinksPager): ?>
                 <div class ="row">

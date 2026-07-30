@@ -5,7 +5,7 @@ include TEMPLATES_PATH . 'head.inc.php';
 ?>
 
 <div id="main">
-    <div class="container-fluid">
+    <div class="container">
         <div id="createPostCard" class="card gmd-0 bg-white">
             <div class="card-header">
                 <div class="row text-center">
@@ -35,7 +35,7 @@ include TEMPLATES_PATH . 'head.inc.php';
                     
                     <div class="card form-group">
                         <div class="card-header">
-                            <h5><i class="fa fa-paperclip" aria-hidden="true"></i>&nbsp&nbsp&nbspAdjuntar archivos&nbsp&nbsp<small><em>(Máximo 5 MB por archivo)</em></small></h5>
+                            <h5><i class="fa fa-paperclip" aria-hidden="true"></i>&nbsp;&nbsp;&nbsp;Adjuntar archivos&nbsp;&nbsp;<small><em>(Maximo 5 MB por archivo)</em></small></h5>
                         </div>
                         <div class="card-body p-4">
                             <input type="file" id="uploadFile" name="uploadFile[]" multiple="" data-userid="<?= $_SESSION["idUser"]; ?>">

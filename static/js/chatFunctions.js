@@ -25,7 +25,7 @@ $(document).ready(function() {
 
 function showUsersChatList() {
     $.ajax({
-        url: BASE_URL + '/instant_messaging/show_user_chat_list',
+        url: BASE_URL + 'instant_messaging/show_user_chat_list',
         method: 'POST',
         data:{action: 'showUserChatList'},
         success:function(data){
@@ -36,7 +36,7 @@ function showUsersChatList() {
 
 function showUserChatHistory(recieverUserId, recieverUserName){
     $.ajax({
-        url: BASE_URL + '/instant_messaging/show_user_chat_history',
+        url: BASE_URL + 'instant_messaging/show_user_chat_history',
         method: 'POST',
         data:{receiverUserId: recieverUserId, receiverUserName: recieverUserName, action: 'showUserChatHistory'},
         success:function(data){
@@ -57,7 +57,7 @@ function sendMessage(recieverUserId) {
     var message = $.trim($('#chatMessage_' + recieverUserId).val());
     if (message !== '') {
         $.ajax({
-            url: BASE_URL + '/instant_messaging/insert_chat',
+            url: BASE_URL + 'instant_messaging/insert_chat',
             method: 'POST',
             data:{receiverUserId: recieverUserId, message: message, action: 'insertChat'},
             success:function(data) {
@@ -90,7 +90,7 @@ function updateUserChatHistory() {
         //console.log("chatHistory visible");
         var recieverUserId = $(this).data('touserid');
         $.ajax({
-            url: BASE_URL + '/instant_messaging/update_user_chat_history',
+            url: BASE_URL + 'instant_messaging/update_user_chat_history',
             method: 'POST',
             data:{receiverUserId: recieverUserId, action: 'updateUserChatHistory'},
             success:function(data) {
@@ -109,7 +109,7 @@ function updateUnreadMessageCount() {
     $('.contact').each(function() {
         var recieverUserId = $(this).data('touserid');
         $.ajax({
-            url: BASE_URL + '/instant_messaging/update_unread_message',
+            url: BASE_URL + 'instant_messaging/update_unread_message',
             method: 'POST',
             data:{receiverUserId:recieverUserId, action: 'updateUnreadMessage'},
             success:function(data){
@@ -121,7 +121,7 @@ function updateUnreadMessageCount() {
 
 function updateAllUnreadMessageCount() {
     $.ajax({
-        url: BASE_URL + '/instant_messaging/update_all_unread_message',
+        url: BASE_URL + 'instant_messaging/update_all_unread_message',
         method: 'POST',
         data:{action: 'updateAllUnreadMessage'},
         success:function(data){

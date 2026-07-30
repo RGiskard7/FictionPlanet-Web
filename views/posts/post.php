@@ -18,24 +18,22 @@ include TEMPLATES_PATH . 'head.inc.php';
                 <div class="row pl-2 pr-2">
                     <div class="col-md-12">
                         <h1 class="primary-heading">
-                            <?= $post->get_title(); ?>
+                            <?= h($post->get_title()); ?>
                         </h1>
-                        <!--<spam></spam>-->
+                        <span>
                         <hr class="featurette-divider mb-2">
-                        <spam>
-                            <i class='fa fa-user'></i> Publicado por <a href="<?= PROFILE_SEO_URL . "/" . $author->get_user_name(); ?>">
-                            <?= $author->get_user_name(); ?></a>
+                        <span>
+                            <i class='fa fa-user'></i> Publicado por <a href="<?= PROFILE_SEO_URL . "/" . h($author->get_user_name()); ?>">
+                            <?= h($author->get_user_name()); ?></a>
                             &nbsp;|&nbsp;
-                            <?php
-                            echo "<i class='fa fa-calendar'></i> Creado en " . date('d-m-Y H:i:s', strtotime($post->get_date_creation()));
-                            if ($post->get_date_creation() !== $post->get_date_last_update()) {
-                                echo " &nbsp;|&nbsp; <i class='fa fa-clock-o'></i> Actualizado en " . date('d-m-Y H:i:s', strtotime($post->get_date_last_update()));
-                            }
-                            if (!empty($postStatus)) {
-                                 echo "<strong><em>&nbsp;&nbsp;(" . $postStatus . ")</em></strong>";
-                            }
-                            ?>
-                        </spam>
+                            <i class="fa fa-calendar"></i> Creado en <?= date('d-m-Y H:i:s', strtotime($post->get_date_creation())); ?>
+                            <?php if ($post->get_date_creation() !== $post->get_date_last_update()): ?>
+                            &nbsp;|&nbsp; <i class="fa fa-clock-o"></i> Actualizado en <?= date('d-m-Y H:i:s', strtotime($post->get_date_last_update())); ?>
+                            <?php endif; ?>
+                            <?php if (!empty($postStatus)): ?>
+                            <strong><em>&nbsp;&nbsp;(<?= h($postStatus); ?>)</em></strong>
+                            <?php endif; ?>
+                        </span>
                         <hr class="featurette-divider mt-2 mb-0">
                     </div>
                 </div>
@@ -95,14 +93,14 @@ include TEMPLATES_PATH . 'head.inc.php';
                                                     $fileName = $attachedFile;
                                                 } ?> 
                                                 
-                                                <td><?= $icon . "&nbsp&nbsp&nbsp"; ?><a id="viewFile" title="Visualizar archivo" href="<?= BASE_URL . UPLOAD_POSTS_DIR 
-                                                        . $post->get_id() . '/' . $attachedFile; ?>"target="_blank"><?= $fileName; ?></a></td>
+                                                <td><?= $icon . "&nbsp;&nbsp;&nbsp;"; ?><a id="viewFile" title="Visualizar archivo" href="<?= BASE_URL . UPLOAD_POSTS_DIR 
+                                                        . $post->get_id() . '/' . urlencode($attachedFile); ?>"target="_blank"><?= h($fileName); ?></a></td>
 
                                                 <?php $size = round(filesize(ROOT_DIRECTORY . UPLOAD_POSTS_DIR . $post->get_id() . '/' . $attachedFile) / 1024, 3); ?>
 
                                                 <td class="text-center"><?= $size . " KB"; ?></td>
                                                 <td class="text-center"><a title="Descargar archivo" href="<?= BASE_URL . UPLOAD_POSTS_DIR . $post->get_id() . 
-                                                        '/' . $attachedFile; ?>" download="<?= $attachedFile; ?>" style="color: blue; font-size:18px;">
+                                                        '/' . urlencode($attachedFile); ?>" download="<?= h($attachedFile); ?>" style="color: blue; font-size:18px;">
                                                         <i class="fa fa-download" aria-hidden="true"></i></a></td>
                                             </tr>
                                         </tbody>

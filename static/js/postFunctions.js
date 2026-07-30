@@ -178,7 +178,7 @@ $(document).ready(function() {
         .then((willDelete) => {
             if (willDelete) {
                 $.ajax({
-                    url: BASE_URL + '/posts/delete',
+                    url: BASE_URL + 'posts/delete',
                     method:'POST',
                     data:{action: 'deletePost', idPost: idPost},
                     success:function(response){
@@ -206,7 +206,7 @@ $(document).ready(function() {
     
     $(document).on('click', '#syncAttachedFilesBtn', function() {
         $.ajax({
-            url: BASE_URL + '/posts/refresh_attached_files',
+            url: BASE_URL + 'posts/refresh_attached_files',
             method: 'POST',
             data:{action: 'refreshAttachedFiles'},
             success:function(response){
@@ -221,7 +221,7 @@ $(document).ready(function() {
 
 function removeAttachedFile(nameFile) {
     $.ajax({
-        url: BASE_URL + '/posts/remove_attached_file',
+        url: BASE_URL + 'posts/remove_attached_file',
         method: 'POST',
         dataType: 'json',
         data:{action: 'removeAttachedFile', nameFile:nameFile},

@@ -247,7 +247,7 @@ $(document).ready(function() {
         var frndRequestId = $(this).attr('data-frndRequestid');
         var fromUserId = $(this).attr('data-fromuserid');
         $.ajax({
-            url: BASE_URL + '/users/accept_friend_request',
+            url: BASE_URL + 'users/accept_friend_request',
             method: 'POST',
             scriptCharset: 'utf-8',
             //dataType: 'json',
@@ -272,7 +272,7 @@ $(document).ready(function() {
         var frndRequestId = $(this).attr('data-frndRequestid');
         var fromUserId = $(this).attr('data-fromuserid');
         $.ajax({
-            url: BASE_URL + '/users/reject_friend_request',
+            url: BASE_URL + 'users/reject_friend_request',
             method: 'POST',
             scriptCharset: 'utf-8',
             data: {action:'rejectFriendRequest', frndRequestId:frndRequestId, fromUserId:fromUserId},
@@ -294,7 +294,7 @@ $(document).ready(function() {
     $(document).on('click', '.addContactBtn', function() {
         var touserid = $(this).attr('data-touserid');
         $.ajax({
-            url: BASE_URL + '/users/request_friendship',
+            url: BASE_URL + 'users/request_friendship',
             method: 'POST',
             scriptCharset: 'utf-8',
             //dataType: 'json',
@@ -327,7 +327,7 @@ $(document).ready(function() {
     $(document).on('keyup', '#currentPassword', function() {
         if ($(this).val().length > 0) {
             $.ajax({
-                url:BASE_URL + '/users/check_current_password',
+                url:BASE_URL + 'users/check_current_password',
                 method:'POST',
                 data:{action:'checkCurrentPassword', currentPassword:$('#currentPassword').val()},
                 success:function(response){
@@ -386,7 +386,7 @@ $(document).ready(function() {
                 && $('#confirmNewPassword').val().length > 0) {
             if ($('#newPassword').val() == $('#confirmNewPassword').val()) {
                 $.ajax({
-                    url:BASE_URL + '/users/submit_change_password',
+                    url:BASE_URL + 'users/submit_change_password',
                     method:'POST',
                     dataType: 'json',
                     data:{action:'submitChangePassword', currentPassword:$('#currentPassword').val(), newPassword:$('#newPassword').val()},
@@ -417,7 +417,7 @@ $(document).ready(function() {
     
     $(document).on('click', '#editProfileBtn', function() {
         $.ajax({
-            url:BASE_URL + '/users/get_logged_in_user_data',
+            url:BASE_URL + 'users/get_logged_in_user_data',
             method:'POST',
             scriptCharset: 'utf-8',
             dataType: 'json',
@@ -452,7 +452,7 @@ $(document).ready(function() {
             if ($(this).val().length > 5) {
                 if ($('#userNameEditProfile').val() != $('#currentUserNameEditProfile').val()) {
                     $.ajax({
-                        url:BASE_URL + '/users/check_user_name',
+                        url:BASE_URL + 'users/check_user_name',
                         method:'POST',
                         data:{action:'checkUserName', userName:$('#userNameEditProfile').val()},
                         success:function(response){
@@ -481,7 +481,7 @@ $(document).ready(function() {
         if ($(this).val().length > 0) {
             if ($(this).val().length > 5) {
                 $.ajax({
-                    url:BASE_URL + '/users/check_user_name',
+                    url:BASE_URL + 'users/check_user_name',
                     method:'POST',
                     data:{action:'checkUserName', userName:$('#userNameNewUser').val()},
                     success:function(response){
@@ -514,7 +514,7 @@ $(document).ready(function() {
             } else {
                 if ($('#emailEditProfile').val() != $('#currentEmailEditProfile').val()) {
                     $.ajax({
-                        url:BASE_URL + '/users/check_email',
+                        url:BASE_URL + 'users/check_email',
                         method:'POST',
                         data:{action:'checkEmail', email:$('#emailEditProfile').val()},
                         success:function(response){
@@ -545,7 +545,7 @@ $(document).ready(function() {
         
         if (editProfileValidate()) {
             $.ajax({
-                url:BASE_URL + '/users/submit_edit_profile',
+                url:BASE_URL + 'users/submit_edit_profile',
                 method:'POST',
                 dataType:'json',
                 data:{action:'submitEditProfile', userNameEditProfile:userNameEditProfile, firstNameEditProfile:firstNameEditProfile, 
@@ -560,7 +560,7 @@ $(document).ready(function() {
                                 text: 'Se ha editado el perfil correctamente.',
                                 icon: 'success'
                             }).then(() => {
-                                $(location).attr('href', BASE_URL + '/users/profile/' + userNameEditProfile);
+                                $(location).attr('href', BASE_URL + 'users/profile/' + userNameEditProfile);
                             });
                         } else {
                             swal('Error', 'Se ha producido un error inesperado.', 'error');
@@ -584,7 +584,7 @@ $(document).ready(function() {
         var idUser = $(this).attr('data-iduser');
         
         $.ajax({
-            url:BASE_URL + '/users/get_data',
+            url:BASE_URL + 'users/get_data',
             method:'POST',
             scriptCharset:'utf-8',
             dataType:'json',
@@ -630,7 +630,7 @@ $(document).ready(function() {
         $('#selectUserStatus').show();
         
         $.ajax({
-            url:BASE_URL + '/users/get_data',
+            url:BASE_URL + 'users/get_data',
             method:"POST",
             scriptCharset: "utf-8",
             dataType: 'json',
@@ -684,7 +684,7 @@ $(document).ready(function() {
         if (editProfileValidate()) {
             if (newPassword == confirmNewPassword) {
                 $.ajax({
-                    url:BASE_URL + '/users/update',
+                    url:BASE_URL + 'users/update',
                     method:"POST",
                     dataType:'json',
                     data:{action:"submitEditUser", idUser:idUser, userNameEditProfile:userNameEditProfile, firstNameEditProfile:firstNameEditProfile, lastNameEditProfile:lastNameEditProfile, 
@@ -694,7 +694,7 @@ $(document).ready(function() {
                         if (response['userName_ok'] == true) {
                             if (response['success'] == true) {                               
                                 if (loggedInUserId == idUser) {
-                                    $(location).attr('href', BASE_URL + '/users/');
+                                    $(location).attr('href', BASE_URL + 'users/');
                                     alert("Se ha editado tu usuario correctamente.");
                                 } else {
                                     $('#userTable').DataTable().ajax.reload();
@@ -737,7 +737,7 @@ $(document).ready(function() {
         .then((willDelete) => {
             if (willDelete) {
                 $.ajax({
-                    url:BASE_URL + '/users/delete',
+                    url:BASE_URL + 'users/delete',
                     method:'POST',
                     data:{action:'deleteUser', idUser:idUser},
                     success:function(response){

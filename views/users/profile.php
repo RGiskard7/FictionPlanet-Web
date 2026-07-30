@@ -72,14 +72,13 @@ include TEMPLATES_PATH . 'modals/upload_new_image_modal.inc.php';
                             <nav>
                                 <div class="nav nav-tabs" id="profileTabs" role="tablist">
                                     <a class="nav-item nav-link active" id="content-tab" data-toggle="tab" href="#content" role="tab" aria-controls="content" aria-selected="true">Publicaciones</a>
-                                    <a class="nav-item nav-link" id="images-tab" data-toggle="tab" href="#images" role="tab" aria-controls="images" aria-selected="true">Imágenes</a>
-                                    <!--<a class="nav-item nav-link" id="planner-tab" data-toggle="tab" href="#planner" role="tab" aria-controls="planner" aria-selected="true">Planificador</a>-->
+                                    <a class="nav-item nav-link" id="images-tab" data-toggle="tab" href="#images" role="tab" aria-controls="images" aria-selected="true">Imagenes</a>
                                     <a class="nav-item nav-link" id="contacts-tab" data-toggle="tab" href="#contacts" role="tab" aria-controls="contacts" aria-selected="true">Contactos</a>
                                     <a class="nav-item nav-link" id="aboutMe-tab" data-toggle="tab" href="#aboutMe" role="tab" aria-controls="aboutMe" aria-selected="true">Acerca de</a>
                                 </div> 
                             </nav>
                             <div class="tab-content mt-4" id="nav-tabContent">
-                                <div class="tab-pane fade show active" id="aboutMe" role="tabpanel" aria-labelledby="aboutMe-tab">
+                                <div class="tab-pane fade" id="aboutMe" role="tabpanel" aria-labelledby="aboutMe-tab">
                                     <div class="card bg-white border" style="border-radius: 10px;">
                                         <div class="card-header"><strong>Información personal</strong></div>
                                         <div class="card-body p-4">
@@ -94,7 +93,7 @@ include TEMPLATES_PATH . 'modals/upload_new_image_modal.inc.php';
                                         </div>
                                     </div>
                                 </div>
-                                <div class="tab-pane fade" id="content" role="tabpanel" aria-labelledby="content-tab">
+                                <div class="tab-pane fade show active" id="content" role="tabpanel" aria-labelledby="content-tab">
                                     <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
                                         <li class="nav-item" role="presentation">
                                             <button class="nav-link active" id="pills-home-tab" data-toggle="pill" data-target="#pills-home" type="button" role="tab" aria-controls="pills-home" aria-selected="true">Lista</button>

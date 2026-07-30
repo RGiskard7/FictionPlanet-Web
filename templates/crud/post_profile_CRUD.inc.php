@@ -1,17 +1,16 @@
 <div class="row">
-    <div class="col-md-12">
+    <div class="col-md-12 mb-3">
         <?php if ($_SESSION['permissions'][MDL_POSTS]['w']): ?>
         <a name="insertPostBtn" id="insertPostBtn" href="<?php echo CREATE_POST_SEO_URL; ?>">
             <button type="button" class="createPostBtn btn btn-primary gmd-1">
-                <i class="fa fa-plus-circle" aria-hidden="true"></i>&nbsp;&nbsp;Crear nueva publicación
+                <i class="fa fa-plus-circle" aria-hidden="true"></i>&nbsp;&nbsp;Crear nueva publicacion
             </button>
         </a>
         <?php else: ?>
         <button type="button" class="btn btn-primary" disabled>
-            <i class="fa fa-plus-circle" aria-hidden="true"></i>&nbsp;&nbsp;Crear nueva publicación
+            <i class="fa fa-plus-circle" aria-hidden="true"></i>&nbsp;&nbsp;Crear nueva publicacion
         </button>
         <?php endif; ?>
-        <p></p>
     </div>
 </div>
 <div class="row">

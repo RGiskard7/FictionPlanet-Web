@@ -1,5 +1,5 @@
 <div class="row">
-    <div class="col-md-12">
+    <div class="col-md-12 mb-3">
         <?php if ($_SESSION['permissions'][MDL_ROLES]['w']): ?>
         <a name="insertRoleBtn" id="insertRoleBtn" href="#">
             <button type="button" class="btn btn-primary gmd-1">
@@ -11,7 +11,6 @@
             <i class="fa fa-plus-circle" aria-hidden="true"></i>&nbsp;&nbsp;Añadir nuevo rol
         </button>
         <?php endif; ?>
-        <p></p>
     </div>
 </div>
 <div class="row">

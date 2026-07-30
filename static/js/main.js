@@ -202,11 +202,13 @@ $(document).ready(function() {
 }*/
 
 function dinamicMainHeight() {
-    /*Height top: 81px y height footer: 378px*/
-    heightHead = document.getElementById("topNavbar").offsetHeight;
-    heightFooter = document.getElementById("footerContainer").offsetHeight;
-    
-    document.getElementById("main").style.minHeight = "calc(95.70vh - " + heightHead + "px - " + heightFooter + "px)"; /*95.68vh*/
+    var headH = document.getElementById("topNavbar").offsetHeight;
+    var footerH = document.getElementById("footerContainer").offsetHeight;
+    var mainEl = document.getElementById("main");
+    var style = window.getComputedStyle(mainEl);
+    var marginTop = parseInt(style.marginTop);
+    var marginBottom = parseInt(style.marginBottom);
+    mainEl.style.minHeight = "calc(100vh - " + (headH + footerH + marginTop + marginBottom) + "px)";
 }
 
 var open1 = true;

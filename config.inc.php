@@ -126,9 +126,3 @@ define('MDL_PUBL_DATA', 5);
 define('MDL_PRSN_DATA', 6);
 define('MDL_CHAT', 7);
 define('MDL_IMAGES', 8);
-
-define('OPERATION_1', 'view');
-define('OPERATION_2', 'create');
-define('OPERATION_3', 'edit');
-define('OPERATION_4', 'delete');
-define('OPERATION_5', 'list');

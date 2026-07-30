@@ -1,5 +1,5 @@
 <div class="row">
-    <div class="col-md-12">
+    <div class="col-md-12 mb-3">
         <?php if ($_SESSION['permissions'][MDL_USERS]['w']): ?>
         <a name="createUserBtn" id="createUserBtn" href='<?php echo CREATE_USER_SEO_URL; ?>'>
             <button type="button" class="btn btn-primary gmd-1">
@@ -11,7 +11,6 @@
             <i class="fa fa-user-plus" aria-hidden="true"></i>&nbsp;&nbsp;Añadir nuevo usuario
         </button>
         <?php endif; ?>
-        <p></p>
     </div>
 </div>
 <div class="row">

@@ -197,7 +197,7 @@ $(document).ready(function() {
     });
     
     $(document).on('click', '#submitEditRole', function() {        
-        $.post(BASE_URL + '/roles/submit_edit_role', $('#formEditRole').serialize() + '&submitEditRole=1', function(data) {
+        $.post(BASE_URL + 'roles/submit_edit_role', $('#formEditRole').serialize() + '&submitEditRole=1', function(data) {
             if (data == 1) {
                 $('#editRoleModal').modal('hide');
                 swal({
@@ -234,7 +234,7 @@ $(document).ready(function() {
         .then((willDelete) => {
             if (willDelete) {
                 $.ajax({
-                    url:BASE_URL + '/roles/delete_role',
+                    url:BASE_URL + 'roles/delete_role',
                     method:'POST',
                     data:{action:"delete_role", roleID:roleID},
                     success:function(response){

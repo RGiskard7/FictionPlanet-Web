@@ -1,44 +1,30 @@
 @charset "UTF-8";
 
-#topNavbar { /*Su altura suele ser 81px*/
+#topNavbar {
     transition: margin-left .5s;
     top: 0;
     height: auto;
     z-index: 5;
     background-color: rgb(255, 255, 255);
-    /*padding: 10px;*/
     padding-top: 0;
     padding-bottom: 0;
     display: flex;
-    
 }
     
 .navbar .navbar-header,
 .navbar .navbar-text {
     position: absolute;
-    /*display: flex;
-    align-items: center*/
 }
 
 .navbar .navbar-header {
-    left: 0.625em; /* 10px, antes 6px*/
-    /*align-self: flex-start;*/
-    
+    left: 0.625em;
 }
 
 .navbar .navbar-text {
     right: 0.625em;
-    /*align-self: flex-end;*/
 }
 
-/*#homeLink, #galleryLink, #aboutUsLink, #userNameLogin {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    text-decoration: none;
-}*/
-
-#navbarTogglerMenu {  /*Es un display flex */
+#navbarTogglerMenu {
     justify-content: center;
 }
 
@@ -53,23 +39,16 @@
     padding: 0;
 }
 
-.topBarElement a span{
-    /*font-weight: 500;
-    font-size: 20px;*/
-}
-
 .topBarElement:hover {
-    background-color: #CBCACA73; /* color: #CBCACA, opacidad: #4D = 30% #*/
-    /*border-radius: 10px;*/
+    background-color: #CBCACA73;
 }
 
-.topBarElement:hover a span{
-    /*font-weight: 700; /* 700 */
+.topBarElement:hover a span {
     color: dodgerblue;
 }
 
 .topBarElementActive {
-    background-color: #CBCACA73; /* color: #CBCACA, opacidad: #4D = 30% #*/
+    background-color: #CBCACA73;
     border-radius: 10px;
 }
 
@@ -77,10 +56,6 @@
     margin-left: 0.313em;
     margin-right: 1.25em;
 }
-
-/*#chatBtnToggler {
-    margin-right: 1.25em;
-}*/
 
 #userNameBtn {
     margin-right: 0.313em;
@@ -92,14 +67,14 @@
 }
 
 #optionSidebar {
-    height: 100%; /* 100% Full-height */
+    height: 100%;
     width: 0;
     position: fixed;
     z-index: 4;
     top: 0;
     left: 0;
     background-color: rgb(255, 255, 255);
-    overflow-x: hidden; 
+    overflow-x: hidden;
     padding-top: 6.250em;
     transition: 0.3s;
     white-space: nowrap;
@@ -107,7 +82,7 @@
 
 #optionSidebar a {
     text-decoration: none;
-    padding: 8px 8px 8px 25px; /*32px*/
+    padding: 8px 8px 8px 25px;
     font-size: 20px;
     display: block;
     transition: 0.3s;
@@ -118,12 +93,10 @@
     margin-right: 20px;
 }
 
-/* When you mouse over the navigation links, change their color */
 #optionSidebar a:hover {
     text-decoration: none;
 }
 
-/* Position and style the close button (top right corner) */
 #optionSidebar .closebtn {
     position: absolute;
     z-index: 1;
@@ -146,28 +119,24 @@
     white-space: nowrap;
 }
 
-/* Extra small devices (portrait phones, less than 576px)*/
-@media (max-width: 575.98px) { 
-    
+@media (max-width: 767.98px) {
     .navbar .navbar-header,
     .navbar .navbar-text {
-      position: static; /* Cambiar a posición estática */
-      display: inline-block; /* Cambiar a display inline-block */
-      align-items: normal; /* Cambiar a alineación normal */
-      left: auto; /* Resetear la propiedad left */
-      right: auto; /* Resetear la propiedad right */
+        position: static;
+        display: inline-block;
+        align-items: normal;
+        left: auto;
+        right: auto;
     }
     
     .navbar-nav > li > a {
-        /*(80px - line-height of 27px) / 2 = 26.5px */
-        padding-top: 15px; /*26.5px*/
-        padding-bottom: 15px; /*26.5px*/
-        line-height: 0; /*27px*/
+        padding-top: 15px;
+        padding-bottom: 15px;
+        line-height: 0;
     }
     
     .topBarElement:hover {
-        /*border-bottom: 0.313em solid dodgerblue;*/
-        background-color: #CBCACA73; /* color: #CBCACA, opacidad: #4D = 30% #*/
+        background-color: #CBCACA73;
         border-radius: 10px;
         padding-left: 15px;
         padding-right: 15px;
@@ -185,78 +154,3 @@
         text-decoration: none;
     }
 }
-
-/* Small devices (landscape phones, 576px and up) */
-@media (min-width: 576px) and (max-width: 767.98px) {  
-   
-    .navbar .navbar-header,
-    .navbar .navbar-text {
-      position: static; /* Cambiar a posición estática */
-      display: inline-block; /* Cambiar a display inline-block */
-      align-items: normal; /* Cambiar a alineación normal */
-      left: auto; /* Resetear la propiedad left */
-      right: auto; /* Resetear la propiedad right */
-    }
-    
-    .navbar-nav > li > a {
-        /*(80px - line-height of 27px) / 2 = 26.5px */
-        padding-top: 15px; /*26.5px*/
-        padding-bottom: 15px; /*26.5px*/
-        line-height: 0; /*27px*/
-    }
-    
-    .topBarElement:hover {
-        /*border-bottom: 0.313em solid dodgerblue;*/
-        background-color: #CBCACA73; /* color: #CBCACA, opacidad: #4D = 30% #*/
-        border-radius: 10px;
-        padding-left: 15px;
-        padding-right: 15px;
-    }
-    
-    #navbarTogglerMenu ul li {
-        margin-left: 0.063em;
-        margin-top: 0.5em;
-        margin-bottom: 0.5em;
-    }
-    
-    #homeLink, #galleryLink, #aboutUsLink {
-        display: flex;
-        flex-direction: row;
-        text-decoration: none;
-    }
-}
-
-/* Medium devices (tablets, 768px and up) */
-@media (min-width: 768px) and (max-width: 991.98px) {
-
-
-}
-
-/* Large devices (desktops, 992px and up) */
-@media (min-width: 992px) and (max-width: 1199.98px) {}
-
-/* Extra large devices (large desktops, 1200px and up) */
-@media (min-width: 1200px) {
-    
-    /*#topNavbar { 
-        padding: 0;
-    }
-    
-    .navbar .navbar-header,
-    .navbar .navbar-text {
-        position: absolute;
-        top: 0;
-        bottom: 0;
-        display: flex;
-        align-items: center;
-    }
-
-    .navbar .navbar-header {
-        left: 0;
-    }
-
-    .navbar .navbar-text {
-        right: 0;
-    }*/
-}
-

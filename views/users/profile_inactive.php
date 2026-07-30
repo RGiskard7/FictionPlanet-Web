@@ -16,7 +16,7 @@ include TEMPLATES_PATH . 'head.inc.php';
                                 <img src="<?= IMAGES_URL . "avatar_2x.png"; ?>" class="img-thumbnail rounded mb-4" alt="avatar">
                             </div>
                             <div class="col-md-8">
-                                <h2 id="profileUsername"><?= $userName; ?></h2>
+                                <h2 id="profileUsername"><?= h($userName); ?></h2>
                                 <span class="badge badge-pill badge-danger mb-1">Perfil suspendido</span>
                             </div>
                         </div>

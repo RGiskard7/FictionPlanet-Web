@@ -19,12 +19,13 @@
         <!--<link rel="shortcut icon" type="image/png" href="<?= IMAGES_URL . "logo8.png"; ?>">-->
         <link rel="shortcut icon" type="image/png" href="<?= IMAGES_URL . "logo_gpt_3.png"; ?>">
 
-        <link rel="stylesheet" href="<?= STATIC_URL . "css/style.css"; ?>">
         <!-- Bootstrap CSS -->
         <link rel="stylesheet" href="<?= STATIC_URL . "css/bootstrap.min.css"; ?>">
         <!-- Tablas bootstrap -->
         <link rel="stylesheet" href="<?= STATIC_URL . "css/dataTables.bootstrap4.min.css"; ?>">
-        <link rel="stylesheet" href="<?= STATIC_URL . "css/buttons.bootstrap4.min"; ?>">
+        <link rel="stylesheet" href="<?= STATIC_URL . "css/buttons.bootstrap4.min.css"; ?>">
+        
+        <link rel="stylesheet" href="<?= STATIC_URL . "css/style.css"; ?>">
         
         <link rel="stylesheet" href="<?= STATIC_URL . "css/jquery-ui.css"; ?>">
         

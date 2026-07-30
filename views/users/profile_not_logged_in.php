@@ -32,7 +32,7 @@ include TEMPLATES_PATH . 'head.inc.php';
                                 <img src="<?= IMAGES_URL . "avatar_2x.png"; ?>" class="img-thumbnail rounded mb-4" alt="avatar">
                             </div>
                             <div class="col-md-8">
-                                <h2 id="profileUsername"><?= $user->get_user_name(); ?></h2>
+                                <h2 id="profileUsername"><?= h($user->get_user_name()); ?></h2>
                                 <i class="fa fa-calendar mr-2"></i><strong>Miembro registrado desde: </strong><?= date('d-m-Y H:i:s', strtotime($user->get_reg_date()));?></br>
                                 <i class="fa fa-clock-o mr-2"></i><strong>Último acceso al sitio: </strong><?= (!is_null($user->get_last_access_date())) ? date('d-m-Y H:i:s', strtotime($user->get_last_access_date())) : "Nunca"; ?></br>
                                 
@@ -44,7 +44,7 @@ include TEMPLATES_PATH . 'head.inc.php';
                                 
                                 <?php if (Session::is_started() && $_SESSION['permissions'][MDL_USERS]['r']): ?> 
                                 <span class="badge badge-pill badge-secondary mt-2">
-                                <?= $userRole->get_sp_name(); ?>
+                                <?= h($userRole->get_sp_name()); ?>
                                 </span>
                                 <span class="badge badge-pill badge-secondary mb-1">  
                                 <?= ($user->is_active() == 1) ? "Activo" : "No activo"; ?>
@@ -108,7 +108,7 @@ include TEMPLATES_PATH . 'head.inc.php';
                                         <div id="postListCard" class="card bg-white border">
                                             <div class='card-body mr-2 ml-2'>
                                             <?php
-                                            $urlPager = "/users/profile/" . $user->get_user_name() . "/posts/";
+                                            $urlPager = "/users/profile/" . h($user->get_user_name()) . "/posts/";
                                             $pager = new Pager($urlPager, $numVisiblePosts, $postsPerPage, $maxLinksPager, $currentPagePost); // PAGINATOR
                                             $htmlPager = $pager->get_data_pager();
 
@@ -124,7 +124,7 @@ include TEMPLATES_PATH . 'head.inc.php';
                                 <div class="row">
                                     <div class="col-md-12">   
                                         <?php
-                                        $urlPager = "/users/profile/" . $user->get_user_name() . "/image_gallery/";
+                                        $urlPager = "/users/profile/" . h($user->get_user_name()) . "/image_gallery/";
                                         $pager = new Pager($urlPager, $numVisibleImages, $imagesPerPage, $maxLinksPager, $currentPageImage); // PAGINATOR
                                         $htmlPager = $pager->get_data_pager();
 

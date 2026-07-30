@@ -8,7 +8,7 @@ include TEMPLATES_PATH . 'head.inc.php';
 ?>
 
 <div id="main">
-    <div class="container-fluid">
+    <div class="container">
         <div id="createPostCard" class="card gmd-0 bg-white">
             <div class="card-header">
                 <div class="row text-center">
@@ -25,7 +25,7 @@ include TEMPLATES_PATH . 'head.inc.php';
                     <?= Session::csrf_input(); ?>
                     <input type="hidden" name="postID" class="form-control" value="<?= $post->get_id(); ?>">
                     <input type="hidden" name="postURL" class="form-control" value="<?= $post->get_url(); ?>">
-                    <input type="hidden" name="oldPostTitle" class="form-control" value="<?= $post->get_title(); ?>">
+                    <input type="hidden" name="oldPostTitle" class="form-control" value="<?= h($post->get_title()); ?>">
                     <?php
                     if (isset($data['validator'])) {
                         $validator = $data['validator'];
@@ -42,7 +42,7 @@ include TEMPLATES_PATH . 'head.inc.php';
                 
                 <div class="card form-group">
                     <div class="card-header">
-                        <h5><i class="fa fa-paperclip" aria-hidden="true"></i>&nbsp&nbsp&nbspAdjuntar nuevos archivos&nbsp&nbsp<small><em>(Máximo 5 MB por archivo)</em></small></h5>
+                            <h5><i class="fa fa-paperclip" aria-hidden="true"></i>&nbsp;&nbsp;&nbsp;Adjuntar nuevos archivos&nbsp;&nbsp;<small><em>(Maximo 5 MB por archivo)</em></small></h5>
                     </div>
                     <div class="card-body p-4">
                         <input type="file" id="uploadFile" name="uploadFile[]" multiple="" data-userid="<?= $_SESSION['idUser']; ?>" form="formUpdatePost">

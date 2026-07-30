@@ -129,9 +129,13 @@ class NewUserValidator {
         } else {
             $this->email = $email;
         }
+
+        if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+            return "El formato del email no es valido.";
+        }
         
         if (UserDAO::is_email_exist($connection, $email)) {
-            return "Este email ya está en uso. Prueba otro diferente.";
+            return "Este email ya esta en uso. Prueba otro diferente.";
         }
     
         return "";

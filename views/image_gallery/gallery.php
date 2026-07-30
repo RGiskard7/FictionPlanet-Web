@@ -27,15 +27,15 @@ include TEMPLATES_PATH . 'modals/upload_new_image_modal.inc.php';
                     </div>
                 </div>
             </div>
-            <div class="card-body pl-6 pr-6 pb-4" style="padding: 40px;">
-                <?php if (Session::is_started()): ?>
-                <!--<div class="row pb-4">
+            <div class="card-body p-4">
+                <?php if (Session::is_started() && ($_SESSION['permissions'][MDL_IMAGES]['w'] ?? 0)): ?>
+                <div class="row mb-4">
                     <div class="col-md-12">
                         <button id="uploadNewImageBtn" name="uploadNewImageBtn" type="button" class="btn btn-primary gmd-1">
-                            <i class="fa fa-plus-circle" aria-hidden="true"></i>&nbsp;&nbsp;Subir nueva imágen
+                            <i class="fa fa-plus-circle" aria-hidden="true"></i>&nbsp;&nbsp;Subir nueva imagen
                         </button>
                     </div>   
-                </div>-->
+                </div>
                 <?php endif; ?>
                 <?php
                 $urlPager = "/image_gallery/";
