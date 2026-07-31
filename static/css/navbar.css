@@ -3,124 +3,56 @@
 #topNavbar {
     transition: margin-left .5s;
     top: 0;
-    z-index: 5;
-    min-height: 52px;
+    z-index: 1030;
+    height: 52px;
+    padding-top: 0 !important;
+    padding-bottom: 0 !important;
+    padding-left: 0.5rem;
+    padding-right: 0.5rem;
+}
+
+#topNavbar .container-fluid {
+    height: 100%;
     padding: 0;
     display: flex;
     align-items: stretch;
 }
 
-#topNavbar .container-fluid {
+.navbar-brand {
     padding: 0;
     display: flex;
-    align-items: stretch;
+    align-items: center;
 }
 
 .navbar .navbar-header {
     display: flex;
     align-items: center;
-    padding-left: 0.75rem;
-    width: 280px;
-    flex-shrink: 0;
+    flex: 1 0 0;
 }
 
 .navbar .navbar-text {
     display: flex;
     align-items: center;
     justify-content: flex-end;
-    padding-right: 0.75rem;
-    width: 200px;
-    flex-shrink: 0;
+    flex: 1 0 0;
 }
 
 #navbarTogglerMenu {
-    justify-content: center;
-    flex: 1 1 auto;
+    flex: 0 0 auto;
+}
+
+.navbar-nav {
+    height: 100%;
 }
 
 .navbar-nav .nav-item {
+    height: 100%;
     display: flex;
-    align-items: stretch;
 }
 
-#sidebarTogglerBtn {
-    margin: 0;
-}
-
-#loginBtn {
-    padding: 0;
-    margin-right: 0.313em;
-}
-
-#optionSidebar {
-    height: 100%;
-    width: 0;
-    position: fixed;
-    z-index: 4;
-    top: 0;
-    left: 0;
-    background-color: #fff;
-    overflow-x: hidden;
-    padding-top: 4em;
-    transition: 0.3s;
-    white-space: nowrap;
-}
-
-#optionSidebar a {
-    text-decoration: none;
-    padding: 8px 8px 8px 25px;
-    font-size: 20px;
-    display: block;
-    transition: 0.3s;
-    margin-right: 20px;
-}
-
-#optionSidebar i {
-    margin-right: 20px;
-}
-
-#optionSidebar a:hover {
-    text-decoration: none;
-}
-
-#optionSidebar .closebtn {
-    position: absolute;
-    z-index: 1;
-    top: 0;
-    right: 0;
-    font-size: 36px;
-    margin-left: 70px;
-}
-
-#chatSidebar {
-    height: 100%;
-    width: 0;
-    position: fixed;
-    z-index: 5;
-    top: 0;
-    right: 0;
-    background-color: #fff;
-    overflow: auto;
-    transition: 0.3s;
-    white-space: nowrap;
-}
 
 @media (max-width: 767.98px) {
-    #topNavbar {
-        height: auto;
-        flex-wrap: wrap;
-    }
-    
-    .navbar-nav .nav-item {
-        height: auto;
-    }
-    
-    #navbarTogglerMenu ul li {
-        margin-top: 0.5em;
-        margin-bottom: 0.5em;
-    }
-
-    #optionSidebar {
-        padding-top: 3.5em;
-    }
+    #topNavbar { height: auto; padding: 0.5rem; }
+    .navbar-nav { height: auto; }
+    .navbar-nav .nav-item { height: auto; }
 }

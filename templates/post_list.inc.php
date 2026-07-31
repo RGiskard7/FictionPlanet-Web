@@ -11,7 +11,8 @@
         <div class="card mb-3">
             <div class="card-body">
                 <div class="d-flex align-items-center mb-3">
-                    <img src="<?= IMAGES_URL . "f2.png"; ?>" class="rounded-circle mr-2" width="40" height="40" alt="" style="border:2px solid #E4E6EB;padding:1px;">
+                    <?php $authorAv = $author->get_avatar(); ?>
+                    <img src="<?= $authorAv ? UPLOAD_IMG_GALLERY_URL . 'avatars/' . $authorAv : IMAGES_URL . 'avatar_2x.png'; ?>" class="rounded-circle mr-2" width="40" height="40" alt="" style="border:2px solid #E4E6EB;padding:1px;object-fit:cover;">
                     <div>
                         <a href="<?= PROFILE_SEO_URL . "/" . h($author->get_user_name()); ?>" class="font-weight-bold text-dark"><?= h($author->get_user_name()); ?></a>
                         <div class="text-muted" style="font-size:0.8rem;">

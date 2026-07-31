@@ -49,6 +49,8 @@ class Instant_messaging extends Controller {
 
                 Connection::open_connection();
                 $conversation = ChatMessageDAO::get_chat_message(Connection::get_connection(), $senderUserId, $receiverUserId);
+                $receiverUser = UserDAO::get_user_by_id(Connection::get_connection(), $receiverUserId);
+                $receiverAvatar = $receiverUser ? $receiverUser->get_avatar() : null;
                 Connection::close_connection();
 
                 ob_start(); // Abrir buffer

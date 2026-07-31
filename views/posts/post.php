@@ -17,7 +17,8 @@ include TEMPLATES_PATH . 'head.inc.php';
                 <h1 class="font-weight-bold mb-2"><?= h($post->get_title()); ?></h1>
                 
                 <div class="d-flex align-items-center text-muted small mb-3">
-                    <img src="<?= IMAGES_URL . "f2.png"; ?>" class="rounded-circle mr-2" width="28" height="28" alt="" style="border:1px solid #E4E6EB;">
+                    <?php $authorAv = $author->get_avatar(); ?>
+                    <img src="<?= $authorAv ? UPLOAD_IMG_GALLERY_URL . 'avatars/' . $authorAv : IMAGES_URL . 'avatar_2x.png'; ?>" class="rounded-circle mr-2" width="28" height="28" alt="" style="border:1px solid #E4E6EB;object-fit:cover;">
                     <a href="<?= PROFILE_SEO_URL . "/" . h($author->get_user_name()); ?>" class="font-weight-bold mr-2"><?= h($author->get_user_name()); ?></a>
                     <span class="mr-2"><?= date('d/m/Y H:i', strtotime($post->get_date_creation())); ?></span>
                     <?php if ($post->get_date_creation() !== $post->get_date_last_update()): ?>

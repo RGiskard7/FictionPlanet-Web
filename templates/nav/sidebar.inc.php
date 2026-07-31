@@ -2,7 +2,8 @@
 <div id="optionSidebar" class="gmd-2">
     <div class="p-3">
         <div class="text-center mb-3 p-3 border-bottom">
-            <img src="<?php echo IMAGES_URL . "f2.png"; ?>" class="rounded-circle mb-2" width="60" height="60" alt="avatar" style="border: 3px solid #1877F2; padding: 2px;">
+            <?php $av = $_SESSION['loggedInUser']->get_avatar(); ?>
+            <img src="<?= $av ? UPLOAD_IMG_GALLERY_URL . 'avatars/' . $av : IMAGES_URL . 'avatar_2x.png'; ?>" class="rounded-circle mb-2" width="60" height="60" alt="" style="border:3px solid #1877F2; padding:2px;object-fit:cover;">
             <div class="font-weight-bold"><?php echo h($_SESSION['loggedInUser']->get_first_name()); ?>&nbsp;<?php echo h($_SESSION['loggedInUser']->get_last_name()); ?></div>
             <small class="text-muted">@<?php echo h($_SESSION['loggedInUser']->get_user_name()); ?></small>
             <div><span class="badge badge-pill mt-1" style="background:#E7F3FF;color:#1877F2;"><?php echo h($_SESSION['role']->get_sp_name()); ?></span></div>

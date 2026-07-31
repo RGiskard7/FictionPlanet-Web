@@ -31,7 +31,8 @@ include TEMPLATES_PATH . 'modals/upload_new_image_modal.inc.php';
             <div class="card-body p-4">
                 <div class="row align-items-center">
                     <div class="col-lg-2 col-md-3 col-sm-12 text-center mb-3 mb-md-0">
-                        <img src="<?= IMAGES_URL . "avatar_2x.png"; ?>" class="rounded-circle" width="90" height="90" alt="avatar" style="border: 3px solid #E4E6EB; padding: 3px; object-fit: cover;">
+                        <?php $av = $user->get_avatar(); ?>
+                        <img src="<?= $av ? UPLOAD_IMG_GALLERY_URL . 'avatars/' . $av : IMAGES_URL . 'avatar_2x.png'; ?>" class="rounded-circle" width="90" height="90" alt="" style="border:3px solid #E4E6EB;padding:3px;object-fit:cover;">
                     </div>
                     <div class="col-lg-7 col-md-6 col-sm-12">
                         <h2 id="profileUsername" class="mb-1"><?= h($user->get_user_name()); ?></h2>
@@ -105,19 +106,16 @@ include TEMPLATES_PATH . 'modals/upload_new_image_modal.inc.php';
                                         <?php endif; ?>
                                     </ul>
                                    <div class="tab-content" id="pills-tabContent">
-                                        <div class="tab-pane fade show active" id="pills-home" role="tabpanel" aria-labelledby="pills-home-tab">
-                                             <div class="card mb-0">
-                                                 <div class='card-body'>
-                                                 <?php
+                                        <div class="tab-pane fade show active" id="pills-home" role="tabpanel">
+                                                <?php
                                                 $urlPager = "/users/profile/" . h($user->get_user_name()) . "/posts/";
-                                                $pager = new Pager($urlPager, $numVisiblePosts, $postsPerPage, $maxLinksPager, $currentPagePost); // PAGINATOR
+                                                $pager = new Pager($urlPager, $numVisiblePosts, $postsPerPage, $maxLinksPager, $currentPagePost);
                                                 $htmlPager = $pager->get_data_pager();
-
                                                 include TEMPLATES_PATH . 'post_list.inc.php';
                                                 ?>
-                                                </div>
-                                            </div></br>
-                                            <?php if ($htmlPager != "") echo $htmlPager; ?>
+                                            <?php if ($htmlPager != ""): ?>
+                                            <div class="text-center mt-3"><?= $htmlPager; ?></div>
+                                            <?php endif; ?>
                                         </div>
                                         <div class="tab-pane fade" id="pills-profile" role="tabpanel" aria-labelledby="pills-profile-tab">
                                             <?php include TEMPLATES_PATH . 'crud/post_profile_CRUD.inc.php'; ?>
@@ -131,7 +129,7 @@ include TEMPLATES_PATH . 'modals/upload_new_image_modal.inc.php';
 
                                             <?php if (Session::is_started() && ($_SESSION['permissions'][MDL_IMAGES]['w'] ?? 0)): ?>
 
-                                                    <button id="uploadNewImageBtn" name="uploadNewImageBtn" type="button" class="btn btn-primary gmd-1">
+                                                    <button id="uploadNewImageBtn" name="uploadNewImageBtn" type="button" class="btn btn-primary gmd-1 mb-3">
                                                         <i class="fa fa-plus-circle" aria-hidden="true"></i>&nbsp;&nbsp;Subir nueva imagen
                                                     </button>
 

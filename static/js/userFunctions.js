@@ -920,7 +920,31 @@ function checkStrength(password) {
     } else {
         $('#result').removeClass();
         $('#passwordType').addClass('strong');
-        return 'La contraseña es fuerte';
+        return 'La contrasena es fuerte';
     }
 };
+
+function uploadAvatar(input) {
+    if (input.files && input.files[0]) {
+        var formData = new FormData();
+        formData.append('avatar', input.files[0]);
+        $.ajax({
+            url: BASE_URL + 'users/upload_avatar',
+            type: 'POST',
+            data: formData,
+            processData: false,
+            contentType: false,
+            success: function(r) {
+                var resp = typeof r === 'string' ? JSON.parse(r) : r;
+                if (resp.success) {
+                    var url = BASE_URL + 'uploads/gallery/avatars/' + resp.avatar;
+                    $('#avatarPreview').attr('src', url);
+                } else {
+                    alert(resp.error || 'Error al subir la imagen');
+                }
+            },
+            error: function() { alert('Error al subir la imagen.'); }
+        });
+    }
+}
 

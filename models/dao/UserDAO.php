@@ -13,7 +13,7 @@ class UserDAO {
 
             $objectUser = new UserModel($record["id"], $record["user_name"], $record["first_name"], $record["last_name"], $record["email"], $record["password"], 
                     $record["address"], $record["country"], $record["phone_number"], $record["role_id"], $record["active"], $record["reg_date"], 
-                    $record["last_update_date"], $record["last_access_date"]);
+                    $record["last_update_date"], $record["last_access_date"], $record["avatar"]);
 
             $userArray[] = $objectUser;
         }
@@ -99,7 +99,7 @@ class UserDAO {
                 if (!empty($result)) {
                     $userObject = new UserModel($result["id"], $result["user_name"], $result["first_name"], $result["last_name"], $result["email"], 
                             $result["password"], $result["address"], $result["country"], $result["phone_number"], $result["role_id"], $result["active"], 
-                            $result["reg_date"], $result["last_update_date"], $result["last_access_date"]);
+                            $result["reg_date"], $result["last_update_date"], $result["last_access_date"], $result["avatar"]);
                 }
             } catch (PDOException $e) {
                 throw new AppException("Database error: " . $e->getMessage(), 500, $e);
@@ -122,7 +122,7 @@ class UserDAO {
                 if (!empty($result)) {
                     $userObject = new UserModel($result["id"], $result["user_name"], $result["first_name"], $result["last_name"], $result["email"], 
                             $result["password"], $result["address"], $result["country"], $result["phone_number"], $result["role_id"], $result["active"], 
-                            $result["reg_date"], $result["last_update_date"], $result["last_access_date"]);
+                            $result["reg_date"], $result["last_update_date"], $result["last_access_date"], $result["avatar"]);
                 }
             } catch (PDOException $e) {
                 throw new AppException("Database error: " . $e->getMessage(), 500, $e);
@@ -145,7 +145,7 @@ class UserDAO {
                 if (!empty($result)) {
                     $userObject = new UserModel($result["id"], $result["user_name"], $result["first_name"], $result["last_name"], $result["email"], 
                             $result["password"], $result["address"], $result["country"], $result["phone_number"], $result["role_id"], $result["active"], 
-                            $result["reg_date"], $result["last_update_date"], $result["last_access_date"]);
+                            $result["reg_date"], $result["last_update_date"], $result["last_access_date"], $result["avatar"]);
                 }
             } catch (PDOException $e) {
                 throw new AppException("Database error: " . $e->getMessage(), 500, $e);
@@ -318,5 +318,20 @@ class UserDAO {
         } else {
             return false; // 0
         }
+    }
+
+    public static function update_avatar($connection, $userId, $avatar) {
+        if (isset($connection)) {
+            try {
+                $sql = "UPDATE users SET avatar = :avatar WHERE id = :id;";
+                $sentence = $connection->prepare($sql);
+                $sentence->bindValue(":avatar", $avatar, PDO::PARAM_STR);
+                $sentence->bindValue(":id", $userId, PDO::PARAM_INT);
+                return $sentence->execute();
+            } catch (PDOException $e) {
+                throw new AppException("Database error: " . $e->getMessage(), 500, $e);
+            }
+        }
+        return false;
     }
 }

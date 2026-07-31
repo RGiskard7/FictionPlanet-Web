@@ -8,6 +8,15 @@
                 </button>
             </div>
             <div class="modal-body">
+                <div class="text-center mb-3">
+                    <?php $av = $_SESSION['loggedInUser']->get_avatar(); ?>
+                    <img id="avatarPreview" src="<?= $av ? UPLOAD_IMG_GALLERY_URL . 'avatars/' . $av : IMAGES_URL . 'avatar_2x.png'; ?>" class="rounded-circle" width="80" height="80" style="object-fit:cover;border:3px solid #E4E6EB;">
+                    <div class="mt-2">
+                        <label class="btn btn-sm btn-outline-primary" style="cursor:pointer;border-radius:20px;">
+                            Cambiar foto <input type="file" id="avatarInput" name="avatar" accept="image/*" style="display:none;" onchange="uploadAvatar(this)">
+                        </label>
+                    </div>
+                </div>
                 <form class="form-horizontal" role="form">
                     <div class="form-group">
                         <label for="userNameEditProfile"><strong>Nombre de usuario <strong style="color: red;">*</strong></strong></label>

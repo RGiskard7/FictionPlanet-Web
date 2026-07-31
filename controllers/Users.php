@@ -598,9 +598,11 @@ class Users extends Controller {
                 for ($i = 0; $i < count($contactObjectsArray); $i++) {
                     $user = UserDAO::get_user_by_id(Connection::get_connection(), $contactObjectsArray[$i]->get_contact_id());
                     $userName = $user->get_user_name();
+                    $av = $user->get_avatar();
+                    $avatarUrl = $av ? UPLOAD_IMG_GALLERY_URL . 'avatars/' . $av : IMAGES_URL . 'avatar_2x.png';
                     
-                    $userContactsTable[$i]['user_name'] = '<img src="' . IMAGES_URL . 'f2.png" class="avatar img-circle img-thumbnail '
-                        . 'mr-2" alt="avatar" style="border:0;"><a href="/users/profile/"' . $userName . '>' . $userName . '</a>';
+                    $userContactsTable[$i]['user_name'] = '<img src="' . $avatarUrl . '" class="rounded-circle mr-2" width="32" height="32" '
+                        . 'style="object-fit:cover;border:1px solid #E4E6EB;" alt=""><a href="/users/profile/' . $userName . '">' . $userName . '</a>';
                     $userContactsTable[$i]['actions'] = '<a href="/users/profile/' . $userName . '"><button type="button" class="btn btn-secondary btn-sm gmd-1">'
                         . 'Ver perfil&nbsp; <i class="fa fa-chevron-right" aria-hidden="true"></i></button></a>';
                 }
@@ -625,8 +627,10 @@ class Users extends Controller {
                 
                 if (!is_null($allUsers)) {
                     for ($i = 0; $i < count($allUsers); $i++) {
-                        $allUserTable[$i]['user_name'] = '<img src="' . IMAGES_URL . 'f2.png" class="avatar img-circle img-thumbnail '
-                            . 'mr-2" alt="avatar" style="border:0;"><a href="/users/profile/"' . $allUsers[$i]->get_user_name() . '>' . $allUsers[$i]->get_user_name() . '</a>';
+                        $av = $allUsers[$i]->get_avatar();
+                        $avatarUrl = $av ? UPLOAD_IMG_GALLERY_URL . 'avatars/' . $av : IMAGES_URL . 'avatar_2x.png';
+                        $allUserTable[$i]['user_name'] = '<img src="' . $avatarUrl . '" class="rounded-circle mr-2" width="32" height="32" '
+                            . 'style="object-fit:cover;border:1px solid #E4E6EB;" alt=""><a href="/users/profile/' . $allUsers[$i]->get_user_name() . '">' . $allUsers[$i]->get_user_name() . '</a>';
                         if (!ContactDAO::is_contact_exist(Connection::get_connection(), $_SESSION['idUser'], $allUsers[$i]->get_id())) {
                             if (FriendRequestsDAO::is_friend_request_send(Connection::get_connection(), $allUsers[$i]->get_id(), $_SESSION['idUser']) 
                                     || FriendRequestsDAO::is_friend_request_send(Connection::get_connection(), $_SESSION['idUser'], $allUsers[$i]->get_id())) {
@@ -666,9 +670,11 @@ class Users extends Controller {
                 for ($i = 0; $i < count($frndRequestObjectsArray); $i++) {
                     $user = UserDAO::get_user_by_id(Connection::get_connection(), $frndRequestObjectsArray[$i]->get_from_user_id()); 
                     $request = $frndRequestObjectsArray[$i];
+                    $av = $user->get_avatar();
+                    $avatarUrl = $av ? UPLOAD_IMG_GALLERY_URL . 'avatars/' . $av : IMAGES_URL . 'avatar_2x.png';
                     
-                    $friendRequestTable[$i]['user_name'] = '<img src="' . IMAGES_URL . 'f2.png" class="avatar img-circle img-thumbnail '
-                            . 'mr-2" alt="avatar" style="border:0;"><a href="/users/profile/"' . $user->get_user_name() . '>' . $user->get_user_name() . '</a>';
+                    $friendRequestTable[$i]['user_name'] = '<img src="' . $avatarUrl . '" class="rounded-circle mr-2" width="32" height="32" '
+                            . 'style="object-fit:cover;border:1px solid #E4E6EB;" alt=""><a href="/users/profile/' . $user->get_user_name() . '">' . $user->get_user_name() . '</a>';
                     $friendRequestTable[$i]['actions'] = '<button type="button" class="rejectRequestBtn btn btn-danger btn-sm gmd-1" id="rejectRequestBtn_' . $request->get_id() . '" '
                             . 'data-fromuserid="' . $user->get_id() . '" data-frndRequestid ="' . $request->get_id() . '">Eliminar</button>&nbsp;'
                             . '<button type="button" class="acceptRequestBtn btn btn-success btn-sm gmd-1" id="acceptRequestBtn_' . $request->get_id() . '" '
@@ -760,6 +766,44 @@ class Users extends Controller {
                 echo $response; 
             }
         }
+        exit;
+    }
+
+    public function upload_avatar() {
+        if (!Session::is_started()) { echo json_encode(['error' => 'No autorizado']); exit; }
+
+        if (isset($_FILES['avatar']) && $_FILES['avatar']['error'] === UPLOAD_ERR_OK) {
+            $ext = strtolower(pathinfo($_FILES['avatar']['name'], PATHINFO_EXTENSION));
+            if (!in_array($ext, ['jpg', 'jpeg', 'png'])) {
+                echo json_encode(['error' => 'Formato no valido. Usa JPG o PNG.']); exit;
+            }
+
+            $dir = ROOT_DIRECTORY . UPLOAD_IMG_GALLERY_DIR . 'avatars/';
+            if (!file_exists($dir)) mkdir($dir, 0777, true);
+
+            $filename = 'avatar_' . $_SESSION['idUser'] . '_' . time() . '.' . $ext;
+            $path = $dir . $filename;
+
+            if (move_uploaded_file($_FILES['avatar']['tmp_name'], $path)) {
+                list($w, $h) = getimagesize($path);
+                $src = $ext === 'png' ? imagecreatefrompng($path) : imagecreatefromjpeg($path);
+                $dst = imagecreatetruecolor(200, 200);
+                if ($ext === 'png') { imagealphablending($dst, false); imagesavealpha($dst, true); }
+                imagecopyresampled($dst, $src, 0, 0, 0, 0, 200, 200, $w, $h);
+                if ($ext === 'png') imagepng($dst, $path);
+                else imagejpeg($dst, $path, 85);
+                imagedestroy($src); imagedestroy($dst);
+
+                Connection::open_connection();
+                UserDAO::update_avatar(Connection::get_connection(), $_SESSION['idUser'], $filename);
+                $_SESSION['loggedInUser']->set_avatar($filename);
+                Connection::close_connection();
+
+                echo json_encode(['success' => true, 'avatar' => $filename]);
+                exit;
+            }
+        }
+        echo json_encode(['error' => 'Error al subir la imagen.']);
         exit;
     }
     

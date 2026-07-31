@@ -123,6 +123,57 @@ $(document).ready(function () {
         $('#preview').attr('src','static/images/80x80.png');
         $(this).find('form').trigger('reset');
     });
+
+    $(document).on('click', '.deleteImageBtn', function() {
+        var id = $(this).data('id');
+        var title = $(this).data('title');
+        swal({
+            title: "Eliminar imagen?",
+            text: "\"" + title + "\" se eliminara permanentemente.",
+            icon: "warning",
+            buttons: { cancel: "Cancelar", ok: { text: "Eliminar", className: "btn-danger" } },
+            dangerMode: true,
+        }).then(function(willDelete) {
+            if (willDelete) {
+                $.ajax({
+                    url: BASE_URL + 'image_gallery/delete',
+                    method: 'POST',
+                    data: { action: 'deleteImage', idImage: id },
+                    success: function(r) {
+                        if (r.success) { location.reload(); }
+                        else { swal("Error", "No se pudo eliminar.", "error"); }
+                    },
+                    error: function() { swal("Error", "Error de conexion.", "error"); }
+                });
+            }
+        });
+    });
+
+    $(document).on('click', '.editImageBtn', function() {
+        var id = $(this).data('id');
+        var currentTitle = $(this).data('title');
+        swal({
+            title: "Editar imagen",
+            content: {
+                element: "input",
+                attributes: { placeholder: "Nuevo titulo...", value: currentTitle, type: "text" }
+            },
+            buttons: { cancel: "Cancelar", ok: { text: "Guardar", className: "btn-primary" } },
+        }).then(function(newTitle) {
+            if (newTitle) {
+                $.ajax({
+                    url: BASE_URL + 'image_gallery/update',
+                    method: 'POST',
+                    data: { action: 'updateImage', idImage: id, title: newTitle, visible: 1 },
+                    success: function(r) {
+                        if (r.success) { location.reload(); }
+                        else { swal("Error", "No se pudo actualizar.", "error"); }
+                    },
+                    error: function() { swal("Error", "Error de conexion.", "error"); }
+                });
+            }
+        });
+    });
     
     function createCaption(element) {
         return '<button id="imageInfo" class="btn btn-success"><span>Más información</span></button>';

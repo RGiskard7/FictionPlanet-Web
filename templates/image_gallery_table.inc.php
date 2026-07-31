@@ -4,16 +4,24 @@
             <?php foreach($imageArray as $image): ?>
             <div class="col-sm-6 col-md-4 col-lg-3 mb-4">
                 <?php if (file_exists($image->get_path())): ?>
-                <a class="lightbox d-block" href="<?= $image->get_url(); ?>" data-title="<?= h($image->get_title()); ?>" 
-                   data-description="<?= h($image->get_description()); ?>" data-author="<?= $image->get_author_id(); ?>">
-                    <div class="card" style="overflow:hidden;">
-                        <img src="<?= $image->get_url(); ?>" class="card-img-top" alt="<?= h($image->get_title()); ?>" 
-                             style="height:200px;object-fit:cover;transition:transform 0.3s ease;">
-                        <div class="card-body py-2 px-3">
-                            <small class="font-weight-bold text-truncate d-block"><?= h($image->get_title()); ?></small>
+                <div class="card" style="overflow:hidden;">
+                    <a class="lightbox d-block" href="<?= $image->get_url(); ?>" data-title="<?= h($image->get_title()); ?>">
+                        <img src="<?= $image->get_url(); ?>" class="card-img-top" alt="" style="height:180px;object-fit:cover;">
+                    </a>
+                    <div class="card-body py-2 px-3">
+                        <small class="font-weight-bold text-truncate d-block"><?= h($image->get_title()); ?></small>
+                        <?php if (Session::is_started() && $image->get_author_id() == $_SESSION['idUser']): ?>
+                        <div class="d-flex mt-1">
+                            <?php if (($_SESSION['permissions'][MDL_IMAGES]['u'] ?? 0)): ?>
+                            <button class="btn btn-sm btn-outline-secondary editImageBtn" data-id="<?= $image->get_id(); ?>" data-title="<?= h($image->get_title()); ?>" title="Editar" style="font-size:0.7rem;padding:0.1rem 0.4rem;"><i class="fa fa-pencil"></i></button>
+                            <?php endif; ?>
+                            <?php if (($_SESSION['permissions'][MDL_IMAGES]['d'] ?? 0)): ?>
+                            <button class="btn btn-sm btn-outline-danger deleteImageBtn ml-1" data-id="<?= $image->get_id(); ?>" data-title="<?= h($image->get_title()); ?>" title="Eliminar" style="font-size:0.7rem;padding:0.1rem 0.4rem;"><i class="fa fa-trash"></i></button>
+                            <?php endif; ?>
                         </div>
+                        <?php endif; ?>
                     </div>
-                </a>
+                </div>
                 <?php endif; ?>
             </div>
             <?php endforeach; ?>

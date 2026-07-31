@@ -46,17 +46,7 @@
         include TEMPLATES_PATH . 'modals/data_confirm_modal.inc.php';
 
         include TEMPLATES_PATH . 'nav/top_navbar.inc.php';
-        include TEMPLATES_PATH . 'nav/sidebar.inc.php';
         include TEMPLATES_PATH . 'nav/chat_sidebar.inc.php';        
         ?>
         
         <a href="javascript:void(0);" id="scroll" class="gmd-5" title="Volver arriba">Top<span></span></a>
-        
-        <?php if (Session::is_started() && $_SESSION['permissions'][MDL_CHAT]['r']): ?>
-        <a href="javascript:void(0);" id="chatButton" class="gmd-5" title="Chats" onclick="chatSidebarToggler()">
-            <span id="allUnread" class="badge rounded-pill badge-danger mb-5 pull-right gmd-3" hidden></span>
-            <span id="iconChat">
-                <i class="fa fa-2x fa-commenting-o" aria-hidden="true" style="color: black;"></i> 
-            </span>   
-        </a>
-        <?php endif; ?>

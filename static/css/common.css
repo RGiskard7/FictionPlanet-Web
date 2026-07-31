@@ -59,31 +59,6 @@ div.dataTables_wrapper {
     opacity: 1;
 }
 
-#chatButton {
-    position: fixed;
-    right: 1.25em;
-    bottom: 5em;
-    width: 3.125em;
-    height: 3.125em;
-    background-color: #25D366;
-    border-radius: 3.75em;
-    text-align: center;
-    z-index: 3;
-}
-
-#chatButton #iconChat {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    margin-left: -1em;
-    margin-top: -1em;
-    height: 0;
-    width: 0;
-}
-
-#chatButton:hover {
-    background-color: #128C7E;
-    opacity: 1;
 }
 
 .gmd-0 {

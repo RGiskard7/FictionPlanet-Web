@@ -9,14 +9,9 @@
                             data-target="#navbarTogglerMenu" aria-controls="navbarTogglerMenu" aria-expanded="false">
                         <span class="navbar-toggler-icon"></span>
                     </button>
-                    <?php if (Session::is_started()): ?>   
-                        <button id="sidebarTogglerBtn" class="btn ml-1 d-none d-md-inline-flex" onclick="optionSidebarToggler()">
-                            <i id="iconToggleSidebar" class="fa fa-angle-double-right text-white"></i>
-                        </button>
-                    <?php endif; ?>
                 </div>
                 <div id="navbarTogglerMenu" class="collapse navbar-collapse">
-                    <ul class="navbar-nav mx-auto">
+                    <ul class="navbar-nav">
                         <li class="nav-item">
                             <a id="homeLink" class="nav-link nav-link-ico text-white" href="<?= BASE_URL; ?>">
                                 <i class="fa fa-home"></i><span>Inicio</span>
@@ -33,16 +28,18 @@
                             </a>
                         </li>
                     </ul>
+                    <div class="navbar-divider d-none d-md-block"></div>
                     <div class="navbar-text">
                         <?php if (Session::is_started()): ?>
                             <a id="userNameRigth" class="nav-link text-white" href="<?= PROFILE_SEO_URL . "/" . h($_SESSION['loggedInUser']->get_user_name()); ?>">
                                 <span><?= h($_SESSION['loggedInUser']->get_user_name()); ?></span>&nbsp;
-                                <i class="fa fa-2x fa-user-circle"></i>
+                                <?php $av = $_SESSION['loggedInUser']->get_avatar(); ?>
+                                <img src="<?= $av ? UPLOAD_IMG_GALLERY_URL . 'avatars/' . $av : IMAGES_URL . 'avatar_2x.png'; ?>" class="rounded-circle" width="32" height="32" style="object-fit:cover;border:2px solid rgba(255,255,255,0.5);" alt="">
                             </a>
                         <?php else: ?>
                             <a id="loginBtn" class="nav-link" href="<?= LOGIN_SEO_URL; ?>">
-                                <button class="btn btn-light" type="button" style="font-weight:600;border-radius:6px;font-size:0.9rem;">
-                                    <i class="fa fa-sign-in mr-1"></i>Iniciar sesion
+                                <button class="btn btn-outline-light" type="button" style="font-weight:600;border-radius:20px;font-size:0.875rem;padding:0.35rem 1.25rem;border-width:1.5px;">
+                                    Iniciar sesion
                                 </button>
                             </a>
                         <?php endif; ?>

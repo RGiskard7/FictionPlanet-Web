@@ -16,9 +16,10 @@ class UserModel {
     private $reg_date;
     private $last_update_date;
     private $last_access_date;
+    private $avatar;
 
     public function __construct($id, $user_name, $first_name, $last_name, $email, $password, $address, $country, $phone_number, $role, 
-            $active, $reg_date, $last_update_date, $last_access_date) {
+            $active, $reg_date, $last_update_date, $last_access_date, $avatar = null) {
         $this->id = $id;
         $this->user_name = $user_name;
         $this->first_name = $first_name;
@@ -33,6 +34,7 @@ class UserModel {
         $this->reg_date = $reg_date;
         $this->last_update_date = $last_update_date;
         $this->last_access_date = $last_access_date;
+        $this->avatar = $avatar;
     }
 
     public function get_id() {
@@ -145,5 +147,13 @@ class UserModel {
     
     public function set_last_access_date($last_access_date) {
         $this->last_access_date = $last_access_date;
+    }
+
+    public function get_avatar() {
+        return $this->avatar;
+    }
+
+    public function set_avatar($avatar) {
+        $this->avatar = $avatar;
     }
 }

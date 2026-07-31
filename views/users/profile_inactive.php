@@ -13,7 +13,8 @@ include TEMPLATES_PATH . 'head.inc.php';
                     <div class="col-lg-12">
                         <div class="row">
                             <div class="col-lg-2 text-center">
-                                <img src="<?= IMAGES_URL . "avatar_2x.png"; ?>" class="img-thumbnail rounded mb-4" alt="avatar">
+                                <?php $av = $data['user']->get_avatar(); ?>
+                                <img src="<?= $av ? UPLOAD_IMG_GALLERY_URL . 'avatars/' . $av : IMAGES_URL . 'avatar_2x.png'; ?>" class="rounded-circle" width="90" height="90" alt="" style="border:3px solid #E4E6EB;padding:3px;object-fit:cover;">
                             </div>
                             <div class="col-md-8">
                                 <h2 id="profileUsername"><?= h($userName); ?></h2>

@@ -1,4 +1,4 @@
-# FictionPlanet-Web
+# php-mvc-social-network
 
 ![PHP](https://img.shields.io/badge/PHP-8.1.1-blue?style=flat-square&logo=php)
 ![MySQL](https://img.shields.io/badge/MariaDB-10.4.21-orange?style=flat-square&logo=mariadb)
@@ -7,9 +7,14 @@
 
 ## Indice
 
-- [FictionPlanet-Web](#fictionplanet-web)
+- [php-mvc-social-network](#php-mvc-social-network)
   - [Indice](#indice)
   - [Descripcion del Proyecto](#descripcion-del-proyecto)
+  - [Capturas de Pantalla](#capturas-de-pantalla)
+    - [Pagina de Inicio](#pagina-de-inicio)
+    - [Perfil de Usuario](#perfil-de-usuario)
+    - [Publicaciones](#publicaciones)
+    - [Chat en Vivo](#chat-en-vivo)
   - [Aspectos Tecnicos](#aspectos-tecnicos)
   - [Funcionalidades](#funcionalidades)
   - [Estructura del Proyecto](#estructura-del-proyecto)
@@ -28,11 +33,6 @@
     - [Flujo de trabajo recomendado](#flujo-de-trabajo-recomendado)
     - [Convenciones de código](#convenciones-de-código)
     - [Consejos para extender la aplicación](#consejos-para-extender-la-aplicación)
-  - [Capturas de Pantalla](#capturas-de-pantalla)
-    - [Página de Inicio](#página-de-inicio)
-    - [Perfil de Usuario](#perfil-de-usuario)
-    - [Publicaciones](#publicaciones)
-    - [Chat en Vivo](#chat-en-vivo)
   - [Seguridad Implementada](#seguridad-implementada)
   - [Desarrollo](#desarrollo)
     - [Dependencias](#dependencias)
@@ -42,9 +42,31 @@
 
 ## Descripcion del Proyecto
 
-FictionPlanet es una aplicación web que implementa una red social completa, desarrollada con propósitos didácticos y educativos. El proyecto demuestra la implementación de un sistema web completo con arquitectura MVC (Modelo-Vista-Controlador) y patrón DAO (Data Access Object) en PHP. 
+El proyecto php-mvc-social-network (Fiction Planet) es una red social completa construida desde cero con PHP 8.1, MySQL y jQuery. Implementa un framework MVC propio con Front Controller, patrón DAO para abstracción de base de datos, sistema de permisos RBAC granular, mensajería instantánea, galería de imágenes, calendario de eventos y un panel de administración de usuarios y roles.
 
-Esta página web no está siendo utilizada para ningún objetivo comercial, y surge únicamente como proyecto personal y como ejemplo de las capacidades adquiridas. Tanto el nombre como el logo son elementos provisionales, así como algunos ejemplos para rellenar texto o diversas imágenes.
+El proyecto no tiene dependencias externas de frameworks PHP — todo el núcleo (enrutamiento, sesiones, validación, conexión a base de datos, manejo de errores) está implementado manualmente, lo que demuestra comprensión profunda de los fundamentos de la arquitectura web.
+
+## Capturas de Pantalla
+
+### Pagina de Inicio
+<p align="center">
+  <img src="doc/images/imagen_1.png" alt="Pagina de Inicio" width="700">
+</p>
+
+### Perfil de Usuario
+<p align="center">
+  <img src="doc/images/imagen_3.png" alt="Perfil de Usuario" width="700">
+</p>
+
+### Publicaciones
+<p align="center">
+  <img src="doc/images/imagen_2.png" alt="Lista de Publicaciones" width="700">
+</p>
+
+### Chat en Vivo
+<p align="center">
+  <img src="doc/images/imagen_5.png" alt="Sistema de Chat" width="700">
+</p>
 
 ## Aspectos Tecnicos
 
@@ -274,10 +296,9 @@ La aplicación ha sido diseñada siguiendo principios robustos de ingeniería de
 FictionPlanet implementa un conjunto completo de funcionalidades que emulan una red social moderna:
 
 - **Sistema de Usuarios**:
-  - Registro y autenticación segura de usuarios
-  - Perfiles personalizables con avatar, datos personales y configuración
-  - Panel de administración de usuarios (activar/desactivar, cambiar roles)
-  - Recuperación de contraseñas olvidadas
+  - Registro y autenticacion segura de usuarios
+  - Perfiles personalizables con avatar, datos personales y configuracion
+  - Panel de administracion de usuarios (activar/desactivar, cambiar roles)
 
 - **Control de Acceso**:
   - Sistema de roles predefinidos (Root, Administrador, Usuario registrado)
@@ -290,11 +311,10 @@ FictionPlanet implementa un conjunto completo de funcionalidades que emulan una 
   - Gestión de visibilidad de publicaciones
   - Sistema de paginación para listar publicaciones
 
-- **Comunicación entre Usuarios**:
+- **Comunicacion entre Usuarios**:
   - Sistema de solicitudes de amistad (enviar, aceptar, rechazar)
   - Lista de contactos/amigos
-  - Mensajería instantánea entre usuarios con indicador de estado (online/offline)
-  - Notificaciones en tiempo real
+  - Mensajeria instantanea entre usuarios
 
 - **Galería de Imágenes**:
   - Carga y gestión de imágenes personales
@@ -320,17 +340,17 @@ FictionPlanet implementa un conjunto completo de funcionalidades que emulan una 
 
 ```
 FictionPlanet-Web/
-├── app/                  # Recursos específicos de la aplicación
 ├── controllers/          # Controladores MVC
-│   ├── About_us.php      # Página de información sobre el proyecto
-│   ├── Fault.php         # Gestión de errores HTTP
-│   ├── Home.php          # Controlador de página principal
-│   ├── Image_gallery.php # Gestión de galerías de imágenes
+│   ├── About_us.php      # Pagina de informacion sobre el proyecto
+│   ├── Calendar.php      # Gestion de eventos de calendario
+│   ├── Fault.php         # Gestion de errores HTTP
+│   ├── Home.php          # Controlador de pagina principal
+│   ├── Image_gallery.php # Gestion de galerias de imagenes
 │   ├── Instant_messaging.php # Sistema de chat en vivo
-│   ├── Login.php         # Autenticación de usuarios
-│   ├── Posts.php         # Gestión de publicaciones
-│   ├── Roles.php         # Administración de roles y permisos
-│   └── Users.php         # Gestión de usuarios y perfiles
+│   ├── Login.php         # Autenticacion de usuarios
+│   ├── Posts.php         # Gestion de publicaciones
+│   ├── Roles.php         # Administracion de roles y permisos
+│   └── Users.php         # Gestion de usuarios y perfiles
 ├── doc/                  # Documentación del proyecto
 │   └── images/           # Capturas de pantalla para documentación
 ├── libs/                 # Bibliotecas y utilidades
@@ -641,10 +661,8 @@ XAMPP es un paquete que incluye Apache, MySQL/MariaDB, PHP y phpMyAdmin, lo que 
      - Desplazarse hacia abajo y hacer clic en "Continuar"
      - Esperar a que se complete la importación (aparecerá un mensaje de éxito)
 
-6. **Configurar la aplicación** (ver detalles en la sección de Configuración):
-   - En `config.inc.php`, verificar/ajustar:
-     - `BASE_DIR` (ruta de instalación)
-     - Credenciales de base de datos (normalmente no requieren cambios con XAMPP)
+6. **Configurar la aplicacion** (ver detalles en la seccion de Configuracion):
+   - Copia `.env.example` a `.env` y edita las credenciales de base de datos
 
 7. **Configurar permisos de directorios**:
    - **Windows**:
@@ -1018,37 +1036,6 @@ Para mantener la coherencia con el proyecto existente, sigue estas convenciones:
   - Para depurar variables, usa `error_log(print_r($variable, true))`
   - Habilita temporalmente `display_errors` para desarrollo
 
-## Capturas de Pantalla
-
-### Página de Inicio
-<p align="center">
-  <img src="doc/images/imagen_1.png" alt="Página de Inicio" width="700">
-</p>
-
-### Perfil de Usuario
-<p align="center">
-  <img src="doc/images/imagen_3.png" alt="Perfil de Usuario" width="700">
-</p>
-<p align="center">
-  <img src="doc/images/imagen_6.png" alt="Perfil de Usuario - Detalles" width="700">
-</p>
-
-### Publicaciones
-<p align="center">
-  <img src="doc/images/imagen_2.png" alt="Lista de Publicaciones" width="700">
-</p>
-<p align="center">
-  <img src="doc/images/imagen_4.png" alt="Detalle de Publicación" width="700">
-</p>
-<p align="center">
-  <img src="doc/images/imagen_7.png" alt="Creación de Publicación" width="700">
-</p>
-
-### Chat en Vivo
-<p align="center">
-  <img src="doc/images/imagen_5.png" alt="Sistema de Chat" width="700">
-</p>
-
 ## Seguridad Implementada
 
 FictionPlanet implementa diversas medidas de seguridad:
@@ -1198,7 +1185,7 @@ Ver seccion [Instalacion](#instalacion) para despliegue con Docker.
 
 ### Convenciones
 
-- PHP 8.1+, PSR-4 autoloading via Composer
+- PHP 8.1+, classmap autoloading via Composer
 - MVC propio con Front Controller
 - DAOs con PDO prepared statements
 - Sin dependencias externas de framework

@@ -7,19 +7,42 @@ $(document).ready(function() {
         updateAllUnreadMessageCount();
     }, 1000);
            
-    $(document).on('click', '.startChatButton', function(){
-        var recieverUserId = $(this).data('touserid');
-        var recieverUserName = $(this).data('tousername');
-        showUserChatHistory(recieverUserId, recieverUserName);
+    $(document).on('click', '.chat-contact', function(){
+        var userId = $(this).data('touserid');
+        var userName = $(this).find('.font-weight-bold').text();
+        showUserChatHistory(userId, userName);
+    });
+
+    $(document).on('click', '.startChatButton', function(e){
+        e.stopPropagation();
+        var userId = $(this).data('touserid');
+        var userName = $(this).data('tousername');
+        showUserChatHistory(userId, userName);
     });	
     
     $(document).on('click', '.sendChatButton', function(){
-        var recieverUserId = $(this).data('touserid');
-        sendMessage(recieverUserId);
+        var userId = $(this).data('touserid');
+        sendMessage(userId);
+    });
+
+    $(document).on('keypress', '.chatMessage', function(e){
+        if (e.which === 13 && !e.shiftKey) {
+            e.preventDefault();
+            var userId = $(this).data('touserid');
+            sendMessage(userId);
+        }
     });
     
     $(document).on('click', '#btnBackUserChatList', function() {
         showUsersChatList();
+    });
+
+    $('#chatSearchInput').on('keyup', function() {
+        var val = $(this).val().toLowerCase();
+        $('.chat-contact').each(function() {
+            var name = $(this).find('.font-weight-bold').text().toLowerCase();
+            $(this).toggle(name.indexOf(val) > -1);
+        });
     });
 });
 
@@ -34,86 +57,64 @@ function showUsersChatList() {
     });
 }
 
-function showUserChatHistory(recieverUserId, recieverUserName){
+function showUserChatHistory(userId, userName){
     $.ajax({
         url: BASE_URL + 'instant_messaging/show_user_chat_history',
         method: 'POST',
-        data:{receiverUserId: recieverUserId, receiverUserName: recieverUserName, action: 'showUserChatHistory'},
+        data:{receiverUserId: userId, receiverUserName: userName, action: 'showUserChatHistory'},
         success:function(data){
             $('#chatWindowContainer').html(data);
-            $('#chatMessage_' + recieverUserId).emojioneArea({
-                pickerPosition: 'top',
-                toneStyle: 'bullet',
-                inline: null,
-                autocomplete: false
-            });
-            $('#unread_' + recieverUserId).html('');
+            $('#unread_' + userId).html('');
             $('.chatHistoryWindow').animate({scrollTop: 20000000}, 'fast');
         }
     });
 }
 
-function sendMessage(recieverUserId) {
-    var message = $.trim($('#chatMessage_' + recieverUserId).val());
+function sendMessage(userId) {
+    var message = $.trim($('#chatMessage_' + userId).val());
     if (message !== '') {
         $.ajax({
             url: BASE_URL + 'instant_messaging/insert_chat',
             method: 'POST',
-            data:{receiverUserId: recieverUserId, message: message, action: 'insertChat'},
+            data:{receiverUserId: userId, message: message, action: 'insertChat'},
             success:function(data) {
                 $('.chatHistoryWindow').html(data);
                 $('.chatHistoryWindow').animate({scrollTop: 20000000}, 'fast');
-                
-                var element = $('#chatMessage_' + recieverUserId).emojioneArea();
-                element[0].emojioneArea.setText('');
+                $('#chatMessage_' + userId).val('');
             }
 	});
     }
 }
 
-function isElementVisible(elem) {
-    var $elem = $(elem);
-    var $window = $(window);
-
-    var docViewTop = $window.scrollTop();
-    var docViewBottom = docViewTop + $window.height();
-
-    var elemTop = $elem.offset().top;
-    var elemBottom = elemTop + $elem.height();
-
-    return ((elemBottom <= docViewBottom) && (elemTop >= docViewTop));
-}
-
 function updateUserChatHistory() {
-    // each itera sobre elementos de una clase, si el elemento no esta en el doom
     $('.chatHistoryWindow').each(function() { 
-        //console.log("chatHistory visible");
-        var recieverUserId = $(this).data('touserid');
+        var userId = $(this).data('touserid');
+        if (!userId) return;
+        var wasAtBottom = this.scrollHeight - this.scrollTop - this.clientHeight < 50;
         $.ajax({
             url: BASE_URL + 'instant_messaging/update_user_chat_history',
             method: 'POST',
-            data:{receiverUserId: recieverUserId, action: 'updateUserChatHistory'},
+            data:{receiverUserId: userId, action: 'updateUserChatHistory'},
             success:function(data) {
-                $('.chatHistoryWindow').html(data);
-                
-                if (isElementVisible($('.chatHistoryWindow ul li:last'))) {
-                    $('.chatHistoryWindow').animate({scrollTop: 20000000}, 'fast');
+                $('.chatHistoryWindow[data-touserid=' + userId + ']').html(data);
+                if (wasAtBottom) {
+                    $('.chatHistoryWindow[data-touserid=' + userId + ']').animate({scrollTop: 20000000}, 'fast');
                 }
             }
         });
     });
-    //console.log("fuera del for");
 }
 
 function updateUnreadMessageCount() {
     $('.contact').each(function() {
-        var recieverUserId = $(this).data('touserid');
+        var userId = $(this).data('touserid');
+        if (!userId) return;
         $.ajax({
             url: BASE_URL + 'instant_messaging/update_unread_message',
             method: 'POST',
-            data:{receiverUserId:recieverUserId, action: 'updateUnreadMessage'},
+            data:{receiverUserId: userId, action: 'updateUnreadMessage'},
             success:function(data){
-                $('#unread_' + recieverUserId).html(data);					
+                $('#unread_' + userId).html(data);
             }
         });
     });
@@ -126,36 +127,25 @@ function updateAllUnreadMessageCount() {
         data:{action: 'updateAllUnreadMessage'},
         success:function(data){
             if (data > 0) {
-                $('#allUnread').removeAttr('hidden');
-                $('#allUnread').html(data);
-                
-                $('#allUnread2').removeAttr('hidden');
-                $('#allUnread2').html(data);
+                $('#allUnreadToggle').show().html(data);
+                $('#allUnread').removeAttr('hidden').html(data);
             } else {
+                $('#allUnreadToggle').hide();
                 $('#allUnread').attr('hidden', true);
-                
-                $('#allUnread2').attr('hidden', true);
-            }		
+            }
         }
     });
 }
 
-var chatOpen = true;
-function chatSidebarToggler() {
-    var mediaQuery = window.matchMedia('(max-width: 768px)');
-    if (chatOpen) {
-        if (mediaQuery.matches) {
-            document.getElementById("chatSidebar").style.width = "100%";
-        } else {
-            document.getElementById("chatSidebar").style.width = "447px";
-        }
-        document.getElementById("scroll").style.right = "465px";
-        // Al cerrar el menu desplegable del chat, se cierra el chat abierto
-        showUsersChatList(); 
-        chatOpen = false;
-    } else {
-        document.getElementById("chatSidebar").style.width = "0px"; // 85px
-        document.getElementById("scroll").style.right = "20px";
+var chatOpen = false;
+function chatPanelToggler() {
+    var body = document.getElementById("chatBody");
+    if (!chatOpen) {
+        body.classList.add("open");
         chatOpen = true;
+        showUsersChatList();
+    } else {
+        body.classList.remove("open");
+        chatOpen = false;
     }
 }
