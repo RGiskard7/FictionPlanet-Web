@@ -1,6 +1,14 @@
 {
-  "updatedAt": "2026-07-22T10:26:59.076Z",
+  "updatedAt": "2026-07-31T15:00:00.000Z",
   "command": "init",
-  "gitHead": "eff078fb1139f13ada5103dfe7c9cde4a3fea774",
-  "model": "deepseek/deepseek-v4-flash"
+  "gitHead": "11c00c2",
+  "model": "claude-sonnet-4-20250514",
+  "changes": [
+    "Added /openwiki/domain/calendar.md — FullCalendar event CRUD domain page",
+    "Added /openwiki/testing-and-security.md — PHPUnit tests, CSRF protection, rate limiting, security hardening",
+    "Updated /openwiki/quickstart.md — corrected 'no tests' claim, added Calendar and Testing links to nav table",
+    "Updated /openwiki/architecture/overview.md — added CSRF token section to Session library, permission + CSRF pattern, Security Features section",
+    "Updated /openwiki/architecture/source-map.md — added docker/ directory to tree, added Testing & Security related link",
+    "Updated /openwiki/operations/configuration.md — added Docker setup section, .env config section"
+  ]
 }

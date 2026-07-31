@@ -36,6 +36,86 @@ SOURCE /path/to/fictionplanetdb.sql;
 | Asimov | 1234 | Root |
 | Asimov2 | 1234 | Administrator |
 
+## Docker Setup
+
+The project includes a complete Docker setup for local development.
+
+### Docker Compose (`/docker-compose.yml`)
+
+```yaml
+services:
+  app:
+    build: .
+    container_name: fictionplanet-app
+    ports:
+      - "8080:80"
+    volumes:
+      - .:/var/www/html
+      - ./uploads:/var/www/html/uploads
+    environment:
+      - APP_URL=http://localhost:8080
+    depends_on:
+      db: { condition: service_healthy }
+
+  db:
+    image: mariadb:10.4
+    container_name: fictionplanet-db
+    ports:
+      - "3307:3306"
+    environment:
+      MARIADB_ROOT_PASSWORD: root
+      MARIADB_DATABASE: fictionplanetdb
+    volumes:
+      - db_data:/var/lib/mysql
+      - ./fictionplanetdb.sql:/docker-entrypoint-initdb.d/schema.sql
+```
+
+### Dockerfile (`/Dockerfile`)
+
+- Base: `php:8.1-apache`
+- Enables `mod_rewrite`
+- Installs `pdo_mysql` and `gd` extensions
+- Installs Composer for autoloader
+- Creates upload directories (`uploads/editor/img`, `uploads/gallery`, `uploads/posts/attachments`)
+- Sets permissions to `www-data` for uploads
+
+### Docker Helper Scripts
+
+| Script | Purpose |
+|--------|---------|
+| `/docker/setup.sh` | Linux/macOS: builds image, starts containers, runs DB import, sets permissions |
+| `/docker/setup.ps1` | Windows PowerShell: Docker volume init, image build, DB import, permissions |
+| `/docker/apache-config.conf` | Apache virtual host config for Docker |
+
+### Quick Start (Docker)
+
+```bash
+# Linux/macOS
+chmod +x docker/setup.sh && ./docker/setup.sh
+
+# Windows (PowerShell)
+.\docker\setup.ps1
+
+# Or manually
+docker-compose up -d --build
+# Then open http://localhost:8080
+```
+
+## Configuration via `.env`
+
+The application reads environment variables from a `.env` file:
+
+```
+DB_TYPE=mysql
+DB_HOST=localhost
+DB_USER=root
+DB_PASSWORD=
+DB_NAME=fictionplanetdb
+DB_CHARSET=utf8mb4
+APP_URL=http://localhost
+APP_DEBUG=false
+```
+
 ## Configuration (`/config.inc.php`)
 
 ### Database Settings

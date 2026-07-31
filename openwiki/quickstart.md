@@ -34,7 +34,9 @@ FictionPlanet is a **social network simulation** web application built with **PH
 | [Users & Auth](/openwiki/domain/users-and-auth.md) | Login/registration, roles, permissions, profiles, contacts |
 | [Image Gallery](/openwiki/domain/images-and-gallery.md) | Image upload, gallery display, CKEditor integration |
 | [Chat](/openwiki/domain/chat.md) | Contact-based polling chat, unread messages, online status |
-| [Configuration](/openwiki/operations/configuration.md) | Database setup, config constants, upload paths, error logging |
+| [Calendar](/openwiki/domain/calendar.md) | Public event calendar with FullCalendar, CRUD API |
+| [Testing & Security](/openwiki/testing-and-security.md) | PHPUnit tests, CSRF protection, rate limiting |
+| [Configuration](/openwiki/operations/configuration.md) | Database setup, config constants, Docker, upload paths, error logging |
 
 ## Setup
 
@@ -85,7 +87,7 @@ Permissions are role-based with four operations per module: **r** (read), **w** 
 3. **Global JavaScript**: All JS files use global functions with jQuery — no module bundler
 4. **Static DAO pattern**: DAOs use static methods and require a PDO connection parameter
 5. **Spanish codebase**: Most UI text, comments, and some variable names are in Spanish
-6. **No automated tests**: The project has no PHPUnit or other test infrastructure
+6. **Unit tests exist**: PHPUnit tests under `/tests/` — see [Testing & Security](/openwiki/testing-and-security.md)
 7. **CKEditor 4**: The full CKEditor distribution is committed to the repo under `/plugins/ckeditor/`
 
 ## Domain Map
@@ -101,12 +103,11 @@ Users ─── has role → Roles ─── has permissions → Permissions (mo
   │
   ├── has → Contacts ─── bidirectional → other Users
   │
-  └── sends → Friend Requests ─── to → other Users
+  ├── has → Events (Calendar) ─── displayed via → FullCalendar
 ```
 
 ## Backlog
 
-- **Calendar Events** (`/app/calendarEventsController.php`, `/models/CalendarEventModel.php`, `/models/dao/CalendarEventsDAO.php`, `/views/modals/calendar_modal.inc.php`, `/templates/modals/new_event_calendar_modal.inc.php`): FullCalendar-based public events with CRUD. Relatively isolated — deferred for brevity.
 - **Notifications** (`notifications` table in DB, no dedicated controller): Database table exists but no clear controller implementation. Deferred pending further investigation.
 - **Module 5/6 (publisher_data, personal_data)**: Constants defined in config but marked as "Duda" (doubt). Deferred — unclear if fully implemented.
 

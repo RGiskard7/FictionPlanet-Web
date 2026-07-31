@@ -167,6 +167,13 @@ tags: [source-map, structure, php]
 ├── doc/                               # Documentation images
 │   └── images/                        # README screenshots
 │
+├── docker/                            # Docker deployment scripts
+│   ├── apache-config.conf             # Apache virtual host for Docker
+│   ├── setup.sh                       # Linux/macOS Docker setup
+│   └── setup.ps1                      # Windows PowerShell Docker setup
+│
+├── openwiki/                          # OpenWiki generated documentation
+│
 └── skills/                            # Agent skills (OpenWiki)
 ```
 
@@ -184,4 +191,6 @@ tags: [source-map, structure, php]
 ## Related Pages
 
 - [Architecture Overview](/openwiki/architecture/overview.md) — MVC pattern, routing, core libraries
-- [Configuration](/openwiki/operations/configuration.md) — constants, database, upload paths
+- [Configuration](/openwiki/operations/configuration.md) — constants, database, Docker, upload paths
+- [Testing & Security](/openwiki/testing-and-security.md) — PHPUnit tests, CSRF, rate limiting
+- [Calendar Domain](/openwiki/domain/calendar.md) — event calendar

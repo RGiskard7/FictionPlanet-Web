@@ -34,11 +34,6 @@
     - [Convenciones de código](#convenciones-de-código)
     - [Consejos para extender la aplicación](#consejos-para-extender-la-aplicación)
   - [Seguridad Implementada](#seguridad-implementada)
-  - [Desarrollo](#desarrollo)
-    - [Dependencias](#dependencias)
-    - [Tests](#tests)
-    - [Docker](#docker)
-    - [Convenciones](#convenciones)
 
 ## Descripcion del Proyecto
 
@@ -339,7 +334,7 @@ FictionPlanet implementa un conjunto completo de funcionalidades que emulan una 
 ## Estructura del Proyecto
 
 ```
-FictionPlanet-Web/
+php-mvc-social-network/
 ├── controllers/          # Controladores MVC
 │   ├── About_us.php      # Pagina de informacion sobre el proyecto
 │   ├── Calendar.php      # Gestion de eventos de calendario
@@ -1162,32 +1157,3 @@ FictionPlanet implementa diversas medidas de seguridad:
 <p align="center">
   Desarrollado por <a href="https://github.com/RGiskard7">RGiskard7</a>
 </p>
-
-## Desarrollo
-
-### Dependencias
-
-```bash
-composer install
-```
-
-### Tests
-
-```bash
-composer test
-```
-
-Los tests cubren validadores (`LoginValidator`, `NewUserValidator`), modelos (`UserModel`, `ContactModel`) y la clase `Session` (incluyendo proteccion CSRF).
-
-### Docker
-
-Ver seccion [Instalacion](#instalacion) para despliegue con Docker.
-
-### Convenciones
-
-- PHP 8.1+, classmap autoloading via Composer
-- MVC propio con Front Controller
-- DAOs con PDO prepared statements
-- Sin dependencias externas de framework
-- Errores manejados via `AppException` con log a archivo — sin `die()` en produccion
-- CSS/JS servidos directamente desde `static/`, sin bundler

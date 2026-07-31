@@ -59,6 +59,14 @@ File-system utilities: directory copy, file copy, directory emptiness check, dir
 ### `/libs/Session.php`
 Manages user sessions: `log_in()`, `log_out()`, `is_started()`, `change_session_data()`. Stores `loggedInUser`, `idUser`, `userName`, `role`, and `permissions` in `$_SESSION`.
 
+Session also provides **CSRF protection**:
+- `csrf_token()` — generates or returns a 64-char hex token stored in `$_SESSION['csrf_token']`
+- `csrf_input()` — returns a hidden `<input>` for form-based CSRF tokens
+- `csrf_meta()` — returns a `<meta>` tag for AJAX-based CSRF tokens
+- `verify_csrf($token)` — compares the submitted token (from `$_POST['csrf_token']` or `X-CSRF-Token` header) against the session token using `hash_equals()`
+
+All mutation endpoints validate CSRF before processing (see [Testing & Security](/openwiki/testing-and-security.md)).
+
 ### `/libs/Pager.php`
 HTML pagination component. Renders a Bootstrap-styled pagination strip with first/prev/page numbers/next/last links. Takes URL, total items, items per page, max visible links, and current page.
 
@@ -111,7 +119,23 @@ The application uses a **module-level RBAC** (Role-Based Access Control) with fo
 | 2 | Administrator | Broad access (posts, roles, chat, calendar) |
 | 4 | Registered user | Limited read access |
 
-Controllers check permissions at the start of each action via `$_SESSION['permissions'][MDL_XXX]['r']` (or `w`/`u`/`d`). Unauthorized access is redirected to the homepage.
+Controllers check permissions at the start of each action via `$_SESSION['permissions'][MDL_XXX]['r']` (or `w`/`u`/`d`). Mutation actions additionally validate CSRF tokens:
+
+```php
+// Permission check
+if (!Session::is_started() || !$_SESSION['permissions'][MDL_POSTS]['r']) {
+    Redirection::redirect(BASE_URL);
+}
+
+// CSRF check for mutations
+if (!Session::verify_csrf()) {
+    http_response_code(403);
+    echo json_encode(['error' => 'Token de seguridad invalido']);
+    exit;
+}
+```
+
+For details on CSRF token generation, see the [Session library](/openwiki/testing-and-security.md#csrf-protection).
 
 ## Templates
 
@@ -134,3 +158,5 @@ Reusable template fragments live in `/templates/`:
 - [Users & Auth](/openwiki/domain/users-and-auth.md) — user management, roles, permissions
 - [Image Gallery](/openwiki/domain/images-and-gallery.md) — image upload and gallery
 - [Chat](/openwiki/domain/chat.md) — real-time messaging
+- [Calendar](/openwiki/domain/calendar.md) — event calendar with FullCalendar
+- [Testing & Security](/openwiki/testing-and-security.md) — PHPUnit tests, CSRF protection, rate limiting
